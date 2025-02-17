@@ -15,8 +15,8 @@ function App() {
         <p className="motto">Track. Manage. Grow</p>
         <p className="hook">Simplify your finances with real-time tracking and effortless management.</p>  
         <div className="buttons">
-          <button className="signIn"> Sign In</button>
-          <button className="signUp">Sign up</button>
+          <button className="signIn" href="/authentication">Sign In</button>
+          <button className="signUp" href="/authentication">Sign up</button>
         </div>   
       </div>
     </>
