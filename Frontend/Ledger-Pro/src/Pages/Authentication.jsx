@@ -1,9 +1,11 @@
 import React from 'react'
+import SignUpIn from '../Components/signUpInModal/SignUpIn'
+
 
 function Authentication() {
   return (
     <>
-        <h1>Authentication page</h1>
+        <SignUpIn/>
     </>
   )
 }
