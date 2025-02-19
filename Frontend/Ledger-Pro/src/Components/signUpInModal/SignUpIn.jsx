@@ -27,7 +27,7 @@ function SignUpIn() {
                     <div className="forgot-link">
                         <a href="">Forgot Password?</a>
                     </div>
-                    <button type="submit" className="bttn">Login</button>
+                    <Link className="link" to="/Home"><button type="submit" className="bttn">Login</button></Link>
                 </form>
             </div>
 
@@ -54,7 +54,7 @@ function SignUpIn() {
                         <input type="email" placeholder="Email" required/>
                         <i><BiEnvelope /></i>
                     </div>
-                    <button type="submit" className="bttn">Sign up</button>
+                    <Link className="link" to="/Home"><button type="submit" className="bttn">Sign up</button></Link>
                 </form>
             </div>
 
