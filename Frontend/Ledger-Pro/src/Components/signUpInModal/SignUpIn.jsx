@@ -11,7 +11,7 @@ function SignUpIn() {
 
 
   return (
-    <>
+    <div className='login-modal-body'>
         <div className={`login-container ${isActive ? "active" : ""}`} >
             <div className="form-box login">
                 <form action="">
@@ -76,7 +76,7 @@ function SignUpIn() {
                 </div>
             </div>
         </div>
-    </>
+    </div>
   )
 }
 
