@@ -2,7 +2,7 @@ from flask import request, jsonify
 from config import app, db
 from models import users
 
-@app.route("/users", methods=["GET"])
+@app.route("/get_users", methods=["GET"])
 def get_users():
     all_users = users.query.all()
     json_users = list(map(lambda x: x.to_json(), all_users))
