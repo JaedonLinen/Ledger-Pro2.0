@@ -1,5 +1,6 @@
 import "./Modal.css";
 import {useState} from "react"
+import { BiX } from "react-icons/bi";
 
 
 const Modal = ({closeModal}) => {
@@ -44,8 +45,11 @@ const Modal = ({closeModal}) => {
     }
 
   return (
-    <div className="modal-container" onClick={closeModal}>
+    <div className="modal-container" >
         <div className="modal">
+            <div className="exit-btn-container" onClick={closeModal}>
+                <BiX className="userModal-exit-btn" size='35'/>
+            </div>
             <form onSubmit={onSubmit}>
                 <div className="form-group">
                     <label htmlFor="firstName">First Name</label>
@@ -79,7 +83,9 @@ const Modal = ({closeModal}) => {
                     <label htmlFor="date">Date of Birth</label>
                     <input type="date" id="dateOfBirth" value={dateOfBirth} onChange={(e) => setDOB(e.target.value)} />
                 </div>
-                <button type="submit" className="btn">submit</button>
+                <div className="submit-button-container">
+                    <button type="submit" className="addUserModal-btn">submit</button>
+                </div>
             </form>
         </div>
     </div>
