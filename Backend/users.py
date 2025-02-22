@@ -71,12 +71,11 @@ def update_user(user_id):
     user.email = data.get("email", user.email)
     user.password_hash = data.get("passwordHash", user.password_hash)
     user.role = data.get("role", user.role)
-    user.date_of_birth = data.get("dateOfBirth", user.date_of_birth)
+    user.date_of_birth = datetime.strptime((data.get("dateOfBirth", user.date_of_birth)), "%a, %d %b %Y %H:%M:%S %Z").date()
 
     db.session.commit()
 
-    if not user:
-        return jsonify({"message": "User updated!"}), 200
+    return jsonify({"message": "User updated!"}), 200
 
 
 
@@ -93,8 +92,7 @@ def delete_user(user_id):
     db.session.delete(user)
     db.session.commit()
 
-    if not user:
-        return jsonify({"message": "User deleted!"}), 200
+    return jsonify({"message": "User deleted!"}), 200
 
 if __name__ == "__main__":
     with app.app_context():

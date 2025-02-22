@@ -1,0 +1,95 @@
+.confirmation-text{
+    text-align: center;
+    line-height: 40px;
+}
+
+.confirmation-text p{
+    color: grey;
+    font-size: 14px;
+}
+
+.btn-options-container{
+    display: flex; 
+    justify-content: center;
+}
+
+.btn-options-container .btn-options:not(:last-child){
+    margin-right: 10px;
+}
+
+.btn-options {
+    appearance: none;
+    background-color: #2ea44f;
+    border: 1px solid rgba(27, 31, 35, .15);
+    border-radius: 6px;
+    box-shadow: rgba(27, 31, 35, .1) 0 1px 0;
+    color: #fff;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 20px;
+    padding: 6px 60px;
+    text-align: center;
+    text-decoration: none;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+    vertical-align: middle;
+    white-space: nowrap;
+  }
+  
+  .btn-options:focus:not(:focus-visible):not(.focus-visible) {
+    box-shadow: none;
+    outline: none;
+  }
+  
+  .btn-options:hover {
+    background-color: #2c974b;
+  }
+  
+  .btn-options:focus {
+    box-shadow: rgba(46, 164, 79, .4) 0 0 0 3px;
+    outline: none;
+  }
+  
+  .btn-options:disabled {
+    background-color: #94d3a2;
+    border-color: rgba(27, 31, 35, .1);
+    color: rgba(255, 255, 255, .8);
+    cursor: default;
+  }
+  
+  .btn-options:active {
+    background-color: #298e46;
+    box-shadow: rgba(20, 70, 32, .2) 0 1px 0 inset;
+  }
+
+  #no-btn{
+    background-color: #c96666;
+  }
+
+  #no-btn:focus:not(:focus-visible):not(.focus-visible) {
+    box-shadow: none;
+    outline: none;
+  }
+  
+  #no-btn:hover {
+    background-color: #972c2c;
+  }
+  
+  #no-btn:focus {
+    box-shadow: rgba(164, 46, 46, 0.4) 0 0 0 3px;
+    outline: none;
+  }
+  
+  #no-btn:disabled {
+    background-color: #d39494;
+    border-color: rgba(27, 31, 35, .1);
+    color: rgba(255, 255, 255, .8);
+    cursor: default;
+  }
+  
+  #no-btn:active {
+    background-color: #8e2929;
+    box-shadow: rgba(20, 70, 32, .2) 0 1px 0 inset;
+  }

@@ -2,20 +2,46 @@ import "./Table.css";
 import { useState } from "react";
 import { useEffect } from "react";
 import Modal from '../addUserModal/Modal.jsx'
-import { BiSolidTrash, BiEdit, BiPlus } from "react-icons/bi";
+import ConfirmModal from '../addUserConfirmModal/addUserConfirmModal.jsx'
+import { BiSolidTrash, BiEdit } from "react-icons/bi";
 
 
 const Table = () => {
 
     const [modalOpen, setModalOpen] = useState(false)
 
+    const [currentUser, setCurrentUser] = useState({})
 
-
-
-
-
+    const [confirmModalOpen, setConfirmModalOpen] = useState(false)
 
     const [users, setUsers] = useState([])
+
+    const onUserUpdate = () => {
+        setCurrentUser({})
+        setModalOpen(false)
+        fetchUsers()
+    }
+
+    const onDeleteUpdate = () => {
+        setCurrentUser({})
+        setConfirmModalOpen(false)
+        fetchUsers()
+    }
+
+    const openModal = () => {
+        setCurrentUser({})
+        setModalOpen(true)
+    }
+
+    const openEditModal = (user) => {
+        setCurrentUser(user)
+        setModalOpen(true)
+    }
+
+    const openDeleteConfirmation = (user) => {
+        setCurrentUser(user)
+        setConfirmModalOpen(true)
+    }
 
     useEffect(() => {
         fetchUsers()
@@ -25,7 +51,6 @@ const Table = () => {
         try {
             const response = await fetch("http://127.0.0.1:5000/get_users");
             const data = await response.json();
-            console.log("API Response:", data);
             setUsers(data.allUsers);
         } catch (error) {
             console.error("Failed to fetch users:", error);
@@ -37,13 +62,20 @@ const Table = () => {
   return (
     <>
         <div className="addUserModalOpen-btn-container">
-            <button className="addUserModalOpen-btn" onClick={() => setModalOpen(true)}>
+            <button className="addUserModalOpen-btn" onClick={() => openModal()}>
                 Add User
             </button>
         </div>
-        {modalOpen && <Modal closeModal={() => {
-            setModalOpen(false)
-        }}/>}
+        {modalOpen && <Modal 
+            closeModal={() => {setModalOpen(false)}}
+            existingUser={currentUser}
+            updateCallBack={onUserUpdate}
+        />}
+        {confirmModalOpen && <ConfirmModal 
+            closeModal={() => {setConfirmModalOpen(false)}}
+            existingUser={currentUser}
+            updateDelete={onDeleteUpdate}
+        />}
         <div className="table-master-container">
             
             <table>
@@ -73,8 +105,10 @@ const Table = () => {
                             <td data-cell="role"        >{user.role}</td>
                             <td data-cell="date of birth"     >{user.dateOfBirth}</td>
                             <td>
-                                <BiEdit />
-                                <BiSolidTrash />
+                                <div className="actions-container">
+                                    <BiEdit size={22} className="actions-btn" onClick={() => openEditModal(user)}/>
+                                    <BiSolidTrash size={22} className="actions-btn" style={{ fill: '#954535' }} onClick={() => openDeleteConfirmation(user)}/>
+                                </div>
                             </td>
                         </tr>
                     ))}

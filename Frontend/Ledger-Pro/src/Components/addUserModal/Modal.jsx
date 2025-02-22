@@ -3,15 +3,17 @@ import {useState} from "react"
 import { BiX } from "react-icons/bi";
 
 
-const Modal = ({closeModal}) => {
+const Modal = ({closeModal, existingUser = {}, updateCallBack}) => {
 
-    const [firstName, setFirstName] = useState("")
-    const [lastName, setLastName] = useState("")
-    const [username, setUsername] = useState("")
-    const [passwordHash, setPassword] = useState("")
-    const [email, setEmail] = useState("")
-    const [role, setRole] = useState("")
-    const [dateOfBirth, setDOB] = useState("")
+    const [firstName, setFirstName] = useState(existingUser.firstName ||  "")
+    const [lastName, setLastName] = useState(existingUser.lastName || "")
+    const [username, setUsername] = useState(existingUser.username || "")
+    const [passwordHash, setPassword] = useState(existingUser.passwordHash || "")
+    const [email, setEmail] = useState(existingUser.email || "")
+    const [role, setRole] = useState(existingUser.role || "")
+    const [dateOfBirth, setDOB] = useState(existingUser.dateOfBirth || "")
+
+    const updating = Object.entries(existingUser).length !== 0
 
     const onSubmit = async (e) => {
         e.preventDefault()
@@ -26,9 +28,9 @@ const Modal = ({closeModal}) => {
             role
         }
 
-        const url = "http://127.0.0.1:5000/create_user"
+        const url = "http://127.0.0.1:5000/" + (updating ? `update_user/${existingUser.id}` : "create_user")
         const options = {
-            method: "POST",
+            method: updating ? "PATCH" : "POST",
             headers: {
                 "Content-Type": "application/json"
             },
@@ -40,15 +42,15 @@ const Modal = ({closeModal}) => {
             const data = await response.json()
             alert(data.message)
         } else {
-            // successfull
+            updateCallBack()
         }
     }
 
   return (
     <div className="modal-container" >
         <div className="modal">
-            <div className="exit-btn-container" onClick={closeModal}>
-                <BiX className="userModal-exit-btn" size='35'/>
+            <div className="exit-btn-container">
+                <BiX className="userModal-exit-btn" size='35' onClick={closeModal}/>
             </div>
             <form onSubmit={onSubmit}>
                 <div className="form-group">
