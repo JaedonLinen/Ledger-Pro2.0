@@ -14,6 +14,7 @@
 .home-navbar .home-nav-logo {
     width: 32px;
     margin: 15px;
+    cursor: pointer;
 }
 
 .home-navbar .home-nav-items .home-nav-link{

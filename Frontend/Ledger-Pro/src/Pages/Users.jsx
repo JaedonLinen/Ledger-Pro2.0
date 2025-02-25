@@ -8,7 +8,6 @@ function Users() {
 
   const location = useLocation();
   const { currentUser } = location.state;
-  console.log("current user:", currentUser)
 
   if (!currentUser){
     return <div className='error'>User not found...</div>;
@@ -18,7 +17,7 @@ function Users() {
     <div>
       <HomeNav currentUser={currentUser}/>
       <div className="breadcrumb-text-container"><h1 className="breadcrumb-text">Users</h1></div>
-      <Table />
+      <Table  userCurrent={currentUser}/>
     </div>
   )
 }

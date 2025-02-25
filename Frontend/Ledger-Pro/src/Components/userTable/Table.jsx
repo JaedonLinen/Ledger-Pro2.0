@@ -6,7 +6,7 @@ import ConfirmModal from '../addUserConfirmModal/addUserConfirmModal.jsx'
 import { BiSolidTrash, BiEdit } from "react-icons/bi";
 
 
-const Table = () => {
+const Table = ({userCurrent}) => {
 
     const [modalOpen, setModalOpen] = useState(false)
 
@@ -70,11 +70,12 @@ const Table = () => {
 
   return (
     <>
-        <div className="addUserModalOpen-btn-container">
-            <button className="addUserModalOpen-btn" onClick={() => openModal()}>
-                Add User
-            </button>
-        </div>
+        {userCurrent.role === "Admin" &&
+            <div className="addUserModalOpen-btn-container">
+                <button className="addUserModalOpen-btn" onClick={() => openModal()}>
+                    Add User
+                </button>
+            </div>}
         {modalOpen && <Modal 
             closeModal={() => {setModalOpen(false)}}
             existingUser={currentUser}
@@ -99,7 +100,9 @@ const Table = () => {
                         <th>Email</th>
                         <th>Role</th>
                         <th>Date of Birth</th>
-                        <th>Actions</th>
+                        <th>Active</th>
+                        <th>Expiration Date</th>
+                        {userCurrent.role === "Admin" && <th>Actions</th>}
                     </tr>
                 </thead>
                 <tbody>
@@ -111,12 +114,14 @@ const Table = () => {
                             <td data-cell="email"        >{user.email}</td>
                             <td data-cell="role"        >{user.role}</td>
                             <td data-cell="date of birth"     >{formatDate(user.dateOfBirth)}</td>
-                            <td>
+                            <td data-cell="is active"        >{user.isActive}</td>
+                            <td data-cell="expiration date"        >{formatDate(user.expiration_date)}</td>
+                            {userCurrent.role === "Admin" && <td data-cell="actions">
                                 <div className="actions-container">
                                     <BiEdit size={22} className="actions-btn" onClick={() => openEditModal(user)}/>
                                     <BiSolidTrash size={22} className="actions-btn" style={{ fill: '#954535' }} onClick={() => openDeleteConfirmation(user)}/>
                                 </div>
-                            </td>
+                            </td>}
                         </tr>
                     ))}
                 </tbody>

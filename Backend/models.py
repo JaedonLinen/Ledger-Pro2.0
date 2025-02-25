@@ -1,5 +1,5 @@
 from config import db
-from datetime import datetime
+from datetime import datetime, timedelta
 import bcrypt
 
 class users(db.Model):
@@ -12,6 +12,9 @@ class users(db.Model):
     role =  db.Column(db.String(7), unique=False, nullable=False)
     date_of_birth =  db.Column(db.Date, unique=False, nullable=False)
     created_at =  db.Column(db.DateTime, default=datetime.now)
+    expiration_date =  db.Column(db.DateTime, default=lambda: datetime.now() + timedelta(days=365))
+    isActive =  db.Column(db.String(8), unique=False, nullable=False)
+    
 
     def set_password(self, password):
         salt = bcrypt.gensalt()
@@ -38,6 +41,8 @@ class users(db.Model):
             "passwordHash": self.password_hash,
             "role": self.role,
             "dateOfBirth": self.date_of_birth,
-            "createdAt": self.created_at
+            "createdAt": self.created_at,
+            "expiration_date": self.expiration_date,
+            "isActive": self.isActive
         }
 

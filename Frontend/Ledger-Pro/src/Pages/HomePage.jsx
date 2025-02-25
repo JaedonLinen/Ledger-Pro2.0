@@ -8,7 +8,7 @@ function HomePage() {
   const { user } = location.state;
 
   if (!user){
-    return <div>User not found...</div>;
+    return <div className='error'>User not found...</div>;
   }
 
   return (

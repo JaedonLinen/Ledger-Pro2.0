@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import myImage from "/src/assets/LP-logo-black.png";
 import ppImage from "/src/assets/base-pp.png";
@@ -8,20 +8,28 @@ function HomeNav({currentUser}) {
 
     const [isOpen, setIsOpen] = useState(false);
     const navigate = useNavigate(); 
-    console.log(currentUser)
 
     const handleNavigateUsers = () => {
         navigate("/Users", { state: { currentUser } });
     };
 
+    const handleNavigateHome = () => {
+        navigate("/Home", {state: {user: currentUser} })  
+    };
+
+    const handleNavigateSignOut = () => {
+        currentUser = null
+        navigate("/authentications")  
+    };
+
   return (
     <div className={`home-navbar ${isOpen ? "open" : ""}`}>
-        <div><img src={myImage} alt="" className='home-nav-logo'/></div>
+        <img src={myImage} alt="" className='home-nav-logo' onClick={handleNavigateHome}/>
         <div className={`home-nav-items ${isOpen ? "open" : ""}`}>
             <div className="home-nav-link"><p className='home-nav-link-txt'>Accounts</p></div>
             <div onClick={handleNavigateUsers} className="home-nav-link"><p className='home-nav-link-txt'>Users</p></div>
             <div className="home-nav-link"><p className='home-nav-link-txt'>Metrics</p></div>
-            <div className="profile-container">
+            <div className="profile-container" onClick={handleNavigateSignOut}>
                 <div className="home-nav-link">
                     <img src={ppImage} alt="" />
                 </div>

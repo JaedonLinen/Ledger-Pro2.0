@@ -57,7 +57,50 @@ def create_user():
     if not date_of_birth:
         return (jsonify({"message": "dob"}), 400)
     
-    new_user =  users(first_name=first_name, last_name=last_name, email=email, password_hash=password_hash, role=role, date_of_birth=date_of_birth)
+    new_user =  users(first_name=first_name, last_name=last_name, email=email, password_hash=password_hash, role=role, date_of_birth=date_of_birth, isActive="Active")
+    new_user.set_password(password_hash)
+    new_user.set_username()
+
+
+    try:
+        db.session.add(new_user)
+        db.session.commit()
+    except Exception as e:
+        return jsonify({"message": str(e)}), 400
+    
+    return jsonify({"message": "User created!"}), 201
+
+
+
+
+@app.route("/register_user", methods=["POST"])
+def register_user():
+    first_name = request.json.get("firstName")
+    last_name = request.json.get("lastName")
+    email = request.json.get("email")
+    password_hash = request.json.get("passwordHash")
+    role = request.json.get("role")
+    date_of_birth = datetime.strptime(request.json.get("dateOfBirth"), '%Y-%m-%d').date()
+    
+    if not first_name:
+        return (jsonify({"message": "First Name"}), 400)
+
+    if not last_name:
+        return (jsonify({"message": "Last Name"}), 400)
+    
+    if not email:
+        return (jsonify({"message": "Email"}), 400)
+    
+    if not password_hash:
+        return (jsonify({"message": "Password"}), 400)
+    
+    if not role:
+        return (jsonify({"message": "role"}), 400)
+    
+    if not date_of_birth:
+        return (jsonify({"message": "dob"}), 400)
+    
+    new_user =  users(first_name=first_name, last_name=last_name, email=email, password_hash=password_hash, role=role, date_of_birth=date_of_birth, isActive="Inactive")
     new_user.set_password(password_hash)
     new_user.set_username()
 
@@ -90,6 +133,7 @@ def update_user(user_id):
     user.password_hash = data.get("passwordHash", user.password_hash)
     user.role = data.get("role", user.role)
     user.date_of_birth = datetime.strptime((data.get("dateOfBirth", user.date_of_birth)), "%a, %d %b %Y %H:%M:%S %Z").date()
+    user.isActive = data.get("isActive", user.isActive)
 
     db.session.commit()
 

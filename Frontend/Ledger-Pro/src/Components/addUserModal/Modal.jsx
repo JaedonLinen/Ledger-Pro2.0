@@ -10,6 +10,7 @@ const Modal = ({closeModal, existingUser = {}, updateCallBack}) => {
     const [passwordHash, setPassword] = useState(existingUser.passwordHash || "")
     const [email, setEmail] = useState(existingUser.email || "")
     const [role, setRole] = useState(existingUser.role || "")
+    const [isActive, setIsActive] = useState(existingUser.isActive || "")
     const [dateOfBirth, setDOB] = useState(existingUser.dateOfBirth || "")
 
     const updating = Object.entries(existingUser).length !== 0
@@ -23,7 +24,8 @@ const Modal = ({closeModal, existingUser = {}, updateCallBack}) => {
             email,
             passwordHash, 
             dateOfBirth,
-            role
+            role,
+            isActive
         }
 
         const url = "http://127.0.0.1:5000/" + (updating ? `update_user/${existingUser.id}` : "create_user")
@@ -63,13 +65,21 @@ const Modal = ({closeModal, existingUser = {}, updateCallBack}) => {
                     <label htmlFor="email">Email</label>
                     <input type="text" id="email" value={email} onChange={(e) => setEmail(e.target.value)} />
                 </div>
-                <div className="form-group">
+                {!updating && <div className="form-group">
                     <label htmlFor="passwordHash">Password</label>
                     <input type="text" id="passwordHash" value={passwordHash} onChange={(e) => setPassword(e.target.value)} />
-                </div>
+                </div>}
+                {updating && <div className="form-group">
+                    <label htmlFor="isActive">Active</label>
+                    <select name="isActive" value={isActive} onChange={(e) => setIsActive(e.target.value)}>
+                        <option value="Active">Active</option>
+                        <option value="Inactive">Inactive</option>
+                    </select>
+                </div>}
                 <div className="form-group">
                     <label htmlFor="Role">Role</label>
                     <select name="role" value={role} onChange={(e) => setRole(e.target.value)}>
+                        <option value=""></option>
                         <option value="Admin">Admin</option>
                         <option value="Manager">Manager</option>
                         <option value="Accountant">Accountant</option>
