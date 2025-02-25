@@ -7,7 +7,6 @@ const Modal = ({closeModal, existingUser = {}, updateCallBack}) => {
 
     const [firstName, setFirstName] = useState(existingUser.firstName ||  "")
     const [lastName, setLastName] = useState(existingUser.lastName || "")
-    const [username, setUsername] = useState(existingUser.username || "")
     const [passwordHash, setPassword] = useState(existingUser.passwordHash || "")
     const [email, setEmail] = useState(existingUser.email || "")
     const [role, setRole] = useState(existingUser.role || "")
@@ -21,7 +20,6 @@ const Modal = ({closeModal, existingUser = {}, updateCallBack}) => {
         const data = {
             firstName,
             lastName,
-            username,
             email,
             passwordHash, 
             dateOfBirth,
@@ -60,10 +58,6 @@ const Modal = ({closeModal, existingUser = {}, updateCallBack}) => {
                 <div className="form-group">
                     <label htmlFor="lastName">Last Name</label>
                     <input type="text" id="lastName" value={lastName} onChange={(e) => setLastName(e.target.value)} />
-                </div>
-                <div className="form-group">
-                    <label htmlFor="username">Username</label>
-                    <input type="text" id="username" value={username} onChange={(e) => setUsername(e.target.value)} />
                 </div>
                 <div className="form-group">
                     <label htmlFor="email">Email</label>

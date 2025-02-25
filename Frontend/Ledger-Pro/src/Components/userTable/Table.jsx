@@ -58,6 +58,15 @@ const Table = () => {
         }
     };
 
+    const formatDate = (dateData) => {
+        const date = new Date(dateData)
+        return new Intl.DateTimeFormat("en-US", {
+            year: "numeric",
+            month: "2-digit",
+            day: "2-digit"
+        }).format(date);
+    }
+
 
   return (
     <>
@@ -88,7 +97,6 @@ const Table = () => {
                         <th>Last Name</th>
                         <th>Username</th>
                         <th>Email</th>
-                        <th>Password</th>
                         <th>Role</th>
                         <th>Date of Birth</th>
                         <th>Actions</th>
@@ -101,9 +109,8 @@ const Table = () => {
                             <td data-cell="last name"    >{user.lastName}</td>
                             <td data-cell="username"    >{user.username}</td>
                             <td data-cell="email"        >{user.email}</td>
-                            <td data-cell="password"     >{user.passwordHash}</td>
                             <td data-cell="role"        >{user.role}</td>
-                            <td data-cell="date of birth"     >{user.dateOfBirth}</td>
+                            <td data-cell="date of birth"     >{formatDate(user.dateOfBirth)}</td>
                             <td>
                                 <div className="actions-container">
                                     <BiEdit size={22} className="actions-btn" onClick={() => openEditModal(user)}/>

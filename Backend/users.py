@@ -11,12 +11,29 @@ def get_users():
 
 
 
+@app.route("/login", methods=["POST"])
+def login():
+    data = request.json
+    username = data.get("username")
+    password = data.get("password")
+
+    if not username or not password:
+        return jsonify({"error": "Username and password are required"}), 400
+    
+    user = users.query.filter_by(username=username).first()
+
+    if user and user.check_password(password): 
+        return jsonify({"message": "Login successful", "user": user.to_json()}), 201
+    else:
+        return jsonify({"message": "Invalid username or password"}), 401
+
+
+
 
 @app.route("/create_user", methods=["POST"])
 def create_user():
     first_name = request.json.get("firstName")
     last_name = request.json.get("lastName")
-    username = request.json.get("username")
     email = request.json.get("email")
     password_hash = request.json.get("passwordHash")
     role = request.json.get("role")
@@ -27,9 +44,6 @@ def create_user():
 
     if not last_name:
         return (jsonify({"message": "Last Name"}), 400)
-    
-    if not username:
-        return (jsonify({"message": "User Name"}), 400)
     
     if not email:
         return (jsonify({"message": "Email"}), 400)
@@ -43,7 +57,11 @@ def create_user():
     if not date_of_birth:
         return (jsonify({"message": "dob"}), 400)
     
-    new_user =  users(first_name=first_name, last_name=last_name, username=username, email=email, password_hash=password_hash, role=role, date_of_birth=date_of_birth)
+    new_user =  users(first_name=first_name, last_name=last_name, email=email, password_hash=password_hash, role=role, date_of_birth=date_of_birth)
+    new_user.set_password(password_hash)
+    new_user.set_username()
+
+
     try:
         db.session.add(new_user)
         db.session.commit()

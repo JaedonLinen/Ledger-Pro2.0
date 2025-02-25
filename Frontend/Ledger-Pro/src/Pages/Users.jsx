@@ -1,14 +1,22 @@
 import React from 'react'
 import Table from '../Components/userTable/Table.jsx'
-import { Link } from 'react-router-dom'
 import HomeNav from '../Components/homeNav/HomeNav.jsx'
+import { useLocation } from "react-router-dom";
 
 
 function Users() {
 
+  const location = useLocation();
+  const { currentUser } = location.state;
+  console.log("current user:", currentUser)
+
+  if (!currentUser){
+    return <div className='error'>User not found...</div>;
+  }
+
   return (
     <div>
-      <HomeNav />
+      <HomeNav currentUser={currentUser}/>
       <div className="breadcrumb-text-container"><h1 className="breadcrumb-text">Users</h1></div>
       <Table />
     </div>

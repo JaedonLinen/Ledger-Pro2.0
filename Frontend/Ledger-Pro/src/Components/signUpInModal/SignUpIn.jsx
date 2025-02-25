@@ -1,33 +1,75 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import './SignUpIn.css'
 import { BiLock, BiUser, BiEnvelope, BiNotepad} from 'react-icons/bi'
 import { useState } from 'react';
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import myImage from "/src/assets/LP-logo-white.png";
 
 function SignUpIn() {
-
+    const navigate = useNavigate();
     const [isActive, setIsActive] = useState(false);
 
+
+    const [username, setUsernameLogin] = useState("")
+    const [password, setPasswordLogin] = useState("")
+    const [user, setUser] = useState(null)
+
+    const attemptLogin = async (e) => {
+        e.preventDefault()
+
+        const loginData = {
+            username,
+            password
+        }
+
+        const url = "http://127.0.0.1:5000/login"
+        const options = {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(loginData)
+        }
+
+        try{
+            const response = await fetch (url, options)
+            if (response.status !== 201 && response.status !== 200){
+                const data = await response.json()
+                alert(data.message)
+            } else {
+                const data = await response.json()
+                setUser(data.user)
+                navigate("/Home", {state: {user: user} })   
+            }
+        } catch (error) {
+            alert(error.message);
+        }
+    }
+
+    useEffect(() => {
+        if(user){ 
+            navigate("/Home", {state: {user: user} })  
+        }
+    }, [user]);
 
   return (
     <div className='login-modal-body'>
         <div className={`login-container ${isActive ? "active" : ""}`} >
             <div className="form-box login">
-                <form action="">
+                <form onSubmit={attemptLogin}>
                     <h1>Login</h1>
                     <div className="login-input-box">
-                        <input type="text" placeholder="Username" required/>
-                        <i><BiLock /></i>
+                        <input type="text" placeholder="Username"  value={username} onChange={(e) => setUsernameLogin(e.target.value)} required/>
+                        <i><BiUser /></i>
                     </div>
                     <div className="login-input-box">
-                        <input type="password" placeholder="Password" required/>
-                        <i><BiUser /></i>
+                        <input type="password" placeholder="Password" value={password} onChange={(e) => setPasswordLogin(e.target.value)} required/>
+                        <i><BiLock /></i>
                     </div>
                     <div className="forgot-link">
                         <a href="">Forgot Password?</a>
                     </div>
-                    <Link className="link" to="/Home"><button type="submit" className="bttn">Login</button></Link>
+                    <button type="submit" className="bttn">Login</button>
                 </form>
             </div>
 
