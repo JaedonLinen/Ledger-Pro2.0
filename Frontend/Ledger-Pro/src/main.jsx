@@ -6,6 +6,7 @@ import App from './App'
 import Authentication from './Pages/Authentication'
 import HomePage from './Pages/HomePage'
 import Users from './Pages/Users'
+import ForgotPassword from './Pages/ForgotPassword'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
@@ -15,6 +16,7 @@ createRoot(document.getElementById('root')).render(
         <Route path='/authentications' element={<Authentication />} />
         <Route path='/Home' element={<HomePage />} />
         <Route path='/Users' element={<Users />} />
+        <Route path='/ForgotPassword' element={<ForgotPassword />} />
       </Routes>
     </Router>
   </StrictMode>,

@@ -158,8 +158,8 @@ function SignUpIn() {
                         <input type="password" placeholder="Password" value={password} onChange={(e) => setPasswordLogin(e.target.value)} required/>
                         <i><BiLock /></i>
                     </div>
-                    <div className="forgot-link">
-                        <a href="">Forgot Password?</a>
+                    <div className="forgot-link-container">
+                        <Link to="/ForgotPassword" className='forgot-link'><p>Forgot Password?</p></Link>
                     </div>
                     <button type="submit" className="bttn">Login</button>
                     <p style={{ color: "red" }}>{errorAttempts}</p>

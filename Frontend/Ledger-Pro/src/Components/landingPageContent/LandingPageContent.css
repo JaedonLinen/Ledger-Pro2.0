@@ -1,6 +1,7 @@
-.text{
+
+.landing-text{
   position: relative;
-  top: 10rem;
+  top: 15vh;
   left: 10vw;
   letter-spacing: 1px;
   background-color: transparent;
@@ -14,6 +15,7 @@
   font-weight: bold;
   font-size: 4rem;
   margin-bottom: 10px;
+  margin-top: 0;
   width: 83vw;
   background-color: transparent;
 }
@@ -23,7 +25,7 @@
   background-color: transparent;
 }
 
-.buttons{
+.landing-buttons{
   display: flex;
   position: relative;
   justify-content: space-between;
@@ -32,7 +34,7 @@
   background-color: transparent;
 }
 
-.buttons button {
+.landing-buttons button {
   padding: 1em 2em;
   background-color: black;
   border: none;
@@ -46,7 +48,7 @@
   align-items: center;
 }
 
-.buttons button::after {
+.landing-buttons button::after {
   content: '';
   position: absolute;
   height: 115%;
@@ -57,7 +59,7 @@
   transition: 2s ease;
 }
 
-.buttons button:hover {
+.landing-buttons button:hover {
   z-index: 0;
   box-shadow: 40px 0 100px #58bb89, -40px 0 100px #607c3c;
   cursor: pointer;
@@ -94,6 +96,105 @@
   margin: auto;
   background: conic-gradient(from 0deg, #e6832b, #f8dd5d, #58bb89, #db605d, #607c3c );
   animation: spinBlob 8s linear infinite;
+}
+
+@media (max-width: 500px){ 
+
+  .landing-text{
+    position: relative;
+    top: 10vh;
+    left: 10vw;
+    letter-spacing: 1px;
+    background-color: transparent;
+  }
+
+  .link{
+    background: transparent;
+    padding-right: 15px;
+  }
+
+  .landing-buttons{
+    display: flex;
+    position: relative;
+    justify-content: left;
+    padding-top: 20px;
+    max-width: 320px;
+    background-color: transparent;
+  }
+  
+  .landing-buttons button {
+    padding: 1em 2em;
+    background-color: black;
+    border: none;
+    color: white;
+    font-size: 15px;
+    width: 37vw;
+    max-width: 140px;
+    border-radius: 100px;
+    position: relative;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .buttons button::after {
+    content: '';
+    position: absolute;
+    height: 115%;
+    width: 105%;
+    border-radius: 100px;
+    background-image: linear-gradient(to bottom right, #607c3c, #58bb89);
+    z-index: -1;
+    transition: 2s ease;
+  }
+  
+  .buttons button:hover {
+    z-index: 0;
+    box-shadow: 40px 0 100px #58bb89, -40px 0 100px #607c3c;
+    cursor: pointer;
+    transition: 2s ease-in-out;
+  }
+
+  .blob-outer-container{
+    height: 100%;
+    width: 50%;
+    z-index: -1;
+    inset: 0;
+    margin: auto;
+    filter: blur(120px);
+  }
+  
+  .blob-inner-container{
+    border-radius: 1000px;
+    position: absolute;
+    inset: 0;
+    margin: auto;
+    width: 50vw;
+    height: 150vh;
+    min-width: 100px;
+    overflow: hidden;
+    background-color: blue;
+    transform: scale(0.5);
+    padding-left: 15em;
+  }
+  
+  .blob{
+    position: absolute;
+    height: 100vh;
+    inset: 0;
+    margin: auto;
+    background: conic-gradient(from 0deg, #e6832b, #f8dd5d, #58bb89, #db605d, #607c3c );
+    animation: spinBlob 8s linear infinite;
+  }
+  .text{
+    position: relative;
+    top: 10rem;
+    left: 10vw;
+    letter-spacing: 1px;
+    background-color: transparent;
+    width: 80%;
+  }
+  
 }
 
 @keyframes spinBlob {
