@@ -7,6 +7,7 @@ import Authentication from './Pages/Authentication'
 import HomePage from './Pages/HomePage'
 import Users from './Pages/Users'
 import ForgotPassword from './Pages/ForgotPassword'
+import AccountsLanding from './Pages/AccountsLanding'
 import Accounts from './Pages/Accounts'
 import Wizard from './Pages/CreateAccount'
 
@@ -18,7 +19,8 @@ createRoot(document.getElementById('root')).render(
         <Route path='/authentications' element={<Authentication />} />
         <Route path='/Home' element={<HomePage />} />
         <Route path='/Users' element={<Users />} />
-        <Route path='/Accounts' element={<Accounts />} />
+        <Route path='/Accounts_Landing' element={<AccountsLanding />} />
+        <Route path='/Accounts_List' element={<Accounts />} />
         <Route path='/CreateAccount' element={<Wizard />} />
         <Route path='/ForgotPassword' element={<ForgotPassword />} />
       </Routes>

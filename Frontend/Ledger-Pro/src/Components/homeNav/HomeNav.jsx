@@ -18,7 +18,7 @@ function HomeNav({currentUser}) {
     };
 
     const handleNavigateAccounts = () => {
-        navigate("/Accounts", {state: { currentUser } })  
+        navigate("/Accounts_Landing", {state: { currentUser } })  
     };
 
     const handleNavigateSignOut = () => {

@@ -1,9 +1,9 @@
 import React from 'react'
 import HomeNav from '../Components/homeNav/HomeNav.jsx'
+import AccountTable from '../Components/accountsTable/AccountsTable.jsx'
 import { useNavigate, useLocation } from "react-router-dom";
 
 function Accounts() {
-    const navigate = useNavigate();
     const location = useLocation();
     const { currentUser } = location.state;
 
@@ -11,14 +11,11 @@ function Accounts() {
         return <div className='error'>User not found...</div>;
     }
 
-    const handleNavigateCreateAccounts = () => {
-        navigate("/CreateAccount", {state: {currentUser} })  
-    };
-
     return (
         <div>
             <HomeNav currentUser={currentUser}/>
-            <button onClick={handleNavigateCreateAccounts}>Create Account</button>
+            <div className="breadcrumb-text-container"><h1 className="breadcrumb-text">Accounts</h1></div>
+            <AccountTable />
         </div>
     )
 }

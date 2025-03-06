@@ -1,30 +1,62 @@
 import React from 'react'
 import './CreateAccountWizard.css'
 import {useState} from "react"
+import { useLocation } from "react-router-dom";
 
-function CreateAccountWizard({currentUser}) {
+function CreateAccountWizard () {
+
+    const location = useLocation();
+    const { currentUser } = location.state;
+
+    if (!currentUser){
+        return <div className='error'>User not found...</div>;
+    }
 
     const [account_name,    setAccountName] = useState("")
-    const [account_num,     setAccountNum] = useState("")
+    const [account_num,     setAccountNum] = useState()
     const [account_desc,    setAccountDesc] = useState("")
-    const [normalSide,      setNormalSide] = useState("")
+    const [normal_side,      setNormalSide] = useState("")
     const [category,        setCategory] = useState("")
     const [subcategory,     setSubcategory] = useState("")
-    const [initial_balance, setInitialBalance] = useState("");
+    const [initial_balance, setInitialBalance] = useState(0.0);
     const account_owner = currentUser.id
+    const [formattedBalance, setFormattedBalance] = useState("");
+    const [displayAccountNum, setDisplayAccountNum] = useState("");
+
+    const numbersOnly = (text) =>{
+        return text.replace(/[^0-9.]/g, ""); // Keep only numbers & decimals
+    }
+
+    const handleAccountNumberChange = (e) => {
+        let rawNumber = numbersOnly(e.target.value)
+        setAccountNum(
+            isNaN(parseInt(rawNumber)) ? 0 : 
+            parseInt(parseInt(rawNumber))
+        );
+        console.log(account_num)
+        setDisplayAccountNum(numbersOnly(rawNumber))
+    };
+
+    const handleBalanceChange = (e) => {
+        let rawValue = numbersOnly(e.target.value)
+        setInitialBalance(
+            isNaN(parseFloat(rawValue)) ? 0 : 
+            parseFloat(parseFloat(rawValue).toFixed(2))
+        ); // Store raw value
+    
+        // Apply formatting
+        setFormattedBalance(formatCurrency(rawValue));
+    };
 
     const formatCurrency = (num) => {
-        let number = num.replace(/[^0-9.]/g, ""); 
-        
-        // Ensure only one decimal point
-        let parts = number.split(".");
+        let parts = num.split(".");
         parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ","); // Add commas
-
+    
         // Limit to two decimal places
         if (parts.length > 1) {
             parts[1] = parts[1].slice(0, 2);
         }
-
+    
         return `$${parts.join(".")}`;
     };
 
@@ -35,7 +67,7 @@ function CreateAccountWizard({currentUser}) {
             account_name,   
             account_num,    
             account_desc,   
-            normalSide,     
+            normal_side,     
             category,       
             subcategory,    
             initial_balance,
@@ -56,9 +88,11 @@ function CreateAccountWizard({currentUser}) {
             const data = await response.json()
             alert(data.message)
         } else {
-            // code
+            // success modal
         }
     }
+
+    
 
   return (
     <div className='wizard-body'>
@@ -75,7 +109,7 @@ function CreateAccountWizard({currentUser}) {
                     </div>
                     <div className="wizard-group">
                         <label htmlFor="">Number</label>
-                        <input type="number" name='Number' value={account_num} onChange={(e) => setAccountNum(e.target.value)} required/>
+                        <input type="text" name='Number' value={displayAccountNum} onChange={handleAccountNumberChange} required/>
                     </div>
                     <div className="wizard-group">
                         <label htmlFor="">Description</label>
@@ -85,7 +119,7 @@ function CreateAccountWizard({currentUser}) {
                 <div className="wizard-step two">
                     <div className="wizard-group">
                         <label htmlFor="side">Normal Side</label>
-                        <select name="side" value={normalSide} onChange={(e) => setNormalSide(e.target.value)} required>
+                        <select name="side" value={normal_side} onChange={(e) => setNormalSide(e.target.value)} required>
                             <option value=""></option>
                             <option value="Debit">Debit (left)</option>
                             <option value="Credit">Credit (right)</option>
@@ -95,12 +129,12 @@ function CreateAccountWizard({currentUser}) {
                         <label htmlFor="Category">Category</label>
                         <select name="side" value={category} onChange={(e) => setCategory(e.target.value)} required>
                             <option value=""></option>
-                            {normalSide === "Debit" && <option value="Assets">Assets</option>}
-                            {normalSide === "Debit" && <option value="Expenses">Expenses</option>}
+                            {normal_side === "Debit" && <option value="Assets">Assets</option>}
+                            {normal_side === "Debit" && <option value="Expenses">Expenses</option>}
 
-                            {normalSide === "Credit" && <option value="Liabilites">Liabilites</option>}
-                            {normalSide === "Credit" && <option value="Equity">Equity</option>}
-                            {normalSide === "Credit" && <option value="Revenue">Revenue</option>}
+                            {normal_side === "Credit" && <option value="Liabilites">Liabilites</option>}
+                            {normal_side === "Credit" && <option value="Equity">Equity</option>}
+                            {normal_side === "Credit" && <option value="Revenue">Revenue</option>}
                         </select>
                     </div>
                     <div className="wizard-group">
@@ -129,7 +163,7 @@ function CreateAccountWizard({currentUser}) {
                 <div className="wizard-step three">
                     <div className="wizard-group">
                         <label htmlFor="initial balance">Initial Balance</label>
-                        <input type="text" name='initial balance' min="0" step="any" onChange={(e) => setInitialBalance(formatCurrency(e.target.value))} value={initial_balance} required />
+                        <input type="text" name='initial balance' min="0" step="any" onChange={handleBalanceChange} value={formattedBalance} required />
                     </div>
                     <div className="wizard-btn-container">
                         <button className="wizard-submit">Create Account</button>

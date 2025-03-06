@@ -46,9 +46,12 @@ class users(db.Model):
             "isActive": self.isActive
         }
 
-class accounts(db.Model):
+class Accounts(db.Model):
+
+    __tablename__ = 'Accounts'
+
     account_id = db.Column(db.Integer, primary_key=True)  # Unique identifier for account
-    account_num = db.Column(db.Integer, unique=True,  primary_key=True)  # Unique identifier for account
+    account_num = db.Column(db.Integer, nullable=False, unique=True)  # Unique identifier for account
     account_name = db.Column(db.String(50), unique=True,  nullable=False)  # Account name (not unique)
     account_desc = db.Column(db.String(255), nullable=False)  # Description (increased size for flexibility)
     normal_side = db.Column(db.String(10), nullable=False)  # Should be 'Debit' or 'Credit'
@@ -65,8 +68,21 @@ class accounts(db.Model):
     statement = db.Column(db.String(2), nullable=True)  # Financial statement type ('IS', 'BS', 'RE')
     comment = db.Column(db.Text, nullable=True)  # Optional comment field
 
+    def place_initial_balance(self):
+        if self.normal_side == "Debit":
+            self.debit = self.initial_balance
+        elif self.normal_side == "Credit":
+            self.credit = self.initial_balance
+
+    def place_balance(self):
+        if self.normal_side == "Debit":
+            self.balance = self.initial_balance
+        elif self.normal_side == "Credit":
+            self.balance = -self.initial_balance
+
     def to_json(self):
         return {
+            "account_id": self.account_id,
             "account_num": self.account_num,
             "account_name": self.account_name,
             "account_desc": self.account_desc,

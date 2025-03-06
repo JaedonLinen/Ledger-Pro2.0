@@ -1,6 +1,6 @@
 from flask import request, jsonify
 from config import app, db
-from models import users, accounts
+from models import users, Accounts
 from datetime import datetime
 
 @app.route("/get_users", methods=["GET"])
@@ -138,11 +138,6 @@ def delete_user(user_id):
 
     return jsonify({"message": "User deleted!"}), 200
 
-if __name__ == "__main__":
-    with app.app_context():
-        db.create_all()
-
-    app.run(debug=True)
 
 
 
@@ -150,12 +145,13 @@ if __name__ == "__main__":
 ################# account api calls #######################
 @app.route("/get_accounts", methods=["GET"])
 def get_accounts():
-    all_accounts = users.query.all()
+    all_accounts = Accounts.query.all()
     json_accounts = list(map(lambda x: x.to_json(), all_accounts))
     return jsonify({"allAccounts": json_accounts})
 
 @app.route("/create_account", methods=["POST"])
 def create_account():
+
     account_name = request.json.get("account_name")
     account_num = request.json.get("account_num")
     account_desc = request.json.get("account_desc")
@@ -189,7 +185,10 @@ def create_account():
     if not account_owner:
         return (jsonify({"message": "Account Owner"}), 400)
     
-    new_account = accounts(account_num=account_num, account_name=account_name, account_desc=account_desc, normal_side=normal_side, category=category, subcategory=subcategory, initial_balance=initial_balance, account_owner=account_owner)
+    new_account = Accounts(account_num=account_num, account_name=account_name, account_desc=account_desc, normal_side=normal_side, category=category, subcategory=subcategory, initial_balance=initial_balance, account_owner=account_owner)
+    if new_account.initial_balance != 0.0 and new_account.initial_balance != 0:
+        new_account.place_initial_balance()
+        new_account.place_balance()
 
     try:
         db.session.add(new_account)
@@ -198,5 +197,15 @@ def create_account():
         return jsonify({"message": str(e)}), 400
     
     return jsonify({"message": "User created!"}), 201
+
+
+
+if __name__ == "__main__":
+    with app.app_context():
+        db.create_all()
+
+    app.run(debug=True)
+
+
 
 
