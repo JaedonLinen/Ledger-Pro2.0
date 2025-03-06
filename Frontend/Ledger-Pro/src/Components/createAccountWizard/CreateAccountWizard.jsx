@@ -38,8 +38,12 @@ function CreateAccountWizard({currentUser}) {
                         <input type="text" name='Account Name' required/>
                     </div>
                     <div className="wizard-group">
+                        <label htmlFor="">Number</label>
+                        <input type="number" name='Number' required/>
+                    </div>
+                    <div className="wizard-group">
                         <label htmlFor="">Description</label>
-                        <input type="text" name='Account Name' required/>
+                        <input type="text" name='Description' required/>
                     </div>
                 </div>
                 <div className="wizard-step two">
