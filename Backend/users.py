@@ -148,6 +148,12 @@ if __name__ == "__main__":
 
 
 ################# account api calls #######################
+@app.route("/get_accounts", methods=["GET"])
+def get_accounts():
+    all_accounts = users.query.all()
+    json_accounts = list(map(lambda x: x.to_json(), all_accounts))
+    return jsonify({"allAccounts": json_accounts})
+
 @app.route("/create_account", methods=["POST"])
 def create_account():
     account_name = request.json.get("account_name")
