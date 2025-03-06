@@ -17,6 +17,10 @@ function HomeNav({currentUser}) {
         navigate("/Home", {state: {user: currentUser} })  
     };
 
+    const handleNavigateAccounts = () => {
+        navigate("/Accounts", {state: { currentUser } })  
+    };
+
     const handleNavigateSignOut = () => {
         currentUser = null
         navigate("/authentications")  
@@ -26,7 +30,7 @@ function HomeNav({currentUser}) {
     <div className={`home-navbar ${isOpen ? "open" : ""}`}>
         <img src={myImage} alt="" className='home-nav-logo' onClick={handleNavigateHome}/>
         <div className={`home-nav-items ${isOpen ? "open" : ""}`}>
-            <div className="home-nav-link"><p className='home-nav-link-txt'>Accounts</p></div>
+            <div onClick={handleNavigateAccounts} className="home-nav-link"><p className='home-nav-link-txt'>Accounts</p></div>
             <div onClick={handleNavigateUsers} className="home-nav-link"><p className='home-nav-link-txt'>Users</p></div>
             <div className="home-nav-link"><p className='home-nav-link-txt'>Metrics</p></div>
             <div className="profile-container" onClick={handleNavigateSignOut}>
