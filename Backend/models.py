@@ -61,8 +61,8 @@ class accounts(db.Model):
     created_at = db.Column(db.DateTime, default=datetime.now)  # Timestamp when account is created
     account_owner = db.Column(db.Integer, nullable=False)  # Expiration or ownership time
     isActive = db.Column(db.Boolean, nullable=False, default=True)  # Boolean for active/inactive status
-    order = db.Column(db.Integer, nullable=False)  # Order for sorting (e.g., Cash = 1)
-    statement = db.Column(db.String(2), nullable=False)  # Financial statement type ('IS', 'BS', 'RE')
+    order = db.Column(db.Integer, nullable=True)  # Order for sorting (e.g., Cash = 1)
+    statement = db.Column(db.String(2), nullable=True)  # Financial statement type ('IS', 'BS', 'RE')
     comment = db.Column(db.Text, nullable=True)  # Optional comment field
 
     def to_json(self):

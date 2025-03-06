@@ -4,10 +4,14 @@ import {useState} from "react"
 
 function CreateAccountWizard({currentUser}) {
 
-    const [normalSide, setNormalSide] = useState("")
-    const [category, setCategory] = useState("")
-    const [subcategory, setSubcategory] = useState("")
-    const [initBalance, setInitBalance] = useState("");
+    const [account_name,    setAccountName] = useState("")
+    const [account_num,     setAccountNum] = useState("")
+    const [account_desc,    setAccountDesc] = useState("")
+    const [normalSide,      setNormalSide] = useState("")
+    const [category,        setCategory] = useState("")
+    const [subcategory,     setSubcategory] = useState("")
+    const [initial_balance, setInitialBalance] = useState("");
+    const account_owner = currentUser.id
 
     const formatCurrency = (num) => {
         let number = num.replace(/[^0-9.]/g, ""); 
@@ -24,6 +28,38 @@ function CreateAccountWizard({currentUser}) {
         return `$${parts.join(".")}`;
     };
 
+    const onSubmit = async (e) => {
+        e.preventDefault()
+
+        const data = {
+            account_name,   
+            account_num,    
+            account_desc,   
+            normalSide,     
+            category,       
+            subcategory,    
+            initial_balance,
+            account_owner
+        }
+
+        const url = "http://127.0.0.1:5000/create_account"
+        const options = {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(data)
+        }
+
+        const response = await fetch (url, options)
+        if (response.status !== 201 && response.status !== 200){
+            const data = await response.json()
+            alert(data.message)
+        } else {
+            // code
+        }
+    }
+
   return (
     <div className='wizard-body'>
         <div className="wizard-header-text">
@@ -31,19 +67,19 @@ function CreateAccountWizard({currentUser}) {
             <p>Please fill out the information below to create an account</p>
         </div>
         <div className='wizard-container'>
-            <form action="" className="wizard-form">
+            <form action="" onSubmit={onSubmit} className="wizard-form">
                 <div className="wizard-step one">
                     <div className="wizard-group">
                         <label htmlFor="">Name</label>
-                        <input type="text" name='Account Name' required/>
+                        <input type="text" name='Account Name' value={account_name} onChange={(e) => setAccountName(e.target.value)} required/>
                     </div>
                     <div className="wizard-group">
                         <label htmlFor="">Number</label>
-                        <input type="number" name='Number' required/>
+                        <input type="number" name='Number' value={account_num} onChange={(e) => setAccountNum(e.target.value)} required/>
                     </div>
                     <div className="wizard-group">
                         <label htmlFor="">Description</label>
-                        <input type="text" name='Description' required/>
+                        <input type="text" name='Description' value={account_desc} onChange={(e) => setAccountDesc(e.target.value)} required/>
                     </div>
                 </div>
                 <div className="wizard-step two">
@@ -93,7 +129,7 @@ function CreateAccountWizard({currentUser}) {
                 <div className="wizard-step three">
                     <div className="wizard-group">
                         <label htmlFor="initial balance">Initial Balance</label>
-                        <input type="text" name='initial balance' min="0" step="any" onChange={(e) => setInitBalance(formatCurrency(e.target.value))} value={initBalance} required />
+                        <input type="text" name='initial balance' min="0" step="any" onChange={(e) => setInitialBalance(formatCurrency(e.target.value))} value={initial_balance} required />
                     </div>
                     <div className="wizard-btn-container">
                         <button className="wizard-submit">Create Account</button>
