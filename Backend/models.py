@@ -80,6 +80,12 @@ class Accounts(db.Model):
         elif self.normal_side == "Credit":
             self.balance = -self.initial_balance
 
+    def check_negative_balance(self):
+        if self.balance < 0:
+            return True
+        else:
+            return False
+
     def to_json(self):
         return {
             "account_id": self.account_id,
@@ -98,5 +104,32 @@ class Accounts(db.Model):
             "isActive": self.isActive,
             "order": self.order,
             "statement": self.statement,
+            "comment": self.comment
+        }
+    
+class event_log(db.Model):
+
+    __tablename__ = 'event_logs'
+
+    event_id = db.Column(db.Integer, primary_key=True)  # Unique event ID
+    timestamp = db.Column(db.DateTime, default=datetime.now, nullable=False)  # Date & time of event
+    user_id = db.Column(db.Integer, nullable=False)  # ID of user who made the change
+    table_name = db.Column(db.String(50), nullable=False)  # Name of the affected table
+    column_name = db.Column(db.String(50), nullable=True)  # Name of the changed column
+    old_value = db.Column(db.Text, nullable=True)  # Previous value before change
+    new_value = db.Column(db.Text, nullable=True)  # New value after change
+    action = db.Column(db.String(10), nullable=False)  # Type of action ('INSERT', 'UPDATE', 'DELETE')
+    comment = db.Column(db.Text, nullable=True)  # Optional comment (e.g., reason for change)
+
+    def to_json(self):
+        return {
+            "event_id": self.event_id,
+            "timestamp": self.timestamp,
+            "user_id": self.user_id,
+            "table_name": self.table_name,
+            "column_name": self.column_name,
+            "old_value": self.old_value,
+            "new_value": self.new_value,
+            "action": self.action,
             "comment": self.comment
         }

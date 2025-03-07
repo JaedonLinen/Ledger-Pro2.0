@@ -80,6 +80,20 @@
 
 @media (max-width: 700px){
 
+    .profile-container{
+        background-color: transparent;
+        border: none;
+    }
+
+    .profile-container:hover{
+        background-color: transparent;
+        cursor: pointer;
+        transition: all 1s ease-in-out;
+    }
+
+    .home-nav-username{
+        visibility: hidden;
+    }
     .home-navbar.open{
         background: #7bab72;
         border: none;
@@ -171,6 +185,7 @@
     }
 
     .home-nav-link img{
+        margin-left: 65%;
         width: 65px;
         clip-path: circle();
     }

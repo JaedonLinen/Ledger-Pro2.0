@@ -141,13 +141,34 @@ def delete_user(user_id):
 
 
 
+#######                            ########
+  #######   account api calls    ########
+#######                            ########
 
-################# account api calls #######################
 @app.route("/get_accounts", methods=["GET"])
 def get_accounts():
     all_accounts = Accounts.query.all()
     json_accounts = list(map(lambda x: x.to_json(), all_accounts))
     return jsonify({"allAccounts": json_accounts})
+
+@app.route("/update_account/<int:user_id>", methods=["PATCH"])
+def update_account(account_id):
+    account = Accounts.query.get(account_id)
+
+    if not account:
+        return jsonify({"message": "User not found"}), 404
+    
+    data = request.json
+    account.account_name = data.get("account_name", account.account_name)
+    account.account_num = data.get("account_num", account.account_num)
+    account.account_desc = data.get("account_desc", account.account_desc)
+    account.normal_side = data.get("normal_side", account.normal_side)
+    account.category = data.get("category", account.category)
+    account.subcategory = data.get("subcategory", account.subcategory)
+
+    db.session.commit()
+
+    return jsonify({"message": "Account updated!"}), 200
 
 @app.route("/create_account", methods=["POST"])
 def create_account():

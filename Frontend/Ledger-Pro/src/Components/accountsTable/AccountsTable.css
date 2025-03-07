@@ -1,0 +1,232 @@
+#tooltip .tooltiptext {
+    visibility: hidden;
+    width: 120px;
+    background-color: black;
+    color: #fff;
+    text-align: center;
+    border-radius: 5px;
+    padding: 5px;
+    position: absolute;
+    z-index: 1;
+    bottom: 125%; /* Position the tooltip above the div */
+    left: 50%;
+    margin-left: -60px; /* Offset for centering */
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+#tooltip:hover .tooltiptext {
+    visibility: visible;
+    opacity: 1;
+}
+
+.account-table-filter-options-container{
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+    width: 95%;
+    margin: 0 auto;
+    height: 34px;
+    gap: 5px;
+}
+.account-table-name-filter-container{
+    background: rgb(159, 189, 159);
+    width: 250px;
+    border-radius: 8px 8px 0px 0px;
+    border: none;
+    outline: none;
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+    transition: 0.3s ease-in-out;
+}
+.account-table-name-filter-container:hover{
+    background: rgb(190, 215, 190);
+    transition: 0.7s ease-in-out;
+}
+
+.account-table-filter-options-container input{
+    width: 210px;
+    padding: 0px 5px 0px 5px;
+    background: transparent;
+    border-radius: 8px;
+    border: none;
+    outline: none;
+    font-size: 16px;
+    color: black;
+    font-weight: 100;
+}
+
+.account-table-filter-options-container input::placeholder{
+    font-size: 16px;
+    color: rgba(0, 0, 0, 0.595);
+    font-weight: 100;
+}
+
+.search-icon{
+    padding: 10px 0px 0px 7px;
+}
+
+.filter-icon{
+    padding: 7px 0px 0px 5px;
+}
+
+.filter-menu-container{
+    background: lightgrey;
+    border-radius: 8px 8px 0px 0px;
+    width: 30px;
+    cursor: pointer;
+    transition: 0.3s ease-in-out;
+}
+
+.filter-menu-container:hover{
+    background: rgb(150, 150, 150);
+    transition: 0.7s ease-in-out;
+}
+
+.extra-filters-menu{
+    background-color: lightgrey;
+    border-radius: 8px 8px 8px 8px;
+    display: flex;
+    flex-direction: column; /* Stack buttons vertically */
+    align-items: center; /* Center buttons horizontally */
+    z-index: 1;
+    height: 270px;
+    width: 130px;
+}
+
+.extra-filter-menu-options button {
+    cursor: pointer;
+    width: 100%; /* Make buttons full-width */
+    padding: 10px;
+    text-align: center;
+    background: none; /* Remove background */
+    border: none;
+    font-size: 16px;
+    border-top: 1px solid black; /* Remove border */
+    transition: 0.15s ease-in-out;
+}
+.extra-filter-menu-options button:hover {
+    background-color: rgb(159, 189, 159);
+    transition: 0.3s ease-in-out;
+}
+.extra-filter-menu-options button:last-child:hover {
+    border-radius: 0px 0px 8px 8px;
+}
+
+.exit-filter-menu-container {
+    align-self: flex-end; /* Aligns the exit button to the right */
+    margin-left: auto; /* Ensures it is pushed to the right */
+}
+.exit-filter-menu{
+    transition: 0.15s ease-in-out;
+}
+.exit-filter-menu:hover{
+    cursor: pointer;
+    color: rgb(191, 40, 40);
+    transition: 0.3s ease-in-out;
+}
+
+.extra-filter-menu-options-extended-side{
+    background-color: rgb(188, 188, 188);
+    border-radius: 0px 8px 8px 0px;
+    display: flex;
+    flex-direction: column; /* Stack buttons vertically */
+    align-items: center; /* Center buttons horizontally */
+    z-index: 1;
+    margin-top: 34px;
+    margin-left: -5px;
+}
+.extra-filter-menu-options-extended-category{
+    background-color: rgb(188, 188, 188);
+    border-radius: 0px 8px 8px 0px;
+    display: flex;
+    flex-direction: column; /* Stack buttons vertically */
+    align-items: center; /* Center buttons horizontally */
+    z-index: 1;
+    margin-top: 73px;
+    margin-left: -5px;
+}
+.extra-filter-menu-options-extended-subcategory{
+    background-color: rgb(188, 188, 188);
+    border-radius: 0px 8px 8px 0px;
+    display: flex;
+    flex-direction: column; /* Stack buttons vertically */
+    align-items: center; /* Center buttons horizontally */
+    z-index: 1;
+    max-height: 300px;
+    overflow-y: scroll;
+    scrollbar-width: thin; /* For Firefox */
+    margin-top: 112px;
+    margin-left: -5px;
+}
+::-webkit-scrollbar {
+    width: 4px; /* Width of the scrollbar */
+    background: white; /* Background of the scrollbar */
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgb(159, 189, 159);
+    border-radius: 10px;
+}
+
+.extra-filter-menu-options-extended-balance{
+    background-color: rgb(188, 188, 188);
+    border-radius: 0px 0px 8px 0px;
+    display: flex;
+    flex-direction: column; /* Stack buttons vertically */
+    align-items: center; /* Center buttons horizontally */
+    z-index: 1;
+    margin-top: 151px;
+    margin-left: -5px;
+}
+.extra-filter-menu-options-extended-active{
+    background-color: rgb(188, 188, 188);
+    border-radius: 0px 0px 8px 0px;
+    display: flex;
+    flex-direction: column; /* Stack buttons vertically */
+    align-items: center; /* Center buttons horizontally */
+    z-index: 1;
+    margin-top: 190px;
+    margin-left: -5px;
+}
+.extra-filter-menu-options-extended-owners{
+    background-color: rgb(188, 188, 188);
+    border-radius: 0px 8px 8px 0px;
+    display: flex;
+    flex-direction: column; /* Stack buttons vertically */
+    align-items: center; /* Center buttons horizontally */
+    z-index: 1;
+    max-height: 300px;
+    overflow-y: scroll;
+    margin-top: 34px;
+    margin-left: -5px;
+}
+
+
+.extra-filter-menu-options-extended{
+    z-index: 1;
+}
+
+button.clicked{
+    background-color: rgb(159, 189, 159);
+}
+.extra-filter-menu-options-extended button {
+    cursor: pointer;
+    width: 100%; /* Make buttons full-width */
+    padding: 10px;
+    text-align: center;
+    background: none; /* Remove background */
+    border: none;
+    font-size: 16px;
+    border-top: 1px solid grey;
+    border-left: 1px solid black;
+    transition: 0.15s ease-in-out;
+}
+.extra-filter-menu-options-extended button:hover {
+    background-color: rgb(159, 189, 159);
+    transition: 0.3s ease-in-out;
+}
+.extra-filter-menu-options-extended button:last-child:hover {
+    border-radius: 0px 0px 8px 8px;
+}

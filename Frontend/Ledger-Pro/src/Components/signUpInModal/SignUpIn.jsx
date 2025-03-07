@@ -65,7 +65,7 @@ function SignUpIn() {
     const [lastName, setlastName] = useState("")
     const [email, setEmail] = useState("")
     const [dateOfBirth, setDOB] = useState("")
-    const role = "Accountant"
+    const role = "Admin"
 
     const attemptRegister = async (e) => {
         e.preventDefault()
@@ -99,6 +99,7 @@ function SignUpIn() {
                     const data = await response.json()
                     alert(data.message)
                 } else {
+                    console.log(data)
                     const data = await response.json()
                     setUser(data.user)
                     // navigate("/Home", {state: {user: user} })   
