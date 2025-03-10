@@ -82,6 +82,14 @@ function AccountsTable() {
         setOpenOwnerOptions(false)
     }
 
+    const handleAccountNavigation = (id) => {
+        navigate("/AccountGeneralInformation", {
+            state: {
+                currentUser,
+                id
+            } 
+        })}
+
 
 
   return (
@@ -192,7 +200,7 @@ function AccountsTable() {
                     }
                 </div>
             </div>
-            <table>
+            <table className='accounts-Table'>
                 <caption>
                     List of all accounts in system
                 </caption>
@@ -208,9 +216,9 @@ function AccountsTable() {
                         <th>Owner</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody id='tooltip'>
                     {filteredAccounts.map((account) => (
-                        <tr key={account.account_id}>
+                        <tr key={account.account_id} onClick={() => handleAccountNavigation(account.account_id)} title="Click to view more information" id='tooltiptext' className='table-data'>
                             <td data-cell="number"    >{account.account_name}</td>
                             <td data-cell="name"    >{account.account_num}</td>
                             <td data-cell="description"    >{account.account_desc}</td>

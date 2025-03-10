@@ -10,6 +10,7 @@ import ForgotPassword from './Pages/ForgotPassword'
 import AccountsLanding from './Pages/AccountsLanding'
 import Accounts from './Pages/Accounts'
 import Wizard from './Pages/CreateAccount'
+import GeneralInfo from './Pages/AccountLedger'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
@@ -23,6 +24,7 @@ createRoot(document.getElementById('root')).render(
         <Route path='/Accounts_List' element={<Accounts />} />
         <Route path='/CreateAccount' element={<Wizard />} />
         <Route path='/ForgotPassword' element={<ForgotPassword />} />
+        <Route path='/AccountGeneralInformation' element={<GeneralInfo />} />
       </Routes>
     </Router>
   </StrictMode>,

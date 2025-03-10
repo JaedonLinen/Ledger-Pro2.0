@@ -1,0 +1,76 @@
+.account-landing-options-container{
+    display: flex;
+    justify-content: center; /* Centers horizontally */
+    align-items: center; /* Centers vertically */
+    gap: 2%; /* Adds space between items */
+    height: 93vh;
+}
+
+.account-option{
+    cursor: pointer;
+    text-align: center;
+    justify-content: center;
+    background-color: rgb(95, 105, 96);
+    height: 85vh;
+    width: 46vw;
+    box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
+    border-radius: 25px;
+    transition: 0.3s all ease-in-out;
+}
+
+.account-option:hover{
+    height: 86vh;
+    width: 47vw;
+    box-shadow: rgba(46, 240, 62, 0.4) -5px 5px, rgba(46, 240, 101, 0.3) -10px 10px, rgba(46, 240, 98, 0.2) -15px 15px, rgba(46, 240, 85, 0.1) -20px 20px, rgba(46, 240, 98, 0.05) -25px 25px;
+    transition: 0.1s all ease-in-out;
+}
+
+.account-option p{
+    margin-left: auto;
+    padding-right: 35px;
+    padding-top: 55vh;
+    font-size: 4rem;
+    font-weight: 600;
+    color: whitesmoke;
+    width: 260px;
+}
+
+
+@media (max-width: 650px){
+    .account-landing-options-container{
+        display: flex;
+        flex-direction: column; /* Stacks items vertically */
+        justify-content: center; /* Centers horizontally */
+        align-items: center; /* Centers vertically */
+        gap: 20px; /* Adds space between items */
+        height: 93vh;
+    }
+    
+    .account-option{
+        cursor: pointer;
+        text-align: center;
+        justify-content: center;
+        background-color: rgb(95, 105, 96);
+        height: 45%;
+        width: 85%;
+        box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
+        border-radius: 25px;
+        transition: 0.3s all ease-in-out;
+    }
+
+    .account-option:hover{
+        width: 86%;
+        height: 46%;
+        box-shadow: rgba(46, 240, 62, 0.4) -5px 5px, rgba(46, 240, 101, 0.3) -10px 10px, rgba(46, 240, 98, 0.2) -15px 15px, rgba(46, 240, 85, 0.1) -20px 20px, rgba(46, 240, 98, 0.05) -25px 25px;
+        transition: 0.1s all ease-in-out;
+    }
+
+    .account-option p{
+        padding-right: 0px;
+        padding-top: 23vh;
+        font-size: 40px;
+        font-weight: 600;
+        color: whitesmoke;
+        width: 260px;
+    }
+}

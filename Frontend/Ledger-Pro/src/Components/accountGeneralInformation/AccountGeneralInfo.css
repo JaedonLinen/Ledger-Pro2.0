@@ -1,0 +1,13 @@
+.general-info-container{
+    margin: auto;
+    height: 60vh;
+    width: 95%;
+    margin-top: 80px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.info-section {
+    height: 100%;
+    width: 100%;
+}

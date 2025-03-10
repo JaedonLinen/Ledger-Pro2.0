@@ -1,7 +1,7 @@
 import React from 'react'
 import HomeNav from '../Components/homeNav/HomeNav.jsx'
 import AccountTable from '../Components/accountsTable/AccountsTable.jsx'
-import { useNavigate, useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 
 function Accounts() {
     const location = useLocation();

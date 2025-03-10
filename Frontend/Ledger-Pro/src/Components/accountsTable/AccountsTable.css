@@ -230,3 +230,15 @@ button.clicked{
 .extra-filter-menu-options-extended button:last-child:hover {
     border-radius: 0px 0px 8px 8px;
 }
+
+.accounts-Table tbody{
+    cursor: pointer;
+}
+.table-data{
+    transition: 0.175s ease-in-out;
+}
+.table-data:hover{
+    background-color: rgb(84, 98, 88);
+    transition: 0.3s ease-in-out;
+    color: lightgrey;
+}
