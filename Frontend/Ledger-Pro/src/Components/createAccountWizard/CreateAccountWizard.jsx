@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import './CreateAccountWizard.css'
 import {useState} from "react"
 import { useLocation } from "react-router-dom";
@@ -27,28 +27,37 @@ function CreateAccountWizard () {
         return text.replace(/[^0-9.]/g, ""); // Keep only numbers & decimals
     }
 
+    const balance_numbersOnly = (text) => {
+        return text.replace(/[^0-9.-]/g, "") // Keep only numbers, decimals, and negative sign
+                   .replace(/(?!^)-/g, ""); // Ensure negative sign only appears at the start
+    };
+
     const handleAccountNumberChange = (e) => {
         let rawNumber = numbersOnly(e.target.value)
         setAccountNum(
             isNaN(parseInt(rawNumber)) ? 0 : 
             parseInt(parseInt(rawNumber))
         );
-        console.log(account_num)
         setDisplayAccountNum(numbersOnly(rawNumber))
     };
 
     const handleBalanceChange = (e) => {
-        let rawValue = numbersOnly(e.target.value)
+        let rawValue = balance_numbersOnly(e.target.value)
         setInitialBalance(
             isNaN(parseFloat(rawValue)) ? 0 : 
             parseFloat(parseFloat(rawValue).toFixed(2))
         ); // Store raw value
-    
+
         // Apply formatting
         setFormattedBalance(formatCurrency(rawValue));
     };
 
     const formatCurrency = (num) => {
+        num = num.toString(); // Ensure it's a string for processing
+    
+        let isNegative = initial_balance.toString().startsWith("-") ? true : false; // Check if the number is negative
+        if (isNegative) num = num.slice(1); // Remove the negative sign for formatting
+    
         let parts = num.split(".");
         parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ","); // Add commas
     
@@ -56,8 +65,9 @@ function CreateAccountWizard () {
         if (parts.length > 1) {
             parts[1] = parts[1].slice(0, 2);
         }
-    
-        return `$${parts.join(".")}`;
+
+        let formatted = `$${parts.join(".")}`;
+        return isNegative ? `-${formatted}` : formatted; // Re-add negative sign if needed
     };
 
     const onSubmit = async (e) => {
@@ -141,21 +151,21 @@ function CreateAccountWizard () {
                         <label htmlFor="Subcategory">Subcategory</label>
                         <select name="side" value={subcategory} onChange={(e) => setSubcategory(e.target.value) } required>
                             <option value=""></option>
-                            {category === "Assets" && <option value="Current Assets">Current Assets (Short-term, within one year)</option>}
-                            {category === "Assets" && <option value="Non-Current Assets">Non-Current Assets (Long-term, beyond one year)</option>}
+                            {normal_side === "Debit" && category === "Assets" && <option value="Current Assets">Current Assets (Short-term, within one year)</option>}
+                            {normal_side === "Debit" && category === "Assets" && <option value="Non-Current Assets">Non-Current Assets (Long-term, beyond one year)</option>}
 
-                            {category === "Liabilites" && <option value="Current Liabilites">Current Liabilites (Due within one year)</option>}
-                            {category === "Liabilites" && <option value="Non-Current Liabilites">Non-Current Liabilites (Due after one year)</option>}
+                            {normal_side === "Debit" && category === "Liabilites" && <option value="Current Liabilites">Current Liabilites (Due within one year)</option>}
+                            {normal_side === "Debit" && category === "Liabilites" && <option value="Non-Current Liabilites">Non-Current Liabilites (Due after one year)</option>}
 
-                            {category === "Expenses" && <option value="Operating Expenses">Operating Expenses (Directly related to core business operations)</option>}
-                            {category === "Expenses" && <option value="Non-Operating Expenses">Non-Operating Expenses (Not tied to main business activities)</option>}
+                            {normal_side === "Credit" && category === "Expenses" && <option value="Operating Expenses">Operating Expenses (Directly related to core business operations)</option>}
+                            {normal_side === "Credit" && category === "Expenses" && <option value="Non-Operating Expenses">Non-Operating Expenses (Not tied to main business activities)</option>}
 
-                            {category === "Equity" && <option value="Contributed Capital">Contributed Capital (Funds invested by owners)</option>}
-                            {category === "Equity" && <option value="Retained Earnings">Retained Earnings (Accumulated net income not distributed as dividends)</option>}
-                            {category === "Equity" && <option value="Treasury Stock">Treasury Stock (Repurchased shares)</option>}
+                            {normal_side === "Credit" && category === "Equity" && <option value="Contributed Capital">Contributed Capital (Funds invested by owners)</option>}
+                            {normal_side === "Credit" && category === "Equity" && <option value="Retained Earnings">Retained Earnings (Accumulated net income not distributed as dividends)</option>}
+                            {normal_side === "Credit" && category === "Equity" && <option value="Treasury Stock">Treasury Stock (Repurchased shares)</option>}
 
-                            {category === "Revenue" && <option value="Operating Revenue">Operating Revenue (Main business earnings)</option>}
-                            {category === "Revenue" && <option value="Operating Revenue">Non-Operating Revenue (Other income sources)</option>}
+                            {normal_side === "Credit" && category === "Revenue" && <option value="Operating Revenue">Operating Revenue (Main business earnings)</option>}
+                            {normal_side === "Credit" && category === "Revenue" && <option value="Operating Revenue">Non-Operating Revenue (Other income sources)</option>}
 
                         </select>
                     </div>

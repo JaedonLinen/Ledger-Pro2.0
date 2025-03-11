@@ -2,11 +2,15 @@ import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import myImage from "/src/assets/LP-logo-black.png";
 import ppImage from "/src/assets/base-pp.png";
+import Help from "../helpModal/Help.jsx";
+import { BiHelpCircle } from "react-icons/bi";
 import './HomeNav.css'
+
 
 function HomeNav({currentUser}) {
 
     const [isOpen, setIsOpen] = useState(false);
+    const [modalOpen, setModalOpen] = useState(false)
     const navigate = useNavigate(); 
 
     const handleNavigateUsers = () => {
@@ -21,6 +25,10 @@ function HomeNav({currentUser}) {
         navigate("/Accounts_Landing", {state: { currentUser } })  
     };
 
+    const handleEventLog = () => {
+        navigate("/events", {state: { currentUser } })  
+    };
+
     const handleNavigateSignOut = () => {
         currentUser = null
         navigate("/authentications")  
@@ -28,10 +36,14 @@ function HomeNav({currentUser}) {
 
   return (
     <div className={`home-navbar ${isOpen ? "open" : ""}`}>
-        <img src={myImage} alt="" className='home-nav-logo' onClick={handleNavigateHome}/>
+        <div className="logo-and-help" id="tooltip">
+            <BiHelpCircle className="help" size={20} onClick={() => setModalOpen(true)} id="tooltiptext" title='Help'/>
+            <img src={myImage} alt="" className='home-nav-logo' onClick={handleNavigateHome}/>
+        </div>
         <div className={`home-nav-items ${isOpen ? "open" : ""}`}>
             <div onClick={handleNavigateAccounts} className="home-nav-link"><p className='home-nav-link-txt'>Accounts</p></div>
             <div onClick={handleNavigateUsers} className="home-nav-link"><p className='home-nav-link-txt'>Users</p></div>
+            <div onClick={handleEventLog} className="home-nav-link"><p className='home-nav-link-txt'>Events</p></div>
             <div className="home-nav-link"><p className='home-nav-link-txt'>Metrics</p></div>
             <div className="profile-container" onClick={handleNavigateSignOut}>
                 <div className="home-nav-link">
@@ -45,6 +57,12 @@ function HomeNav({currentUser}) {
         <div className={`home-nav-toggle ${isOpen ? "open" : ""}`} onClick={() => setIsOpen(!isOpen)}>
             <div className="bar-home-nav"></div>
         </div>
+        {
+            modalOpen &&
+            <div className="help-icon">
+                <Help closeModal={() => {setModalOpen(false)}}/>
+            </div>
+        }
     </div>
   )
 }

@@ -11,6 +11,7 @@ import AccountsLanding from './Pages/AccountsLanding'
 import Accounts from './Pages/Accounts'
 import Wizard from './Pages/CreateAccount'
 import GeneralInfo from './Pages/AccountLedger'
+import Events from './Pages/EventsLog'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
@@ -25,6 +26,7 @@ createRoot(document.getElementById('root')).render(
         <Route path='/CreateAccount' element={<Wizard />} />
         <Route path='/ForgotPassword' element={<ForgotPassword />} />
         <Route path='/AccountGeneralInformation' element={<GeneralInfo />} />
+        <Route path='/events' element={<Events />} />
       </Routes>
     </Router>
   </StrictMode>,

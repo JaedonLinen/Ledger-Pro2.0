@@ -1,3 +1,25 @@
+#tooltip .tooltiptext {
+    visibility: hidden;
+    width: 120px;
+    background-color: black;
+    color: #fff;
+    text-align: center;
+    border-radius: 5px;
+    padding: 5px;
+    position: absolute;
+    z-index: 1;
+    bottom: 125%; /* Position the tooltip above the div */
+    left: 50%;
+    margin-left: -60px; /* Offset for centering */
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+#tooltip:hover .tooltiptext {
+    visibility: visible;
+    opacity: 1;
+}
+
 .home-navbar{
     height: 60px;
     display: flex;
@@ -75,7 +97,25 @@
     padding-top: 14px;
     font-size: 12px;
     padding-right: 5px;
-    
+}
+
+.help{
+    position: absolute;
+    margin-top: 70px;
+    margin-left: 5px;
+    cursor: pointer;
+    transition: all .2s ease-in-out;
+}
+
+.help:hover{
+    background-color: rgba(225, 255, 107, 0.485);
+    border-radius: 100px;
+    cursor: pointer;
+    transition: all .4s ease-in-out;
+}
+
+.help-icon{
+    position: absolute;
 }
 
 @media (max-width: 700px){

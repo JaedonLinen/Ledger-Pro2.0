@@ -1,13 +1,169 @@
 .general-info-container{
     margin: auto;
-    height: 60vh;
+    height: 30%;
+    max-height: 445px;
     width: 95%;
     margin-top: 80px;
     display: flex;
     justify-content: center;
     align-items: center;
+    border: solid 1px black;
+}
+.general-info-container p{
+    font-size: 30px;
+    font-weight: 200;
+}
+.general-info-container h3{
+    color: gray;
+    font-size: 13px;
+    font-weight: 100;
 }
 .info-section {
     height: 100%;
-    width: 100%;
+    width: 46vw;
+    margin: auto
+}
+
+.row-one-left{
+    display: flex;
+    justify-content: space-between;
+    padding-right: 25%;
+}
+.row-three-left{
+    display: flex;
+    justify-content: space-between;
+    padding-right: 15%;
+}
+
+.row-one-right-right{
+    position: absolute;
+    right: 5%;
+}
+.account-container.balance p{
+    line-height: 0;
+    font-size: 50px;
+    padding: 0;
+}
+
+.row-one-right{
+    display: flex;
+    justify-content: space-between;
+}
+
+.row-one-right-left{
+    height: 35px;
+    gap: 20px;
+}
+
+.account-container.isActive{
+    display: flex;
+    gap: 8px;
+}
+
+.isActive-dot-container{
+    display: flex;
+    align-items: center;
+}
+.dot{
+    width: 8px;
+    height: 8px;
+    border-radius: 100px;
+}
+.dot.green{
+    background-color: green
+}
+.dot.red{
+    background-color: red
+}
+.circle{
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    border-radius: 100px;
+    animation: ping 1s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+.circle.green{
+    background-color: green
+}
+.circle.red{
+    background-color: red
+}
+
+@keyframes ping {
+    75%,
+    100% {
+      transform: scale(2);
+      opacity: 0;
+    }
+  }
+
+.row-two-right{
+    display: flex;
+    justify-content: space-between;
+    margin-top: 130px;
+    padding-right: 15%;
+}
+
+
+.row-three-right{
+    display: flex;
+    justify-content: space-between;
+    padding-right: 13.5%;
+}
+
+.account-actions-container{
+    padding-top: 20px;
+    display: flex;
+    gap: 20px;
+    cursor: pointer;
+}
+  
+@media (max-width: 650px){
+    .general-info-container{
+        margin: auto;
+        height: 35vh;
+        width: 95%;
+        margin-top: 80px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border: solid 1px black;
+    }
+    .info-section.left{
+        width: 40vw;
+        margin-left: 5px;
+    }
+    .general-info-container p{
+        font-size: 20px;
+    }
+    .general-info-container h3{
+        font-size: 11px;
+    }
+    .account-container.balance p{
+        line-height: 0;
+        font-size: 30px;
+        padding: 0;
+    }
+    .row-two-right{
+        display: flex;
+        justify-content: space-between;
+        margin-top: 100px;
+    }
+    .row-one-left{
+        display: block;
+    }
+    .row-three-left{
+        display: block;
+    }
+    .account-container.num{
+        display: flex;
+        align-items: center;
+        gap: 10px; 
+    }   
+    .account-container.num p{
+        font-size: 15px;
+    }  
+    .account-container.desc p{
+        font-size: 15px;
+    }  
 }

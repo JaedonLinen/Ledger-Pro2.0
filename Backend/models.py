@@ -78,7 +78,7 @@ class Accounts(db.Model):
         if self.normal_side == "Debit":
             self.balance = self.initial_balance
         elif self.normal_side == "Credit":
-            self.balance = -self.initial_balance
+            self.balance = self.initial_balance
 
     def check_negative_balance(self):
         if self.balance < 0:
@@ -106,6 +106,11 @@ class Accounts(db.Model):
             "statement": self.statement,
             "comment": self.comment
         }
+    
+    def reset_table():
+        db.metadata.tables["Accounts"].drop(db.engine)  # Drop all tables (or use db.metadata.tables["transactions"].drop(db.engine) for one table)
+        db.create_all()  # Recreate all tables
+        print("Table 'accounts' has been dropped and recreated.")
     
 class event_log(db.Model):
 

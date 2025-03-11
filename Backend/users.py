@@ -1,6 +1,6 @@
 from flask import request, jsonify
 from config import app, db
-from models import users, Accounts
+from models import users, Accounts, event_log
 from datetime import datetime
 
 @app.route("/get_users", methods=["GET"])
@@ -151,7 +151,13 @@ def get_accounts():
     json_accounts = list(map(lambda x: x.to_json(), all_accounts))
     return jsonify({"allAccounts": json_accounts})
 
-@app.route("/update_account/<int:user_id>", methods=["PATCH"])
+@app.route("/get_account/<int:account_id>", methods=["GET"])
+def get_account(account_id):
+    account = Accounts.query.get(account_id)
+    json_account = account.to_json()
+    return jsonify({"account": json_account})
+
+@app.route("/update_account/<int:account_id>", methods=["PATCH"])
 def update_account(account_id):
     account = Accounts.query.get(account_id)
 
@@ -165,6 +171,7 @@ def update_account(account_id):
     account.normal_side = data.get("normal_side", account.normal_side)
     account.category = data.get("category", account.category)
     account.subcategory = data.get("subcategory", account.subcategory)
+    account.isActive = data.get("isActive", account.isActive)
 
     db.session.commit()
 
@@ -211,14 +218,30 @@ def create_account():
         new_account.place_initial_balance()
         new_account.place_balance()
 
+    new_event = event_log(user_id=account_owner, table_name="Accounts", column_name="all", old_value="null", new_value=account_name, action="add")
+
     try:
         db.session.add(new_account)
+        db.session.add(new_event)
         db.session.commit()
     except Exception as e:
         return jsonify({"message": str(e)}), 400
     
     return jsonify({"message": "User created!"}), 201
 
+
+
+
+
+#######                            ########
+  #######   event api calls    ########
+#######                            ########
+
+@app.route("/get_events", methods=["GET"])
+def get_events():
+    all_events = event_log.query.all()
+    json_events = list(map(lambda x: x.to_json(), all_events))
+    return jsonify({"allEvents": json_events})
 
 
 if __name__ == "__main__":

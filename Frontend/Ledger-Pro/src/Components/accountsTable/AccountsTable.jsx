@@ -1,7 +1,7 @@
 import React from 'react'
 import {useState, useEffect} from "react"
 import { useNavigate, useLocation } from "react-router-dom";
-import { BiSolidFilterAlt, BiX, BiSearch } from 'react-icons/bi'
+import { BiSolidFilterAlt, BiX, BiSearch, BiRefresh } from 'react-icons/bi'
 import './AccountsTable.css'
 
 function AccountsTable() {
@@ -24,9 +24,6 @@ function AccountsTable() {
         try {
             const response = await fetch("http://127.0.0.1:5000/get_accounts");
             const data = await response.json();
-            
-            console.log("Fetched Accounts Data:", data);
-
             setAccounts(data.allAccounts);
         } catch (error) {
             console.error("Failed to fetch users:", error);
@@ -40,7 +37,7 @@ function AccountsTable() {
         fetchUsers()
     }, [])
 
-     const fetchUsers = async () => {
+    const fetchUsers = async () => {
         try {
             const response = await fetch("http://127.0.0.1:5000/get_users");
             const data = await response.json();
@@ -52,7 +49,21 @@ function AccountsTable() {
     };
 
     const formatCurrency = (num) => {
-        return `$${num.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`;
+        num = num.toString(); // Ensure it's a string for processing
+    
+        let isNegative = num.toString().startsWith("-") ? true : false; // Check if the number is negative
+        if (isNegative) num = num.slice(1); // Remove the negative sign for formatting
+    
+        let parts = num.split(".");
+        parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ","); // Add commas
+    
+        // Limit to two decimal places
+        if (parts.length > 1) {
+            parts[1] = parts[1].slice(0, 2);
+        }
+
+        let formatted = `$${parts.join(".")}`;
+        return isNegative ? `-${formatted}` : formatted; // Re-add negative sign if needed
     };
 
     const handleCreateAccountNavigate = () => {
@@ -60,10 +71,43 @@ function AccountsTable() {
     };
 
     const [search, setSearch] = useState("");
-    const filteredAccounts = accounts.filter((account) =>
-        account.account_name.toLowerCase().includes(search.toLowerCase()) || 
-        account.account_num.toString().includes(search)
-    );
+    const [filters, setFilters] = useState({ side: "", category: "", subcategory: "", balance: "", status: "", owner: "" });
+    const [isFiltered, setIsFiltered] = useState(false);
+
+
+    const resetFilters = () => {
+        setSearch("");
+        setFilters({ side: "", category: "", subcategory: "", balance: "", status: "", owner: "" });
+        setIsFiltered(false)
+        setOthersFalse()
+        setOpenFilterMenu(false)
+    };
+
+    const handleFilterChange = (field, value) => {
+        setIsFiltered(true)
+        setFilters((prevFilters) => ({
+            ...prevFilters,
+            [field]: value,
+        }));
+    };
+
+    const filteredAccounts = accounts.filter((account) => {
+        return (
+            (search === "" || 
+                account.account_name.toLowerCase().includes(search.toLowerCase()) || 
+                account.account_num.toString().includes(search)) &&  // <-- Keep `&&` to apply all filters
+            (filters.side === "" || account.normal_side.toLowerCase() === filters.side.toLowerCase()) &&
+            (filters.category === "" || account.category.toLowerCase() === filters.category.toLowerCase()) &&
+            (filters.subcategory === "" || account.subcategory.toLowerCase() === filters.subcategory.toLowerCase()) &&
+            (filters.status === "" || account.isActive.toString() === filters.status) && // Changed `includes` to strict comparison
+            (filters.owner === "" || account.account_owner === filters.owner) &&
+            (filters.balance === "" || 
+                (filters.balance === "Positive" && account.balance > 0) ||
+                (filters.balance === "Negative" && account.balance < 0) ||
+                (filters.balance === "Balanced" && account.balance === 0)
+            )
+        );
+    });
 
     const [openFilterMenu, setOpenFilterMenu] = useState(false)
     const [openSideOptions, setOpenSideOptions] = useState(false)
@@ -111,7 +155,10 @@ function AccountsTable() {
                         type="text"
                         placeholder="Search by name or number..."
                         value={search}
-                        onChange={(e) => setSearch(e.target.value)}
+                        onChange={
+                            (e) => {setSearch(e.target.value); 
+                            setIsFiltered(true);
+                        }}
                     />  
                 </div>
                 {
@@ -140,48 +187,48 @@ function AccountsTable() {
                     {
                         openSideOptions && 
                         <div className="extra-filter-menu-options-extended-side">
-                            <button>Debit</button>
-                            <button>Credit</button>
+                            <button onClick={() => handleFilterChange("side", "Debit")}>Debit</button>
+                            <button onClick={() => handleFilterChange("side", "Credit")}>Credit</button>
                         </div>
                     }
                     {
                         openCategoryOptions && 
                         <div className="extra-filter-menu-options-extended-category">
-                            <button>Assets</button>
-                            <button>Expenses</button>
-                            <button>Liabilities</button>
-                            <button>Equity</button>
-                            <button>Revenue</button>
+                            <button onClick={() => handleFilterChange("category", "Assets")} >Assets</button>
+                            <button onClick={() => handleFilterChange("category", "Expenses")} >Expenses</button>
+                            <button onClick={() => handleFilterChange("category", "Liabilities")} >Liabilities</button>
+                            <button onClick={() => handleFilterChange("category", "Equity")} >Equity</button>
+                            <button onClick={() => handleFilterChange("category", "Revenue")} >Revenue</button>
                         </div>
                     }
                     {
                         openSubCategoryOptions && 
                         <div className="extra-filter-menu-options-extended-subcategory">
-                            <button>Current Assets</button>
-                            <button>Non-Current Assets</button>
-                            <button>Current Expenses</button>
-                            <button>Non-Current Expenses</button>
-                            <button>Current Liabilities</button>
-                            <button>Non-Current Liabilities</button>
-                            <button>Current Equity</button>
-                            <button>Non-Current Equity</button>
-                            <button>Current Revenue</button>
-                            <button>Non-Current Revenue</button>
+                            <button onClick={() => handleFilterChange("subcategory", "Current Assets")} >Current Assets</button>
+                            <button onClick={() => handleFilterChange("subcategory", "Non-Current Assets")} >Non-Current Assets</button>
+                            <button onClick={() => handleFilterChange("subcategory", "Current Expenses")} >Current Expenses</button>
+                            <button onClick={() => handleFilterChange("subcategory", "Non-Current Expenses")} >Non-Current Expenses</button>
+                            <button onClick={() => handleFilterChange("subcategory", "Current Liabilities")} >Current Liabilities</button>
+                            <button onClick={() => handleFilterChange("subcategory", "Non-Current Liabilities")} >Non-Current Liabilities</button>
+                            <button onClick={() => handleFilterChange("subcategory", "Current Equity")} >Current Equity</button>
+                            <button onClick={() => handleFilterChange("subcategory", "Non-Current Equity")} >Non-Current Equity</button>
+                            <button onClick={() => handleFilterChange("subcategory", "Current Revenue")} >Current Revenue</button>
+                            <button onClick={() => handleFilterChange("subcategory", "Non-Current Revenue")} >Non-Current Revenue</button>
                         </div>
                     }
                     {
                         openBalanceOptions && 
                         <div className="extra-filter-menu-options-extended-balance">
-                            <button>Balanced</button>
-                            <button>Positive</button>
-                            <button>Negative</button>
+                            <button onClick={() => handleFilterChange("balance", "Balanced")} >Balanced</button>
+                            <button onClick={() => handleFilterChange("balance", "Positive")} >Positive</button>
+                            <button onClick={() => handleFilterChange("balance", "Negative")} >Negative</button>
                         </div>
                     }
                     {
                         openActiveOptions && 
                         <div className="extra-filter-menu-options-extended-active">
-                            <button>Active</button>
-                            <button>Inactive</button>
+                            <button onClick={() => handleFilterChange("status", "true")} >Active</button>
+                            <button onClick={() => handleFilterChange("status", "false")} >Inactive</button>
                         </div>
                     }
                     {
@@ -189,7 +236,7 @@ function AccountsTable() {
                         <div className="extra-filter-menu-options-extended-owners">
                             {
                                 users.map((user) => (
-                                    <button key={user.id}>
+                                    <button key={user.id} onClick={() => handleFilterChange("owner", user.id)} >
                                         {user.firstName}
                                         <span> </span>
                                         {user.lastName}
@@ -198,6 +245,16 @@ function AccountsTable() {
                             }
                         </div>
                     }
+                </div>
+                {
+                    isFiltered &&
+                    <div className="filter-menu-container refresh" id="tooltip" onClick={() => resetFilters()}>
+                        <BiRefresh size={20} className="filter-icon refresh" id="tooltiptext" title="resets filters"/>
+                        <p>Reset Filters</p>
+                    </div>
+                }
+                <div className="accounts-count">
+                    <p>{filteredAccounts.length}  account(s) total</p>
                 </div>
             </div>
             <table className='accounts-Table'>
@@ -219,8 +276,8 @@ function AccountsTable() {
                 <tbody id='tooltip'>
                     {filteredAccounts.map((account) => (
                         <tr key={account.account_id} onClick={() => handleAccountNavigation(account.account_id)} title="Click to view more information" id='tooltiptext' className='table-data'>
-                            <td data-cell="number"    >{account.account_name}</td>
-                            <td data-cell="name"    >{account.account_num}</td>
+                            <td data-cell="name"    >{account.account_name}</td>
+                            <td data-cell="number"    >{account.account_num}</td>
                             <td data-cell="description"    >{account.account_desc}</td>
                             <td data-cell="side"        >{account.normal_side}</td>
                             <td data-cell="category"     >{account.category}</td>
