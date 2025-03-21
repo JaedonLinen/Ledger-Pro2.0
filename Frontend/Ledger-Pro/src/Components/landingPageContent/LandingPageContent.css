@@ -5,10 +5,12 @@
   left: 10vw;
   letter-spacing: 1px;
   background-color: transparent;
+  width: 700px;
 }
 
 .name{
   background-color: transparent;
+  width: 200px;
 }
 
 .motto{

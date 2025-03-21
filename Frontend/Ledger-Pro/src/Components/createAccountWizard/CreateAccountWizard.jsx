@@ -154,11 +154,11 @@ function CreateAccountWizard () {
                             {normal_side === "Debit" && category === "Assets" && <option value="Current Assets">Current Assets (Short-term, within one year)</option>}
                             {normal_side === "Debit" && category === "Assets" && <option value="Non-Current Assets">Non-Current Assets (Long-term, beyond one year)</option>}
 
-                            {normal_side === "Debit" && category === "Liabilites" && <option value="Current Liabilites">Current Liabilites (Due within one year)</option>}
-                            {normal_side === "Debit" && category === "Liabilites" && <option value="Non-Current Liabilites">Non-Current Liabilites (Due after one year)</option>}
+                            {normal_side === "Debit" && category === "Expenses" && <option value="Operating Expenses">Operating Expenses (Directly related to core business operations)</option>}
+                            {normal_side === "Debit" && category === "Expenses" && <option value="Non-Operating Expenses">Non-Operating Expenses (Not tied to main business activities)</option>}
 
-                            {normal_side === "Credit" && category === "Expenses" && <option value="Operating Expenses">Operating Expenses (Directly related to core business operations)</option>}
-                            {normal_side === "Credit" && category === "Expenses" && <option value="Non-Operating Expenses">Non-Operating Expenses (Not tied to main business activities)</option>}
+                            {normal_side === "Credit" && category === "Liabilites" && <option value="Current Liabilites">Current Liabilites (Due within one year)</option>}
+                            {normal_side === "Credit" && category === "Liabilites" && <option value="Non-Current Liabilites">Non-Current Liabilites (Due after one year)</option>}
 
                             {normal_side === "Credit" && category === "Equity" && <option value="Contributed Capital">Contributed Capital (Funds invested by owners)</option>}
                             {normal_side === "Credit" && category === "Equity" && <option value="Retained Earnings">Retained Earnings (Accumulated net income not distributed as dividends)</option>}
