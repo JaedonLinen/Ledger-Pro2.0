@@ -1,6 +1,6 @@
 from flask import request, jsonify
 from config import app, db
-from models import users, Accounts, event_log
+from models import users, Accounts, event_log, transactions, transaction_entries
 from datetime import datetime
 
 @app.route("/get_users", methods=["GET"])
@@ -229,6 +229,124 @@ def create_account():
     
     return jsonify({"message": "User created!"}), 201
 
+
+
+#######                            ########
+  #######   transaction api calls    ########
+#######                            ########
+
+@app.route("/get_transactions", methods=["GET"])
+def get_transactions():
+    all_transactions = transactions.query.all()
+    json_transactions = list(map(lambda x: x.to_json(), all_transactions))
+    return jsonify({"allTransactions": json_transactions})
+
+@app.route("/get_transaction/<int:transaction_id>", methods=["GET"])
+def get_transaction(transaction_id):
+    transaction = transactions.query.get(transaction_id)
+    json_transaction = transaction.to_json()
+    return jsonify({"transaction": json_transaction})
+
+@app.route("/get_transaction_entries/<int:id>", methods=["GET"])
+def get_transaction_entries(id):
+    entries = transaction_entries.query.filter(transaction_id=id).all()
+    json_transaction_entries = list(map(lambda x: x.to_json(), entries))
+    return jsonify({"transaction_entries": json_transaction_entries})
+
+@app.route("/create_transaction", methods=["POST"])
+def create_transaction():
+
+    description = request.json.get("description")
+    transaction_date = request.json.get("transaction_date")
+    user_id = request.json.get("user_id")
+
+    
+    if not description:
+        return (jsonify({"message": "description"}), 400)
+    
+    if not transaction_date:
+        return (jsonify({"message": "transaction_date"}), 400)
+    
+    if not user_id:
+        return (jsonify({"message": "user_id"}), 400)
+    
+    
+    new_transaction = transactions(description=description, transaction_date=transaction_date, user_id=user_id, status="Pending")
+
+    new_event = event_log(user_id=user_id, table_name="Transactions", column_name="all", old_value="null", new_value="new transaction", action="add")
+
+    try:
+        db.session.add(new_transaction)
+        db.session.add(new_event)
+        db.session.commit()
+    except Exception as e:
+        return jsonify({"message": str(e)}), 400
+    
+    return jsonify({"message": "Transaction created!"}), 201
+
+@app.route("/create_transaction_entries/<int:id>", methods=["POST"])
+def create_transaction_entries(id):
+
+    transaction_id = request.json.get("transaction_id")
+    amount = request.json.get("amount")
+    type = request.json.get("type")
+
+    
+    if not transaction_id:
+        return (jsonify({"message": "transaction_id"}), 400)
+
+    
+    if not amount:
+        return (jsonify({"message": "transaction_date"}), 400)
+    
+    if not type:
+        return (jsonify({"message": "type"}), 400)
+    
+    
+    new_transaction_entry = transaction_entries(transaction_id=transaction_id, amount=amount, account_id=id, type=type)
+
+    new_event = event_log(user_id=id, table_name="transaction_entries", column_name="all", old_value="null", new_value=transaction_id, action="add")
+
+    try:
+        db.session.add(new_transaction_entry)
+        db.session.add(new_event)
+        db.session.commit()
+    except Exception as e:
+        return jsonify({"message": str(e)}), 400
+    
+    return jsonify({"message": "Transaction entry created!"}), 201
+
+@app.route("/excute_transaction/<int:id>", methods=["PATCH"])
+def excute_transaction(id):
+
+    transaction_id = request.json.get("transaction_id")
+    amount = request.json.get("amount")
+    type = request.json.get("type")
+
+    
+    if not transaction_id:
+        return (jsonify({"message": "transaction_id"}), 400)
+
+    
+    if not amount:
+        return (jsonify({"message": "transaction_date"}), 400)
+    
+    if not type:
+        return (jsonify({"message": "type"}), 400)
+    
+    
+    new_transaction_entry = transaction_entries(transaction_id=transaction_id, amount=amount, account_id=id, type=type)
+
+    new_event = event_log(user_id=id, table_name="transaction_entries", column_name="all", old_value="null", new_value=transaction_id, action="add")
+
+    try:
+        db.session.add(new_transaction_entry)
+        db.session.add(new_event)
+        db.session.commit()
+    except Exception as e:
+        return jsonify({"message": str(e)}), 400
+    
+    return jsonify({"message": "Transaction entry created!"}), 201
 
 
 

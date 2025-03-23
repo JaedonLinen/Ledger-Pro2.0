@@ -112,6 +112,44 @@ class Accounts(db.Model):
         db.create_all()  # Recreate all tables
         print("Table 'accounts' has been dropped and recreated.")
     
+class transactions(db.Model):
+
+    __tablename__ = 'transactions'
+
+    transaction_id = db.Column(db.Integer, primary_key=True)  # Unique transaction ID
+    description = db.Column(db.String(250), nullable=False)  # Name of the affected table
+    transaction_date = db.Column(db.Date, unique=False, nullable=False)
+    user_id = db.Column(db.Integer, nullable=False)  # ID of user who made the change
+    status = db.Column(db.String(10), nullable=False)  # Name of the affected table
+
+    def to_json(self):
+        return {
+            "transaction_id": self.transaction_id,
+            "description": self.description,
+            "transaction_date": self.transaction_date,
+            "user_id": self.user_id,
+            "status": self.status
+        }
+    
+class transaction_entries(db.Model):
+
+    __tablename__ = 'transaction_entries'
+
+    transaction_entry_id = db.Column(db.Integer, primary_key=True)  # Unique transaction ID
+    transaction_id = db.Column(db.Integer, nullable=False)  # ID of user who made the change
+    account_id = db.Column(db.Integer, nullable=False)  # ID of user who made the change
+    amount = db.Column(db.Float, nullable=False)  # ammount
+    type = db.Column(db.String(10), nullable=False)  # Should be 'Debit' or 'Credit'
+
+    def to_json(self):
+        return {
+            "transaction_entry_id": self.transaction_entry_id,
+            "transaction_id": self.transaction_id,
+            "account_id": self.account_id,
+            "amount": self.amount,
+            "type": self.type,
+        }
+    
 class event_log(db.Model):
 
     __tablename__ = 'event_logs'
