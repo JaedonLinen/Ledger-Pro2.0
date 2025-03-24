@@ -29,6 +29,10 @@ function HomeNav({currentUser}) {
         navigate("/events", {state: { currentUser } })  
     };
 
+    const handleJournal = () => {
+        navigate("/JournalTable", {state: { currentUser } })  
+    };
+
     const handleNavigateSignOut = () => {
         currentUser = null
         navigate("/authentications")  
@@ -44,6 +48,7 @@ function HomeNav({currentUser}) {
             <div onClick={handleNavigateAccounts} className="home-nav-link"><p className='home-nav-link-txt'>Accounts</p></div>
             <div onClick={handleNavigateUsers} className="home-nav-link"><p className='home-nav-link-txt'>Users</p></div>
             <div onClick={handleEventLog} className="home-nav-link"><p className='home-nav-link-txt'>Events</p></div>
+            <div onClick={handleJournal} className="home-nav-link"><p className='home-nav-link-txt'>Journals</p></div>
             <div className="home-nav-link"><p className='home-nav-link-txt'>Metrics</p></div>
             <div className="profile-container" onClick={handleNavigateSignOut}>
                 <div className="home-nav-link">

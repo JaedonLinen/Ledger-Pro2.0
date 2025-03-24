@@ -12,6 +12,9 @@ import Accounts from './Pages/Accounts'
 import Wizard from './Pages/CreateAccount'
 import GeneralInfo from './Pages/AccountLedger'
 import Events from './Pages/EventsLog'
+import JournalEntry from './Pages/JournalEntry'
+import JournalTablePage from './Pages/JournalTablePage'
+import JournalInfo from './Pages/JournalInfo'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
@@ -27,6 +30,9 @@ createRoot(document.getElementById('root')).render(
         <Route path='/ForgotPassword' element={<ForgotPassword />} />
         <Route path='/AccountGeneralInformation' element={<GeneralInfo />} />
         <Route path='/events' element={<Events />} />
+        <Route path='/JournalEntry' element={<JournalEntry />} />
+        <Route path='/JournalTable' element={<JournalTablePage />} />
+        <Route path='/JournalInfo' element={<JournalInfo />} />
       </Routes>
     </Router>
   </StrictMode>,

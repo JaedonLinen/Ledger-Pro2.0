@@ -245,13 +245,14 @@ def get_transactions():
 def get_transaction(transaction_id):
     transaction = transactions.query.get(transaction_id)
     json_transaction = transaction.to_json()
-    return jsonify({"transaction": json_transaction})
 
-@app.route("/get_transaction_entries/<int:id>", methods=["GET"])
-def get_transaction_entries(id):
-    entries = transaction_entries.query.filter(transaction_id=id).all()
+    entries = transaction_entries.query.filter(transaction_id=transaction_id).all()
     json_transaction_entries = list(map(lambda x: x.to_json(), entries))
-    return jsonify({"transaction_entries": json_transaction_entries})
+
+    return jsonify({
+        "transaction": json_transaction, 
+        "transaction_entries": json_transaction_entries
+    })
 
 @app.route("/create_transaction", methods=["POST"])
 def create_transaction():

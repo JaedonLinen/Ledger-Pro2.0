@@ -29,11 +29,11 @@ function AccountsTable() {
             console.error("Failed to fetch users:", error);
             setAccounts([]);  // Ensure users is always an array
         }
-     };
+    };
 
      const [users, setUsers] = useState([])
 
-     useEffect(() => {
+    useEffect(() => {
         fetchUsers()
     }, [])
 

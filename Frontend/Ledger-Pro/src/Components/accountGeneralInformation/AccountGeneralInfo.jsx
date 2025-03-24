@@ -6,6 +6,7 @@ import EditAccount from '../editAccountModal/EditAccount';
 
 function AccountGeneralInfo({id}) {
 
+  const navigate = useNavigate();
   const location = useLocation();
   const { currentUser } = location.state;
 
@@ -59,7 +60,11 @@ function AccountGeneralInfo({id}) {
   const onAccountUpdate = () => {
     setOpenAccountModal(false)
     fetchAccount()
-}
+  }
+
+  const handleJournalNavigation = () => {
+    navigate("/JournalEntry", {state: {currentUser} }) 
+  }
 
   return (
     <div>
@@ -178,7 +183,7 @@ function AccountGeneralInfo({id}) {
                   <h3>Actions:</h3>
                   <div className="account-actions-container">
                     <div className="account-actions edit" ><BiEdit size={30} onClick={() => setOpenAccountModal(true)}/></div>
-                    <div className="account-actions journal" ><BiBookAdd size={30}/></div>
+                    <div className="account-actions journal" ><BiBookAdd size={30} onClick={() => handleJournalNavigation()}/></div>
                   </div>
                 </>
               }
