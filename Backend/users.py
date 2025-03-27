@@ -258,12 +258,16 @@ def get_transaction(transaction_id):
 def create_transaction():
 
     description = request.json.get("description")
+    transaction_type = request.json.get("transaction_type")
     transaction_date = request.json.get("transaction_date")
     user_id = request.json.get("user_id")
 
     
     if not description:
         return (jsonify({"message": "description"}), 400)
+    
+    if not transaction_type:
+        return (jsonify({"message": "transaction_type"}), 400)
     
     if not transaction_date:
         return (jsonify({"message": "transaction_date"}), 400)
@@ -272,7 +276,7 @@ def create_transaction():
         return (jsonify({"message": "user_id"}), 400)
     
     
-    new_transaction = transactions(description=description, transaction_date=transaction_date, user_id=user_id, status="Pending")
+    new_transaction = transactions(description=description, transaction_type=transaction_type, transaction_date=transaction_date, user_id=user_id, status="Pending")
 
     new_event = event_log(user_id=user_id, table_name="Transactions", column_name="all", old_value="null", new_value="new transaction", action="add")
 

@@ -179,7 +179,9 @@ function JournalTable() {
                 <thead>
                     <tr>
                         <th>Transaction ID</th>
+                        <th>Type</th>
                         <th>Description</th>
+                        <th>Date</th>
                         <th>Created By</th>
                         <th>Status</th>
                     </tr>
@@ -188,9 +190,10 @@ function JournalTable() {
                     {filteredJournals.map((journal) => (
                         <tr key={journal.transaction_id} onClick={() => handleJournalNavigation(journal.transaction_id)} title="Click to view more information" id='tooltiptext' className='table-data'>
                             <td data-cell="id"    >{journal.transaction_id}</td>
+                            <td data-cell="type"    >{journal.transaction_type}</td>
                             <td data-cell="description"    >{journal.description}</td>
                             <td data-cell="transaction date"    >{journal.transaction_date}</td>
-                            <td data-cell="user id"        >{journal.user_id}</td>
+                            <td data-cell="created"        >{journal.user_id}</td>
                             <td data-cell="status"        >{journal.status}</td>
                         </tr>
                     ))}

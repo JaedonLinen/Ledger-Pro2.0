@@ -117,19 +117,28 @@ class transactions(db.Model):
     __tablename__ = 'transactions'
 
     transaction_id = db.Column(db.Integer, primary_key=True)  # Unique transaction ID
+    transaction_type = db.Column(db.String(12), nullable=True)  # Name of the affected table
     description = db.Column(db.String(250), nullable=False)  # Name of the affected table
     transaction_date = db.Column(db.Date, unique=False, nullable=False)
     user_id = db.Column(db.Integer, nullable=False)  # ID of user who made the change
     status = db.Column(db.String(10), nullable=False)  # Name of the affected table
+    date_created = db.Column(db.DateTime, default=datetime.now)
+    date_updated = db.Column(db.DateTime, default=datetime.now)
 
     def to_json(self):
         return {
             "transaction_id": self.transaction_id,
+            "transaction_type": self.transaction_type,
             "description": self.description,
             "transaction_date": self.transaction_date,
             "user_id": self.user_id,
             "status": self.status
         }
+    
+    def reset_table():
+        db.metadata.tables["transactions"].drop(db.engine)  # Drop all tables (or use db.metadata.tables["transactions"].drop(db.engine) for one table)
+        db.create_all()  # Recreate all tables
+        print("Table 'accounts' has been dropped and recreated.")
     
 class transaction_entries(db.Model):
 

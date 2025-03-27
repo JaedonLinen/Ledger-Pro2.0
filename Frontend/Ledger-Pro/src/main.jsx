@@ -15,6 +15,7 @@ import Events from './Pages/EventsLog'
 import JournalEntry from './Pages/JournalEntry'
 import JournalTablePage from './Pages/JournalTablePage'
 import JournalInfo from './Pages/JournalInfo'
+import JournalLanding from './Pages/JournalLanding'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
@@ -33,6 +34,7 @@ createRoot(document.getElementById('root')).render(
         <Route path='/JournalEntry' element={<JournalEntry />} />
         <Route path='/JournalTable' element={<JournalTablePage />} />
         <Route path='/JournalInfo' element={<JournalInfo />} />
+        <Route path='/JournalLanding' element={<JournalLanding/>} />
       </Routes>
     </Router>
   </StrictMode>,
