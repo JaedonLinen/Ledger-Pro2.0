@@ -22,7 +22,11 @@ function HomeNav({currentUser}) {
     };
 
     const handleNavigateAccounts = () => {
-        navigate("/Accounts_Landing", {state: { currentUser } })  
+        if(currentUser.role === "Admin") {
+            navigate("/Accounts_Landing", {state: { currentUser } })
+        } else {
+            navigate("/Accounts_List", {state: {currentUser} })  
+        }  
     };
 
     const handleEventLog = () => {

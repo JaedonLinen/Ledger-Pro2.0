@@ -59,13 +59,19 @@ const Table = ({userCurrent}) => {
     };
 
     const formatDate = (dateData) => {
-        const date = new Date(dateData)
+        const timestamp = Date.parse(dateData); // Convert to timestamp
+        if (isNaN(timestamp)) {
+            console.error("Invalid date:", dateData);
+            return "Invalid Date";
+        }
+        const date = new Date(dateData); // Creates a Date object
         return new Intl.DateTimeFormat("en-US", {
             year: "numeric",
             month: "2-digit",
-            day: "2-digit"
+            day: "2-digit",
+            timeZone: "UTC"  // Force UTC to avoid local conversion
         }).format(date);
-    }
+    };
 
 
   return (

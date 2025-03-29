@@ -1,0 +1,100 @@
+.status-options{
+    display: flex;
+    margin-top: 15px;
+    justify-content: right;
+    gap: 15px;
+    margin-right: 35px;
+}
+.status-option-bttn{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 4px;
+    box-shadow: rgba(27, 31, 35, .1) 0 1px 0;
+    color: black;
+    cursor: pointer;
+    padding: 0px 10% 0px 10%;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+    vertical-align: middle;
+    white-space: nowrap;
+}
+.status-option-bttn.accept{
+    cursor: pointer;
+    background-color: rgba(96, 146, 96, 0.756);
+    transition: 0.15s all ease-in-out;
+}
+.status-option-bttn.reject{
+    cursor: pointer;
+    background-color: rgba(207, 65, 65, 0.777);
+    transition: 0.15s all ease-in-out;
+}
+.status-option-bttn.accept:hover{
+    background-color: rgba(62, 93, 62, 0.612);
+    transition: 0.3s all ease-in-out;
+}
+.status-option-bttn.reject:hover{
+
+    background-color: rgba(122, 38, 38, 0.575);
+    transition: 0.3s all ease-in-out;
+}
+.journal-information-con{
+    margin: 30px;
+}
+.journal-information-title{
+    color: gray;
+    font-weight: 300;
+    font-size: 24px;
+}
+.journal-information-title span{
+    color: black;
+}
+.journal-meta-data-con{
+    display: flex;
+    align-items: center;
+    gap: 30px;
+}
+.journal-meta-data-title{
+    color: gray;
+    font-size: 12px;
+}
+.journal-meta-data-button{
+    background-color: rgba(226, 202, 137, 0.843);
+    height: 30px;
+    width: 150px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 4px;
+    box-shadow: rgba(27, 31, 35, .1) 0 1px 0;
+    color: black;
+    cursor: pointer;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+    vertical-align: middle;
+    white-space: nowrap;
+    transition: 0.1s all ease-in-out;
+}
+.journal-meta-data-button:hover{
+    background-color: rgba(165, 146, 93, 0.843);
+    transition: 0.3s all ease-in-out;
+}
+@media (max-width: 700px){
+    .status-option-bttn{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 4px;
+        box-shadow: rgba(27, 31, 35, .1) 0 1px 0;
+        color: black;
+        cursor: pointer;
+        padding: 0px 25px 0px 25px;
+        user-select: none;
+        -webkit-user-select: none;
+        touch-action: manipulation;
+        vertical-align: middle;
+        white-space: nowrap;
+    }
+}

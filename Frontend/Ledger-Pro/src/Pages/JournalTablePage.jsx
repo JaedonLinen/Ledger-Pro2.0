@@ -16,7 +16,7 @@ function JournalTablePage() {
     <div>
       <HomeNav currentUser={currentUser}/>
       <div className="breadcrumb-text-container"><h1 className="breadcrumb-text">Journals</h1></div>
-      <JournalTable />
+      <JournalTable currentUser={currentUser}/>
     </div>
   )
 }

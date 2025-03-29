@@ -22,7 +22,7 @@ function JournalLandingMenu({currentUser}) {
                 </div>
                 <div className="account-option View" onClick={handleNavigateViewJournal}>
                 <div className="option-text-container">
-                        <p>View Journal</p>
+                        <p>View Journals</p>
                     </div>
                 </div>
             </div>

@@ -81,6 +81,7 @@
     height: 27px;
     width: 45%;
     margin-right: 10px;
+    padding-left: 5px;
     border-radius: 10px;
 }
 .journal-entry-con input{
@@ -126,6 +127,57 @@
 }
 .journal-entry-btn.add{
     background-color: rgba(122, 173, 122, 0.466);
+}
+.side-titles{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: calc(65vw/4);
+    margin-bottom: -20px;
+}
+.journal-entries-options{
+    display: flex;
+}
+.journal-entries-reset{
+    background-color: rgba(219, 151, 151, 0.823);
+    border-radius: 100px;
+    margin-left: 10px;
+    height: 30px;
+    transition: 0.15s all ease-in-out;
+    cursor: pointer;
+}
+.journal-entries-reset:hover{
+    background-color: rgb(219, 151, 151);
+    transition: 0.3s all ease-in-out;
+}
+.journal-entries-flip{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(219, 197, 151, 0.929);
+    border-radius: 100px;
+    margin-left: 10px;
+    height: 30px;
+    width: 30px;
+    transition: 0.15s all ease-in-out;
+    cursor: pointer;
+}
+.journal-entries-flip:hover{
+    background-color: rgb(233, 200, 107);
+    transition: 0.3s all ease-in-out;
+}
+.flip-icon{
+    margin-left: 1px;
+}
+.journal-Entry-Error{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    font-size: 20px;
+    color: red;
+    margin-bottom: -20px;
+    margin-top: 20px;
 }
 @media (max-width: 700px){
     .journal-entry-con {

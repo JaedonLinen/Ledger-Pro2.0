@@ -25,7 +25,7 @@ function AccountsLandingMenu({currentUser}) {
                 </div>
                 <div className="account-option View" onClick={handleNavigateViewAccounts}>
                 <div className="option-text-container">
-                        <p>View Account</p>
+                        <p>View Accounts</p>
                     </div>
                 </div>
             </div>

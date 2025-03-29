@@ -246,7 +246,7 @@ def get_transaction(transaction_id):
     transaction = transactions.query.get(transaction_id)
     json_transaction = transaction.to_json()
 
-    entries = transaction_entries.query.filter(transaction_id=transaction_id).all()
+    entries = transaction_entries.query.filter(transaction_entries.transaction_id == transaction_id).all()
     json_transaction_entries = list(map(lambda x: x.to_json(), entries))
 
     return jsonify({
@@ -256,29 +256,35 @@ def get_transaction(transaction_id):
 
 @app.route("/create_transaction", methods=["POST"])
 def create_transaction():
+    data = request.json  # Retrieve JSON payload
 
-    description = request.json.get("description")
-    transaction_type = request.json.get("transaction_type")
-    transaction_date = request.json.get("transaction_date")
-    user_id = request.json.get("user_id")
+    # Extract transaction details
+    description = data.get("description")
+    transaction_type = data.get("transaction_type")
+    transaction_date = datetime.strptime(data.get("transaction_date"), '%Y-%m-%d').date()
+    user_id = data.get("user_id")
+    entries = data.get("entries")
 
-    
-    if not description:
-        return (jsonify({"message": "description"}), 400)
-    
-    if not transaction_type:
-        return (jsonify({"message": "transaction_type"}), 400)
-    
-    if not transaction_date:
-        return (jsonify({"message": "transaction_date"}), 400)
-    
-    if not user_id:
-        return (jsonify({"message": "user_id"}), 400)
+    if not all([description, transaction_type, transaction_date, user_id]):
+        return jsonify({"message": "Missing required fields"}), 400
     
     
-    new_transaction = transactions(description=description, transaction_type=transaction_type, transaction_date=transaction_date, user_id=user_id, status="Pending")
+    new_transaction = transactions(
+        description=description,
+        transaction_type=transaction_type,
+        transaction_date=transaction_date,
+        user_id=user_id,
+        status="Pending"
+    )
 
-    new_event = event_log(user_id=user_id, table_name="Transactions", column_name="all", old_value="null", new_value="new transaction", action="add")
+    new_event = event_log(
+        user_id=user_id,
+        table_name="Transactions",
+        column_name="all",
+        old_value="null",
+        new_value="new transaction",
+        action="add"
+    )
 
     try:
         db.session.add(new_transaction)
@@ -286,8 +292,50 @@ def create_transaction():
         db.session.commit()
     except Exception as e:
         return jsonify({"message": str(e)}), 400
-    
-    return jsonify({"message": "Transaction created!"}), 201
+
+     # Use the generated transaction ID for entries
+    transaction_id = new_transaction.transaction_id  # Get the newly created transaction ID
+
+    transaction_entries_list = []
+    event_logs_list = []
+
+    for entry in entries:
+        account_id = entry.get("account_id")
+        amount = entry.get("amount")
+        entry_type = entry.get("type")
+
+        # Validate entry data
+        if not all([account_id, amount, entry_type]):
+            return jsonify({"message": "Missing required fields in entries"}), 400
+
+        new_entry = transaction_entries(
+            transaction_id=transaction_id,
+            amount=amount,
+            account_id=account_id,
+            type=entry_type
+        )
+
+        new_entry_event = event_log(
+            user_id=user_id,
+            table_name="transaction_entries",
+            column_name="all",
+            old_value="null",
+            new_value=str(transaction_id),
+            action="add"
+        )
+
+        transaction_entries_list.append(new_entry)
+        event_logs_list.append(new_entry_event)
+
+    try:
+        db.session.add_all(transaction_entries_list)
+        db.session.add_all(event_logs_list)
+        db.session.commit()
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({"message": str(e)}), 400
+
+    return jsonify({"message": "Transaction and entries created successfully!", "transaction_id": transaction_id}), 201
 
 @app.route("/create_transaction_entries/<int:id>", methods=["POST"])
 def create_transaction_entries(id):

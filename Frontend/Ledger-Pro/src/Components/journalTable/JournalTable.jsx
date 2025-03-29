@@ -1,21 +1,26 @@
 import React from 'react'
 import {useState, useEffect} from "react"
+import { useNavigate } from "react-router-dom";
 import { BiSolidFilterAlt, BiX, BiSearch, BiRefresh } from 'react-icons/bi'
 
-function JournalTable() {
+function JournalTable({currentUser}) {
 
+  const navigate = useNavigate();
   const [journals, setJournals] = useState([]);
   
   useEffect(() => {
-      fetchJournals()
-      console.log(journals)
+    fetchJournals()
   }, [])
+
+  useEffect(() => {
+      console.log("journals", journals)
+  }, [journals])
 
   const fetchJournals = async () => {
       try {
           const response = await fetch("http://127.0.0.1:5000/get_transactions");
           const data = await response.json();
-          setJournals(data.all_transactions);
+          setJournals(data.allTransactions);
       } catch (error) {
           console.error("Failed to fetch transactions:", error);
           setJournals([]);  // Ensure users is always an array
@@ -86,9 +91,24 @@ function JournalTable() {
       setOpenStatusOptions(false)
   }
 
-  const handleJournalNavigation = () => {
-    navigate("/JournalInfo", {state: {currentUser} })  
+  const handleJournalNavigation = (id) => {
+    navigate("/JournalInfo", { state: { currentUser, transaction_id: id } });  
   };
+
+  const formatDate = (dateData) => {
+    const timestamp = Date.parse(dateData); // Convert to timestamp
+    if (isNaN(timestamp)) {
+        console.error("Invalid date:", dateData);
+        return "Invalid Date";
+    }
+    const date = new Date(dateData); // Creates a Date object
+    return new Intl.DateTimeFormat("en-US", {
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+        timeZone: "UTC"  // Force UTC to avoid local conversion
+    }).format(date);
+};
       
   return (
     <>
@@ -181,7 +201,7 @@ function JournalTable() {
                         <th>Transaction ID</th>
                         <th>Type</th>
                         <th>Description</th>
-                        <th>Date</th>
+                        <th>Transaction date</th>
                         <th>Created By</th>
                         <th>Status</th>
                     </tr>
@@ -192,7 +212,7 @@ function JournalTable() {
                             <td data-cell="id"    >{journal.transaction_id}</td>
                             <td data-cell="type"    >{journal.transaction_type}</td>
                             <td data-cell="description"    >{journal.description}</td>
-                            <td data-cell="transaction date"    >{journal.transaction_date}</td>
+                            <td data-cell="transaction date"    >{formatDate(journal.transaction_date)}</td>
                             <td data-cell="created"        >{journal.user_id}</td>
                             <td data-cell="status"        >{journal.status}</td>
                         </tr>

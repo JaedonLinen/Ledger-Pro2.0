@@ -132,7 +132,9 @@ class transactions(db.Model):
             "description": self.description,
             "transaction_date": self.transaction_date,
             "user_id": self.user_id,
-            "status": self.status
+            "status": self.status,
+            "date_created": self.date_created,
+            "date_updated": self.date_updated
         }
     
     def reset_table():

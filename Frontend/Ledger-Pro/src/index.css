@@ -6,5 +6,4 @@ body{
 .breadcrumb-text-container{
     position: absolute;
     margin-left: 50px;
-    width: calc(100vw - 50px);
 }
