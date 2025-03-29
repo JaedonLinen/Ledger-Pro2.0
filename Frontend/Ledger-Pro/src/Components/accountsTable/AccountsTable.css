@@ -253,6 +253,7 @@ button.clicked{
 }
 .table-data{
     transition: 0.175s ease-in-out;
+    cursor: pointer;
 }
 .table-data:hover{
     background-color: rgb(84, 98, 88);

@@ -241,6 +241,12 @@ def get_transactions():
     json_transactions = list(map(lambda x: x.to_json(), all_transactions))
     return jsonify({"allTransactions": json_transactions})
 
+@app.route("/get_entries/<int:transaction_id>", methods=["GET"])
+def get_entries(transaction_id):
+    all_entries = transaction_entries.query.filter(transaction_entries.account_id == transaction_id).all()
+    json_entries = list(map(lambda x: x.to_json(), all_entries))
+    return jsonify({"allEntries": json_entries})
+
 @app.route("/get_transaction/<int:transaction_id>", methods=["GET"])
 def get_transaction(transaction_id):
     transaction = transactions.query.get(transaction_id)

@@ -3,6 +3,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import {  BiEdit, BiBookAdd } from "react-icons/bi";
 import './AccountGeneralInfo.css'
 import EditAccount from '../editAccountModal/EditAccount';
+import EntriesTable from '../accountEntriesTable/AccountEntriesTable';
 
 function AccountGeneralInfo({id}) {
 
@@ -193,6 +194,7 @@ function AccountGeneralInfo({id}) {
 
         </div>
       </div>
+     <EntriesTable id={id} currentUser={currentUser}/>
     </div>
   )
 }

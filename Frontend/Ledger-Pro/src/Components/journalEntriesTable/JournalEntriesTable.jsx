@@ -60,7 +60,7 @@ function JournalEntriesTable({id}) {
 
   return (
     <div>
-      <h1 className='Entries-title'>Entries</h1>
+        <h1 className='Entries-title'>Entries</h1>
         <div className="table-master-container">
             <table>
                 <caption>
@@ -81,7 +81,7 @@ function JournalEntriesTable({id}) {
                             <td data-cell="Journal entry Id"    >{entry.transaction_entry_id}</td>
                             <td data-cell="normal side"    >{findAccount(entry.account_id)?.normal_side || ""}</td>
                             <td data-cell="account"    >{findAccount(entry.account_id)?.account_name || ""} </td>
-                            <td data-cell="amount"    >{entry.amount}</td>
+                            <td data-cell="amount"    >{formatCurrency(entry.amount)}</td>
                             <td data-cell="type"        >{entry.type}</td>
                         </tr>
                     ))}
