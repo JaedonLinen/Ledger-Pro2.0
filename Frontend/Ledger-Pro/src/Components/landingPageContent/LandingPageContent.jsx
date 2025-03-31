@@ -1,6 +1,7 @@
 import React from 'react'
 import { useEffect, useState } from "react";
 import { Link } from 'react-router-dom'
+import { BiPhone, BiMailSend, BiLogoLinkedin } from "react-icons/bi";
 import './landingPageContent.css'
 
 function LandingPageContent() {
@@ -101,7 +102,37 @@ function LandingPageContent() {
         </div>
         
         <div className={`landing-con contact ${servicesIsVisible ? "fade-in" : ""}`}>
-          
+          <div className="landing-text contact">
+            <p className="motto contact">Contact us</p>
+            <div className="media-container">
+              <div className="contact-panel left">
+                <div className="media-and-title">
+                  <div className="media">
+                    <BiMailSend size={20}/>
+                  </div>
+                  <p>Link to Mail</p>
+                </div>
+                <div className="media-and-title">
+                  <div className="media">
+                    <BiPhone size={20}/>
+                  </div>
+                  <p>Link to phone</p>
+                </div>
+                <div className="media-and-title">
+                  <div className="media">
+                    <BiLogoLinkedin size={20}/>
+                  </div>
+                  <p>Link to linked in</p>
+                </div>
+              </div>
+
+              <div className="contact-panel left">
+                <p className='contact-disc-title'>Disclaimer</p>
+                <p className='contact-disc-text'>Lorem ipsum dolor sit amet consectetur adipisicing elit. Commodi officiis magnam sequi natus eaque repellendus quasi, minus laboriosam autem consequatur ducimus eum veritatis harum voluptas dignissimos illum. Maiores, hic cum.</p>
+              </div>
+            
+            </div>
+          </div>
         </div>
       </div>
   </div>

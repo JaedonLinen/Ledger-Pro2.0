@@ -3,8 +3,12 @@
   height: calc(90vh - 80px);
   border-bottom: 2px solid black;
 }
+.motto.contact{
+  font-size: 3rem;
+  color: whitesmoke;
+}
 .motto.about{
-  color: rgb(173, 229, 151);
+  color: rgba(173, 229, 151, 0.894);
   text-shadow: 2px 4px 4px rgba(255, 255, 255, 0.2),
                  0px -5px 10px rgba(255, 255, 255, 0.15);
 }
@@ -15,7 +19,7 @@
                  0px -5px 10px rgba(255,255,255,0.15);
 }
 .landing-con.about {
-  background-color: black;
+  background-color: rgb(23, 23, 23);
   opacity: 0;
   transition: opacity 0.8s ease-in-out;
 }
@@ -31,7 +35,8 @@
   opacity: 1;
 }
 .landing-con.contact {
-  background-color: #EDE8D0;
+  height: 50vh;
+  background-color: rgb(56, 56, 56);
   opacity: 0;
   transition: opacity 0.8s ease-in-out;
 }
@@ -56,11 +61,61 @@
   left: 10vw;
   letter-spacing: 1px;
   background-color: transparent;
-  width: 700px;
+  width: 80vw;
 }
 
 .landing-text.services{
   top: 7vh;
+}
+
+.landing-text.contact{
+  top: 7vh;
+}
+
+.media{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  width: 35px;
+  height: 35px;
+  border-radius: 100px;
+  background-color: grey;
+  cursor: pointer;
+  transition: 0.15s ease-in-out;
+}
+
+.media:hover{
+  background-color: rgb(184, 184, 184);
+  transition: 0.3s ease-in-out;
+}
+
+.contact-panel{
+  width: 35vw;
+  height: 200px;
+}
+
+.media-container{
+  display: flex;
+  justify-content: space-between;
+}
+
+.contact-disc-title{
+  color: whitesmoke;
+  font-size: 20px;
+}
+
+.contact-disc-text{
+  color: rgb(218, 77, 77);
+  font-size: 16px;
+}
+
+.media-and-title{
+  color: whitesmoke;
+  margin-top: 20px;
+  gap: 15px;
+  display: flex;
+  align-items: center;
 }
 
 .name{
@@ -82,6 +137,7 @@
   margin-top: 0;
   width: 80vw;
   background-color: transparent;
+  color: rgba(36, 46, 31, 0.486);
 }
 
 .hook{
@@ -100,7 +156,7 @@
 
 .landing-buttons button {
   padding: 1em 2em;
-  background-color: black;
+  background-color: rgb(41, 41, 41);
   border: none;
   color: white;
   font-size: 15px;
@@ -162,7 +218,15 @@
   animation: spinBlob 8s linear infinite;
 }
 
-@media (max-width: 500px){ 
+@media (max-width: 800px){ 
+
+  .contact-disc-text{
+    font-size: 11px;
+  }
+
+  .name.about{
+    font-size: 17px;
+  }
 
   .landing-text{
     position: relative;
@@ -258,7 +322,6 @@
     background-color: transparent;
     width: 80%;
   }
-  
 }
 
 @keyframes spinBlob {
