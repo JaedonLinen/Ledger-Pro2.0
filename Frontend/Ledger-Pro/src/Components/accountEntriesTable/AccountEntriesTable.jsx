@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from "react-router-dom";
+import { BiSolidFilterAlt, BiX, BiSearch, BiRefresh } from 'react-icons/bi'
+import './AccountEntriesTable.css'
 
 function AccountEntriesTable({id, currentUser}) {
 
@@ -63,10 +65,65 @@ function AccountEntriesTable({id, currentUser}) {
             return isNegative ? `-${formatted}` : formatted; // Re-add negative sign if needed
         };
 
+        const [search, setSearch] = useState("");
+        const [filters, setFilters] = useState({ side: "", category: "", subcategory: "", balance: "", status: "", owner: "" });
+        const [isFiltered, setIsFiltered] = useState(false);
+        const [openFilterMenu, setOpenFilterMenu] = useState(false)
+
+        const handleSearchChange = (e) => {
+            const value = e.target.value;
+        
+            // Allow only numbers and limit to 4 digits
+            if (/^\d{0,4}$/.test(value)) {
+                setSearch(value);
+                setIsFiltered(value.length === 4); // Only set filtered if input is exactly 4 digits
+            }
+        };
+
   return (
     <div>
         <h1 className='Entries-title'>Entries</h1>
         <div className="table-master-container">
+            <div className="account-table-filter-options-container">
+                <div className="account-e-table-name-filter-container" id="tooltip">
+                    <input
+                        id="tooltiptext"
+                        title="search through account name and number based on input"
+                        type="text"
+                        placeholder="Search by year..."
+                        value={search}
+                        onChange={handleSearchChange}
+                    />  
+                </div>
+                {
+                    !openFilterMenu &&
+                    <div className="filter-menu-container-e" id="tooltip" onClick={() => setOpenFilterMenu(true)}>
+                        <p>Month</p>
+                    </div>
+                }
+                {
+                    openFilterMenu && 
+                    <div className="e-extra-filters-menu">
+                        <div className="exit-filter-menu-container">
+                            <BiX className="exit-filter-menu" size={30} onClick={() => setOpenFilterMenu(false)}/>
+                        </div>
+                        <div className="extra-filter-menu-options">
+                            <button>Jan</button>
+                            <button>Feb</button>
+                            <button>Mar</button>
+                            <button>Apr</button>
+                            <button>May</button>
+                            <button>Jun</button>
+                            <button>Jul</button>
+                            <button>Aug</button>
+                            <button>Sep</button>
+                            <button>Oct</button>
+                            <button>Nov</button>
+                            <button>Dec</button>
+                        </div>
+                    </div>
+                }
+            </div>
             <table>
                 <caption>
                     List of entries related to this account

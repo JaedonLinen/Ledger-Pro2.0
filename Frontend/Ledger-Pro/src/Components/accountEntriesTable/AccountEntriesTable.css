@@ -1,0 +1,50 @@
+.account-table-filter-options-container{
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+    width: 95%;
+    margin: 0 auto;
+    height: 34px;
+    gap: 5px;
+}
+.account-e-table-name-filter-container{
+    background: rgb(159, 189, 159);
+    width: 135px;
+    border-radius: 8px 8px 0px 0px;
+    border: none;
+    outline: none;
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+    transition: 0.3s ease-in-out;
+}
+.filter-menu-container-e{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: lightgrey;
+    border-radius: 8px 8px 0px 0px;
+    width: 70px;
+    cursor: pointer;
+    transition: 0.3s ease-in-out;
+}
+
+.filter-menu-container-e:hover{
+    background: rgb(150, 150, 150);
+    transition: 0.7s ease-in-out;
+}
+
+.filter-menu-container-e p{
+    font-weight: 100;
+}
+.e-extra-filters-menu{
+    background-color: lightgrey;
+    border-radius: 8px 8px 0px 0px;
+    display: flex;
+    flex-direction: column; /* Stack buttons vertically */
+    align-items: center; /* Center buttons horizontally */
+    z-index: 1;
+    height: 270px;
+    width: 60px;
+    overflow: scroll;
+}

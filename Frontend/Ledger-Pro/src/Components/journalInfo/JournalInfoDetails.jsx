@@ -7,8 +7,10 @@ function JournalInfoDetails({transaction_id, currentUser}) {
 
   const [openDocs, setOpenDocs] = useState(false)
   const [journal, setJournals] = useState([]);
-  const [journalEntries, setJournalEntries] = useState([]);
   const [users, setUsers] = useState([])
+  const [selectedReject, setSelectedReject] = useState(false)
+  const [accecptedModal, setAccecptedModal] = useState(false)
+  const [comment, setComment] = useState("")
   
   useEffect(() => {
     fetchJournals()
@@ -19,7 +21,6 @@ function JournalInfoDetails({transaction_id, currentUser}) {
           const response = await fetch(`http://127.0.0.1:5000//get_transaction/${transaction_id}`);
           const data = await response.json();
           setJournals(data.transaction);
-          setJournalEntries(data.transaction_entries);
       } catch (error) {
           console.error("Failed to fetch transactions:", error);
           setJournals([]);  // Ensure users is always an array
@@ -66,10 +67,10 @@ function JournalInfoDetails({transaction_id, currentUser}) {
     <div>
       { currentUser.role === "Admin" && journal.status === "Pending" &&
         <div className="status-options">
-          <div className="status-option-bttn accept">
+          <div className="status-option-bttn accept" onClick={() => setAccecptedModal(true)}>
             <p>Accept</p>
           </div>
-          <div className="status-option-bttn reject">
+          <div className="status-option-bttn reject" onClick={() => setSelectedReject(true)}>
             <p>Reject</p>
           </div>
         </div>
@@ -88,8 +89,44 @@ function JournalInfoDetails({transaction_id, currentUser}) {
               <BiFileBlank size={20} onClick={() => setOpenDocs(true)}/>
             </div>
         </div>
+        { selectedReject &&
+          <div className="comment-btns">
+            <div className="comment-con" id="tooltip">
+              <input
+                id="tooltiptext"
+                title="reason for rejection"
+                type="text"
+                placeholder="Please enter reason for rejection ..."
+                value={comment}
+                onChange={(e) => {setComment(e.target.value)}}
+              /> 
+            </div>
+            <div className="rejection-buttons">
+              <div className="rejection-button submit">
+                <button>Submit</button>
+              </div>
+              <div className="rejection-button cancel" onClick={() => setSelectedReject(false)}>
+                <button>Cancel</button>
+              </div>
+            </div>
+          </div>
+        }
       </div>
       {openDocs && <FileModal closeModal={() => {setOpenDocs(false)}} />}
+      { accecptedModal &&
+        <div className="modal-container" >
+          <div className="modal">
+              <div className="confirmation-text">
+                  <h1>Are you sure you want to accept?</h1>
+                  <p>Accounts and balances will be reflected</p>
+              </div>
+              <div className="btn-options-container">
+                  <button className="btn-options">Yes</button>
+                  <button className="btn-options" id='no-btn' onClick={() => setAccecptedModal(false)}>No</button>
+              </div>
+          </div>
+        </div>
+      }
     </div>
   )
 }

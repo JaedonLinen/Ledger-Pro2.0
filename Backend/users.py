@@ -247,6 +247,23 @@ def get_entries(transaction_id):
     json_entries = list(map(lambda x: x.to_json(), all_entries))
     return jsonify({"allEntries": json_entries})
 
+@app.route("/get_transaction_by_acc/<int:account_id>", methods=["GET"])
+def get_transactions_by_acc(account_id):
+    # Step 1: Get all distinct transaction IDs for the given account_id
+    transaction_ids = db.session.query(transaction_entries.transaction_id)\
+                                .filter(transaction_entries.account_id == account_id)\
+                                .distinct()\
+                                .all()
+    
+    transaction_ids = [tid[0] for tid in transaction_ids]
+
+    all_entries = transactions.query.filter(transaction_entries.transaction_id.in_(transaction_ids)).all()
+
+    # Convert to JSON format
+    json_entries = [entry.to_json() for entry in all_entries]
+
+    return jsonify({"allTransactions": json_entries})
+
 @app.route("/get_transaction/<int:transaction_id>", methods=["GET"])
 def get_transaction(transaction_id):
     transaction = transactions.query.get(transaction_id)
@@ -259,6 +276,28 @@ def get_transaction(transaction_id):
         "transaction": json_transaction, 
         "transaction_entries": json_transaction_entries
     })
+
+@app.route("/update_transaction/<int:transaction_id>", methods=["PATCH"])
+def update_transaction(transaction_id):
+    transaction = transactions.query.get(transaction_id)
+
+    if not transaction:
+        return jsonify({"message": "User not found"}), 404
+    
+    data = request.json
+    transaction.transaction_id = data.get("transaction_id", transaction.transaction_id)
+    transaction.transaction_type = data.get("transaction_type", transaction.transaction_type)
+    transaction.description = data.get("description", transaction.description)
+    transaction.transaction_date = data.get("transaction_date", transaction.transaction_date)
+    transaction.user_id = data.get("user_id", transaction.user_id)
+    transaction.status = data.get("status", transaction.status)
+    transaction.date_created = data.get("date_created", transaction.date_created)
+    transaction.date_updated = data.get("date_updated", transaction.date_updated)
+    transaction.comment = data.get("comment", transaction.comment)
+
+    db.session.commit()
+
+    return jsonify({"message": "Journal updated!"}), 200
 
 @app.route("/create_transaction", methods=["POST"])
 def create_transaction():

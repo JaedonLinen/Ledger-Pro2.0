@@ -96,11 +96,6 @@
     align-items: center;
 }
 
-.filter-menu-container:hover{
-    background: rgb(150, 150, 150);
-    transition: 0.7s ease-in-out;
-}
-
 .extra-filters-menu{
     background-color: lightgrey;
     border-radius: 8px 8px 8px 8px;

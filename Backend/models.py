@@ -124,6 +124,7 @@ class transactions(db.Model):
     status = db.Column(db.String(10), nullable=False)  # Name of the affected table
     date_created = db.Column(db.DateTime, default=datetime.now)
     date_updated = db.Column(db.DateTime, default=datetime.now)
+    comment = db.Column(db.Text, nullable=True)  # Optional comment field
 
     def to_json(self):
         return {
@@ -134,7 +135,8 @@ class transactions(db.Model):
             "user_id": self.user_id,
             "status": self.status,
             "date_created": self.date_created,
-            "date_updated": self.date_updated
+            "date_updated": self.date_updated,
+            "comment" : self.comment
         }
     
     def reset_table():
@@ -160,6 +162,11 @@ class transaction_entries(db.Model):
             "amount": self.amount,
             "type": self.type,
         }
+    
+    def reset_table():
+        db.metadata.tables["transaction_entries"].drop(db.engine)  # Drop all tables (or use db.metadata.tables["transactions"].drop(db.engine) for one table)
+        db.create_all()  # Recreate all tables
+        print("Table 'accounts' has been dropped and recreated.")
     
 class document_entries(db.Model):
 
