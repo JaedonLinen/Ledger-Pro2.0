@@ -179,6 +179,57 @@
     margin-bottom: -20px;
     margin-top: 20px;
 }
+.file-button{
+    margin-left: 5px;
+    margin-top: 25px;
+    background-color: rgba(226, 202, 137, 0.843);
+    height: 30px;
+    width: 150px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 4px;
+    box-shadow: rgba(27, 31, 35, .1) 0 1px 0;
+    color: black;
+    cursor: pointer;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+    vertical-align: middle;
+    white-space: nowrap;
+    transition: 0.1s all ease-in-out;
+}
+.reset-file-button{
+    margin-top: 25px;
+    background-color: rgba(226, 137, 137, 0.567);
+    height: 30px;
+    width: 90px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 4px;
+    box-shadow: rgba(27, 31, 35, .1) 0 1px 0;
+    color: black;
+    cursor: pointer;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+    vertical-align: middle;
+    white-space: nowrap;
+    transition: 0.1s all ease-in-out;
+}
+.file-btns-con{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.file-btns-con-text{
+    font-size: 12px;
+    margin-left: 15px;
+}
+.file-count{
+    margin-top: 35px;
+}
 @media (max-width: 700px){
     .journal-entry-con {
         display: inline-block;

@@ -1,0 +1,57 @@
+.files-table-master-container table{
+    border-collapse: collapse;
+    margin: auto;
+    width: 95%;
+    caption-side: bottom;
+}
+.files-table-master-container caption, th, td{
+    padding: 1rem;
+}
+.files-table-master-container th{
+    background: rgba(0, 0, 0, 0.5);
+    text-align: left;
+}
+.files-table-master-container tr:nth-of-type(2n){
+    background: rgba(0, 0, 0, 0.07);
+}
+.files-table-master-container caption{
+    text-align: left;
+    color: grey;
+}
+
+.files-con{
+    width: 100%;
+}
+.file-input-con{
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+.file-input-con input{
+    display: flex;
+    border: none;
+    width: 100%;
+    height: 100%;
+    background-color: transparent;
+}
+.input-con{
+    background-color: lightgray;
+    border-radius: 6px;
+    width: 70%;
+    height: 30px;
+}
+
+.custom-file-label {
+    display: inline-block;
+    padding: 5px 5px;
+    color: rgb(22, 22, 22);
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.add-btn-container{
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+}

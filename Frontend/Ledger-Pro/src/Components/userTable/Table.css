@@ -92,7 +92,7 @@ box-shadow: rgba(20, 70, 32, .2) 0 1px 0 inset;
 .actions-btn{
     cursor: pointer;
 }
-@media (max-width: 650px){
+@media (max-width: 1050px){
 
     .table-master-container th{
         display: none;

@@ -4,6 +4,7 @@ import {  BiEdit, BiBookAdd } from "react-icons/bi";
 import './AccountGeneralInfo.css'
 import EditAccount from '../editAccountModal/EditAccount';
 import EntriesTable from '../accountEntriesTable/AccountEntriesTable';
+import EmailModal from '../emailModal/EmailModal';
 
 function AccountGeneralInfo({id}) {
 
@@ -57,6 +58,7 @@ function AccountGeneralInfo({id}) {
   };
 
   const [OpenAccountModal, setOpenAccountModal] = useState(false)
+  const [openEmailModal, setOpenEmailtModal] = useState(false)
 
   const onAccountUpdate = () => {
     setOpenAccountModal(false)
@@ -77,6 +79,17 @@ function AccountGeneralInfo({id}) {
           updateCallBack={onAccountUpdate}
         />
       }
+      { 
+        openEmailModal &&
+        <EmailModal 
+          closeModal={() => setOpenEmailtModal(false)}
+        />
+      }
+      <div className="addUserModalOpen-btn-container" id="tooltip" onClick={() => setOpenEmailtModal(true)}>
+          <button title="Send a email here" className="addUserModalOpen-btn" id="tooltiptext">
+              Send Email
+          </button>
+      </div>
       <div className="general-info-container">
         <div className="info-section left">
 

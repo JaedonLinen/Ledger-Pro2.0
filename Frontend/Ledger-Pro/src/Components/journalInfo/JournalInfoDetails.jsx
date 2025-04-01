@@ -112,7 +112,7 @@ function JournalInfoDetails({transaction_id, currentUser}) {
           </div>
         }
       </div>
-      {openDocs && <FileModal closeModal={() => {setOpenDocs(false)}} />}
+      {openDocs && <FileModal closeModal={() => {setOpenDocs(false)}} id={transaction_id} existing={true} />}
       { accecptedModal &&
         <div className="modal-container" >
           <div className="modal">

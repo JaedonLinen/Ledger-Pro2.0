@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react'
-import { BiDownArrow, BiPlus, BiTrash, BiCalendar, BiErrorCircle, BiRefresh } from "react-icons/bi";
+import { BiDownArrow, BiPlus, BiTrash, BiCalendar, BiErrorCircle, BiRefresh, BiFileBlank } from "react-icons/bi";
 import './CreateJournalEntry.css'
 import { useLocation } from "react-router-dom"
+import FileModal from '../filesTableModal/FilesTableModal'
 
 function CreateJournalEntry() {
 
@@ -184,15 +185,23 @@ function CreateJournalEntry() {
   }
 
   useEffect(() => {
-    console.log(entries)
     checkForErrors()
     checkDebitsCreditsBalance()
     checkValidEntries()
     validateEntries()
   }, [entries])
 
+  const [openDocs, setOpenDocs] = useState(false)
+  const [docs, setDocs] = useState([])
+
+  const docsCallback = (fileName, formData) => {
+    setOpenDocs(false);
+    setDocs([...docs, { filename: fileName, file: formData.get("file") }]);
+  };
+
   return (
     <div>
+      {openDocs && <FileModal closeModal={() => setOpenDocs(false)} existing={false} updateCallback={docsCallback} />}
       <form className='journal-form' onSubmit={onSubmit}>
         <div className="journal-title">
           <h1>Fill out form to request a journal entry</h1>
@@ -221,6 +230,25 @@ function CreateJournalEntry() {
             </div> 
           </div>
         </div>
+
+        <div className="file-btns-con">
+          { docs.length != 0 &&
+            <div className='reset-file-button' onClick={() => setDocs([])}>
+              <p>Clear</p>
+              <BiTrash size={20}/>
+            </div>
+          }
+          <div className='file-button' onClick={() => setOpenDocs(true)}>
+            <p>Add files</p>
+            <BiFileBlank size={20} onClick={() => setOpenDocs(true)}/>
+          </div>
+          { docs.length != 0 &&
+            <div className="file-btns-con-text">
+              <p className='file-count'>{docs.length} file(s) uploaded</p>
+            </div>
+          }
+        </div>
+        
 
         {amountError && <div className='journal-Entry-Error'><BiErrorCircle />Amount cannot be negative or letters</div> }
         {balanceError && <div className='journal-Entry-Error'><BiErrorCircle />Journal entry is not balanced *debits=credits</div> }

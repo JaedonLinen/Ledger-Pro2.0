@@ -1,6 +1,6 @@
 from flask import request, jsonify
 from config import app, db
-from models import users, Accounts, event_log, transactions, transaction_entries
+from models import users, Accounts, event_log, transactions, transaction_entries,document_entries
 from datetime import datetime
 
 @app.route("/get_users", methods=["GET"])
@@ -382,37 +382,6 @@ def create_transaction():
 
     return jsonify({"message": "Transaction and entries created successfully!", "transaction_id": transaction_id}), 201
 
-@app.route("/create_transaction_entries/<int:id>", methods=["POST"])
-def create_transaction_entries(id):
-
-    transaction_id = request.json.get("transaction_id")
-    amount = request.json.get("amount")
-    type = request.json.get("type")
-
-    
-    if not transaction_id:
-        return (jsonify({"message": "transaction_id"}), 400)
-
-    
-    if not amount:
-        return (jsonify({"message": "transaction_date"}), 400)
-    
-    if not type:
-        return (jsonify({"message": "type"}), 400)
-    
-    
-    new_transaction_entry = transaction_entries(transaction_id=transaction_id, amount=amount, account_id=id, type=type)
-
-    new_event = event_log(user_id=id, table_name="transaction_entries", column_name="all", old_value="null", new_value=transaction_id, action="add")
-
-    try:
-        db.session.add(new_transaction_entry)
-        db.session.add(new_event)
-        db.session.commit()
-    except Exception as e:
-        return jsonify({"message": str(e)}), 400
-    
-    return jsonify({"message": "Transaction entry created!"}), 201
 
 @app.route("/excute_transaction/<int:id>", methods=["PATCH"])
 def excute_transaction(id):
@@ -445,6 +414,16 @@ def excute_transaction(id):
         return jsonify({"message": str(e)}), 400
     
     return jsonify({"message": "Transaction entry created!"}), 201
+
+@app.route("/get_files/<int:id>", methods=["GET"])
+def get_files(id):
+    # Query all document entries that match the given transaction_id
+    all_files = document_entries.query.filter(document_entries.transaction_id == id).all()
+    
+    # Convert to JSON format
+    json_files = [file.to_json() for file in all_files]
+
+    return jsonify({"allFiles": json_files})
 
 
 

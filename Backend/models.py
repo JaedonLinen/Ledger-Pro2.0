@@ -176,14 +176,21 @@ class document_entries(db.Model):
     transaction_id = db.Column(db.Integer, nullable=False)  # ID of user who made the change
     account_id = db.Column(db.Integer, nullable=False)  # ID of user who made the change
     filename = db.Column(db.String(255), nullable=False)
+    file_data = db.Column(db.LargeBinary, nullable=False)  # BLOB Column for storing file data
 
     def to_json(self):
         return {
             "document_entry_id": self.document_entry_id,
             "transaction_id": self.transaction_id,
             "account_id": self.account_id,
-            "filename": self.filename
+            "filename": self.filename,
+            "file_data": self.file_data
         }
+    
+    def reset_table():
+        db.metadata.tables["document_entries"].drop(db.engine)  # Drop all tables (or use db.metadata.tables["transactions"].drop(db.engine) for one table)
+        db.create_all()  # Recreate all tables
+        print("Table 'accounts' has been dropped and recreated.")
     
 class event_log(db.Model):
 
