@@ -15,10 +15,6 @@ function JournalTable({currentUser}) {
     fetchJournals()
     }, [])
 
-    useEffect(() => {
-        console.log("journals", journals)
-    }, [journals])
-
     const fetchJournals = async () => {
         try {
             const response = await fetch("http://127.0.0.1:5000/get_transactions");

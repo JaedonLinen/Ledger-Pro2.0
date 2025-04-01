@@ -28,8 +28,6 @@ function AccountGeneralInfo({id}) {
           const response = await fetch(`http://127.0.0.1:5000/get_account/${id}`);
           const data = await response.json();
           setAccount(data.account)
-          console.log(data.account)
-
       } catch (error) {
           console.error("Failed to fetch account:", error);
           setAccount({});  // Ensure users is always an array

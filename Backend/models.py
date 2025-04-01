@@ -85,6 +85,23 @@ class Accounts(db.Model):
             return True
         else:
             return False
+        
+    def reflect_entry(self, entry):
+        entry_type = entry.get("type", "").lower()  # Safely get the type value
+
+        if entry_type == "credit":
+            self.credit = entry.get("amount", 0)  # Get amount safely
+        else:
+            self.debit = entry.get("amount", 0)
+
+        if entry_type == self.normal_side.lower():
+            self.balance = self.balance + entry.get("amount", 0)
+        else:
+            self.balance = self.balance - entry.get("amount", 0)
+
+        return self.balance
+
+        
 
     def to_json(self):
         return {
@@ -152,7 +169,8 @@ class transaction_entries(db.Model):
     transaction_id = db.Column(db.Integer, nullable=False)  # ID of user who made the change
     account_id = db.Column(db.Integer, nullable=False)  # ID of user who made the change
     amount = db.Column(db.Float, nullable=False)  # ammount
-    type = db.Column(db.String(10), nullable=False)  # Should be 'Debit' or 'Credit'
+    type = db.Column(db.String(10), nullable=False)  # Should be 'Debit' or 'Credit']
+    reflected = db.Column(db.String(5), nullable=False, default=False)  # Should be 'Debit' or 'Credit'
 
     def to_json(self):
         return {
@@ -161,7 +179,11 @@ class transaction_entries(db.Model):
             "account_id": self.account_id,
             "amount": self.amount,
             "type": self.type,
+            "reflected": self.reflected
         }
+    
+    def set_reflected(self):
+        self.reflected = True
     
     def reset_table():
         db.metadata.tables["transaction_entries"].drop(db.engine)  # Drop all tables (or use db.metadata.tables["transactions"].drop(db.engine) for one table)

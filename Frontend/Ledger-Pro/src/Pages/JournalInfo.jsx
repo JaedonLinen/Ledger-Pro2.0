@@ -18,7 +18,7 @@ function JournalInfo() {
     <div>
         <HomeNav currentUser={currentUser}/>
         <div className="breadcrumb-text-container"><h1 className="breadcrumb-text">Journal Details</h1></div>
-        <JournalInfoDetails transaction_id={transaction_id} currentUser={currentUser} />
+        <JournalInfoDetails t_id={transaction_id} currentUser={currentUser} />
         <JournalEnties id={transaction_id} />
     </div>
   )

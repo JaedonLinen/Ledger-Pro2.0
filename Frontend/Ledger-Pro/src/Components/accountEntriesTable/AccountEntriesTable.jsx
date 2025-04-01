@@ -69,6 +69,7 @@ function AccountEntriesTable({id, currentUser}) {
         const [filters, setFilters] = useState({ side: "", category: "", subcategory: "", balance: "", status: "", owner: "" });
         const [isFiltered, setIsFiltered] = useState(false);
         const [openFilterMenu, setOpenFilterMenu] = useState(false)
+        const [notReflected, setNotReflected] = useState(false)
 
         const handleSearchChange = (e) => {
             const value = e.target.value;
@@ -123,6 +124,14 @@ function AccountEntriesTable({id, currentUser}) {
                         </div>
                     </div>
                 }
+                <div className={`filter-menu-container-r ${notReflected ? "nr" : ""}`} id="tooltip" onClick={() => setNotReflected(!notReflected)}>
+                    <p>Not Reflected yet</p>
+                </div>
+                { notReflected &&
+                    <div className="reflected-mess">
+                        <p>Showing all transactions that have not yet reflected</p>
+                    </div> 
+                }
             </div>
             <table>
                 <caption>
@@ -138,13 +147,15 @@ function AccountEntriesTable({id, currentUser}) {
                     </tr>
                 </thead>
                 <tbody id='tooltip'>
-                {journalEntries.map((entry) => (
+                    {journalEntries
+                    .filter(entry => entry.reflected !== notReflected)
+                    .map((entry) => (
                         <tr key={entry.account_id} onClick={() => handleJournalNavigation(entry.transaction_id)} title="Click to view post reference" id='tooltiptext' className='table-data'>
-                            <td data-cell="Journal Id"    >{entry.transaction_id}</td>
-                            <td data-cell="Journal entry Id"    >{entry.transaction_entry_id}</td>
-                            <td data-cell="account"    >{findAccount(entry.account_id)?.account_name || ""} </td>
-                            <td data-cell="amount"    >{formatCurrency(entry.amount)}</td>
-                            <td data-cell="type"        >{entry.type}</td>
+                            <td data-cell="Journal Id">{entry.transaction_id}</td>
+                            <td data-cell="Journal entry Id">{entry.transaction_entry_id}</td>
+                            <td data-cell="account">{findAccount(entry.account_id)?.account_name || ""}</td>
+                            <td data-cell="amount">{formatCurrency(entry.amount)}</td>
+                            <td data-cell="type">{entry.type}</td>
                         </tr>
                     ))}
                 </tbody>

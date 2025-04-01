@@ -40,7 +40,8 @@ function CreateJournalEntry() {
       transaction_type,
       transaction_date,
       user_id,
-      entries
+      entries,
+      docs
     }
 
     const url = "http://127.0.0.1:5000/create_transaction"

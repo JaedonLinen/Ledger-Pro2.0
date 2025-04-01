@@ -29,6 +29,43 @@
     transition: 0.3s ease-in-out;
 }
 
+.filter-menu-container-r{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: lightgrey;
+    border-radius: 8px 8px 0px 0px;
+    width: 145px;
+    cursor: pointer;
+    transition: 0.3s ease-in-out;
+}
+.filter-menu-container-r:hover{
+    background: rgb(162, 44, 44);
+    color: white;
+    transition: 0.7s ease-in-out;
+}
+
+.filter-menu-container-r.nr{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgb(162, 44, 44);
+    border-radius: 8px 8px 0px 0px;
+    width: 145px;
+    cursor: pointer;
+    transition: 0.3s ease-in-out;
+    color: white;
+}
+.filter-menu-container-r:hover{
+    background: lightgray;
+    color: black;
+    transition: 0.7s ease-in-out;
+}
+.reflected-mess{
+    color: gray;
+    display: flex;
+    align-items: center;
+}
 .filter-menu-container-e:hover{
     background: rgb(150, 150, 150);
     transition: 0.7s ease-in-out;

@@ -19,8 +19,11 @@ def login():
         return jsonify({"error": "Username and password are required"}), 400
     
     user = users.query.filter_by(username=username).first()
+    new_event = event_log(user_id=user.id, table_name="null", column_name="all", old_value="Logged out", new_value="Logged in", action="login")
 
     if user and user.check_password(password): 
+        db.session.add(new_event)
+        db.session.commit()
         return jsonify({"message": "Login successful", "user": user.to_json()}), 201
     else:
         return jsonify({"message": "Invalid username or password"}), 401
@@ -285,15 +288,69 @@ def update_transaction(transaction_id):
         return jsonify({"message": "User not found"}), 404
     
     data = request.json
+
     transaction.transaction_id = data.get("transaction_id", transaction.transaction_id)
     transaction.transaction_type = data.get("transaction_type", transaction.transaction_type)
     transaction.description = data.get("description", transaction.description)
-    transaction.transaction_date = data.get("transaction_date", transaction.transaction_date)
+
+    # ✅ Convert transaction_date correctly
+    transaction_date_str = data.get("transaction_date", transaction.transaction_date)
+    if isinstance(transaction_date_str, str):
+        try:
+            transaction.transaction_date = datetime.strptime(transaction_date_str, "%a, %d %b %Y %H:%M:%S %Z").date()
+        except ValueError:
+            return jsonify({"message": "Invalid format for transaction_date. Expected: 'Mon, 03 Mar 2025 00:00:00 GMT'"}), 400
+
     transaction.user_id = data.get("user_id", transaction.user_id)
     transaction.status = data.get("status", transaction.status)
-    transaction.date_created = data.get("date_created", transaction.date_created)
-    transaction.date_updated = data.get("date_updated", transaction.date_updated)
+
+    # ✅ Convert date_created correctly
+    date_created_str = data.get("date_created", transaction.date_created)
+    if isinstance(date_created_str, str):
+        try:
+            transaction.date_created = datetime.strptime(date_created_str, "%a, %d %b %Y %H:%M:%S %Z").date()
+        except ValueError:
+            return jsonify({"message": "Invalid format for date_created."}), 400
+
+    # ✅ Convert date_updated correctly
+    date_updated_str = data.get("date_updated", transaction.date_updated)
+    if isinstance(date_updated_str, str):
+        try:
+            transaction.date_updated = datetime.strptime(date_updated_str, "%a, %d %b %Y %H:%M:%S %Z").date()
+        except ValueError:
+            return jsonify({"message": "Invalid format for date_updated."}), 400
+
     transaction.comment = data.get("comment", transaction.comment)
+
+    # ✅ Ensure status checking works correctly
+    if transaction.status.lower() == "accepted":
+        journal_entries = data.get("journalEntries", [])
+        for entry in journal_entries:
+            journal_entry = transaction_entries.query.get(entry["transaction_entry_id"])
+            account = Accounts.query.get(entry["account_id"])  # Simulating account search
+            if account:
+                new_event = event_log(
+                    user_id=transaction.user_id,
+                    table_name="accounts",
+                    column_name="balance",
+                    old_value=str(account.balance),
+                    new_value=str(account.reflect_entry(entry)),  # Call function to reflect entry
+                    action="Accepted a journal entry"
+                )
+                journal_entry.set_reflected()
+                db.session.add(new_event)
+            else:
+                print(f"Account with ID {entry['account_id']} not found.")
+    else:
+        new_event = event_log(
+            user_id=transaction.user_id,
+            table_name="transaction",
+            column_name="status",
+            old_value="Pending",
+            new_value="Rejected",
+            action="Rejected a journal"
+        )
+        db.session.add(new_event)
 
     db.session.commit()
 
@@ -383,38 +440,6 @@ def create_transaction():
     return jsonify({"message": "Transaction and entries created successfully!", "transaction_id": transaction_id}), 201
 
 
-@app.route("/excute_transaction/<int:id>", methods=["PATCH"])
-def excute_transaction(id):
-
-    transaction_id = request.json.get("transaction_id")
-    amount = request.json.get("amount")
-    type = request.json.get("type")
-
-    
-    if not transaction_id:
-        return (jsonify({"message": "transaction_id"}), 400)
-
-    
-    if not amount:
-        return (jsonify({"message": "transaction_date"}), 400)
-    
-    if not type:
-        return (jsonify({"message": "type"}), 400)
-    
-    
-    new_transaction_entry = transaction_entries(transaction_id=transaction_id, amount=amount, account_id=id, type=type)
-
-    new_event = event_log(user_id=id, table_name="transaction_entries", column_name="all", old_value="null", new_value=transaction_id, action="add")
-
-    try:
-        db.session.add(new_transaction_entry)
-        db.session.add(new_event)
-        db.session.commit()
-    except Exception as e:
-        return jsonify({"message": str(e)}), 400
-    
-    return jsonify({"message": "Transaction entry created!"}), 201
-
 @app.route("/get_files/<int:id>", methods=["GET"])
 def get_files(id):
     # Query all document entries that match the given transaction_id
@@ -437,6 +462,21 @@ def get_events():
     all_events = event_log.query.all()
     json_events = list(map(lambda x: x.to_json(), all_events))
     return jsonify({"allEvents": json_events})
+
+@app.route("/logout", methods=["POST"])
+def logout():
+    data = request.json
+    id = data.get("id")
+
+    new_event = event_log(user_id=id, table_name="null", column_name="all", old_value="Logged in", new_value="Logged out", action="logout")
+
+    try:
+        db.session.add(new_event)
+        db.session.commit()
+    except Exception as e:
+        return jsonify({"message": str(e)}), 400
+    
+    return jsonify({"message": "Logout successfull"}), 201
 
 
 if __name__ == "__main__":
