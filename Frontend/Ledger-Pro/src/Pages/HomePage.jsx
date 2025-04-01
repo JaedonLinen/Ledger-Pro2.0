@@ -1,6 +1,7 @@
 import React from 'react'
 import HomeNav from '../Components/homeNav/HomeNav'
 import { useLocation } from "react-router-dom";
+import HomePageDash from '../Components/homePageDash/homePageDash'
 
 function HomePage() {
 
@@ -15,6 +16,7 @@ function HomePage() {
     <>
       <HomeNav currentUser={user}/>
       <div className="breadcrumb-text-container"><h1 className="breadcrumb-text">Home</h1></div>
+      <HomePageDash currentUser={user}/>
     </>
   )
 }
