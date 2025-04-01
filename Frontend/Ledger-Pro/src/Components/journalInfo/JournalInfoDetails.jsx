@@ -36,6 +36,7 @@ function JournalInfoDetails({t_id, currentUser}) {
 
   useEffect(() => {
     setJournalOwner(users.find(user => user.id === journal.user_id))
+    setUpdatedBy(users.find(user => user.id === journal.updated_by))
   }, [users])
 
   useEffect(() => {
@@ -43,6 +44,7 @@ function JournalInfoDetails({t_id, currentUser}) {
   }, [])
 
   const [journalOwner, setJournalOwner] = useState();
+  const [updatedBy, setUpdatedBy] = useState();
   
   const fetchUsers = async () => {
     try {
@@ -61,6 +63,7 @@ function JournalInfoDetails({t_id, currentUser}) {
   const transaction_date = journal.transaction_date
   const user_id = journal.user_id
   const date_created = journal.date_created
+  const updated_by = currentUser.id
 
   const [status, setStatus] = useState()
   const [comment, setComment] = useState("")
@@ -78,6 +81,7 @@ function JournalInfoDetails({t_id, currentUser}) {
       status,
       date_created,
       date_updated,
+      updated_by,
       comment,
       journalEntries
     }
@@ -144,6 +148,10 @@ function JournalInfoDetails({t_id, currentUser}) {
         { 
           journal.status === "Rejected" &&
           <p className="journal-information-title">Reason: <span>{journal?.comment}</span></p>
+        }
+        { 
+          journal.status !== "Pending" &&
+          <p className="journal-information-title">Updated by: <span>{updatedBy?.firstName || ""} {updatedBy?.lastName || ""}</span></p>
         }
         <div className="journal-meta-data-con">
             <p className="journal-meta-data-title">Date of Entry: {journal?.date_created ? formatDate(journal.date_created) : ""}</p>

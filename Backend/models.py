@@ -141,6 +141,7 @@ class transactions(db.Model):
     status = db.Column(db.String(10), nullable=False)  # Name of the affected table
     date_created = db.Column(db.DateTime, default=datetime.now)
     date_updated = db.Column(db.DateTime, default=datetime.now)
+    updated_by = db.Column(db.Integer, nullable=True)  # ID of user who made the change
     comment = db.Column(db.Text, nullable=True)  # Optional comment field
 
     def to_json(self):
@@ -153,6 +154,7 @@ class transactions(db.Model):
             "status": self.status,
             "date_created": self.date_created,
             "date_updated": self.date_updated,
+            "updated_by": self.updated_by,
             "comment" : self.comment
         }
     

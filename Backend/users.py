@@ -292,6 +292,7 @@ def update_transaction(transaction_id):
     transaction.transaction_id = data.get("transaction_id", transaction.transaction_id)
     transaction.transaction_type = data.get("transaction_type", transaction.transaction_type)
     transaction.description = data.get("description", transaction.description)
+    transaction.updated_by = data.get("updated_by", transaction.updated_by)
 
     # ✅ Convert transaction_date correctly
     transaction_date_str = data.get("transaction_date", transaction.transaction_date)
@@ -304,7 +305,6 @@ def update_transaction(transaction_id):
     transaction.user_id = data.get("user_id", transaction.user_id)
     transaction.status = data.get("status", transaction.status)
 
-    # ✅ Convert date_created correctly
     date_created_str = data.get("date_created", transaction.date_created)
     if isinstance(date_created_str, str):
         try:
@@ -312,7 +312,7 @@ def update_transaction(transaction_id):
         except ValueError:
             return jsonify({"message": "Invalid format for date_created."}), 400
 
-    # ✅ Convert date_updated correctly
+   
     date_updated_str = data.get("date_updated", transaction.date_updated)
     if isinstance(date_updated_str, str):
         try:
@@ -322,7 +322,7 @@ def update_transaction(transaction_id):
 
     transaction.comment = data.get("comment", transaction.comment)
 
-    # ✅ Ensure status checking works correctly
+   
     if transaction.status.lower() == "accepted":
         journal_entries = data.get("journalEntries", [])
         for entry in journal_entries:
@@ -463,11 +463,8 @@ def get_events():
     json_events = list(map(lambda x: x.to_json(), all_events))
     return jsonify({"allEvents": json_events})
 
-@app.route("/logout", methods=["POST"])
-def logout():
-    data = request.json
-    id = data.get("id")
-
+@app.route("/logout/<int:id>", methods=["POST"])
+def logout(id):
     new_event = event_log(user_id=id, table_name="null", column_name="all", old_value="Logged in", new_value="Logged out", action="logout")
 
     try:

@@ -12,6 +12,27 @@ function HomeNav({currentUser}) {
     const [isOpen, setIsOpen] = useState(false);
     const [modalOpen, setModalOpen] = useState(false)
     const navigate = useNavigate(); 
+    const id = currentUser.id
+
+    const handleSubmit = async (e) => {
+        e.preventDefault()
+        
+        const url = `http://127.0.0.1:5000/logout/${id}`
+        const options = {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            }
+        }
+    
+        const response = await fetch (url, options)
+        if (response.status !== 201 && response.status !== 200){
+            const data = await response.json()
+            alert(data.message)
+        } else {
+            handleNavigateSignOut()
+        }
+      }
 
     const handleNavigateUsers = () => {
         navigate("/Users", { state: { currentUser } });
@@ -53,7 +74,7 @@ function HomeNav({currentUser}) {
             <div onClick={handleNavigateUsers} className="home-nav-link"><p className='home-nav-link-txt'>Users</p></div>
             <div onClick={handleEventLog} className="home-nav-link"><p className='home-nav-link-txt'>Events</p></div>
             <div onClick={handleJournal} className="home-nav-link"><p className='home-nav-link-txt'>Journals</p></div>
-            <div className="profile-container" onClick={handleNavigateSignOut}>
+            <div className="profile-container" onClick={handleSubmit}>
                 <div className="home-nav-link">
                     <img src={ppImage} alt="" />
                 </div>
