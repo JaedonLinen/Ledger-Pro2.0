@@ -131,7 +131,7 @@ function JournalInfoDetails({t_id, currentUser}) {
           </div>
         </div>
       }
-      <div className={`journal-information-con ${ journal.status !== "Pending" ? "active" : ""}`}>
+      <div className={`journal-information-con ${ journal.status !== "Pending" || currentUser.role === "Accountant" ? "active" : ""}`}>
         <p className="journal-information-title">Created By: <span>{journalOwner?.firstName || ""} {journalOwner?.lastName || ""}</span></p>
         <p className="journal-information-title">Journal id: <span>{journal.transaction_id}</span></p>
         <p className="journal-information-title">Description: <span>{journal.description}</span></p>

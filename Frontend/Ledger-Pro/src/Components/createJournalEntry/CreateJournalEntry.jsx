@@ -208,7 +208,7 @@ function CreateJournalEntry() {
           <h1>Fill out form to request a journal entry</h1>
         </div>
         <div className="journal-entry-desc">
-          <p>Desribe this transaction:</p>
+          <p>Describe this transaction:</p>
           <input type="text" value={description} onChange={(e) => setDesc(e.target.value)} className="journal-entry-desc-text" required/>
         </div>
         <div className="type-date">

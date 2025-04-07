@@ -3,6 +3,23 @@ from config import app, db
 from models import users, Accounts, event_log, transactions, transaction_entries,document_entries
 from datetime import datetime
 
+@app.route("/get_dashboard", methods=["GET"])
+def get_dashboard():
+    all_users = users.query.all()
+    json_users = list(map(lambda x: x.to_json(), all_users))
+
+    all_accounts = Accounts.query.all()
+    json_accounts = list(map(lambda x: x.to_json(), all_accounts))
+
+    all_events = event_log.query.all()
+    json_events = list(map(lambda x: x.to_json(), all_events))
+
+    return jsonify({
+        "users": json_users,
+        "accounts": json_accounts,
+        "events": json_events
+    })
+
 @app.route("/get_users", methods=["GET"])
 def get_users():
     all_users = users.query.all()
@@ -30,8 +47,8 @@ def login():
 
 @app.route("/create_user", methods=["POST"])
 def create_user():
-    first_name = request.json.get("firstName")
-    last_name = request.json.get("lastName")
+    first_name = request.json.get("firstName").capitalize()
+    last_name = request.json.get("lastName").capitalize()
     email = request.json.get("email")
     password_hash = request.json.get("passwordHash")
     role = request.json.get("role")
@@ -221,7 +238,7 @@ def create_account():
         new_account.place_initial_balance()
         new_account.place_balance()
 
-    new_event = event_log(user_id=account_owner, table_name="Accounts", column_name="all", old_value="null", new_value=account_name, action="add")
+    new_event = event_log(user_id=account_owner, table_name="Accounts", column_name="all", old_value="null", new_value=account_name, action="added account to database")
 
     try:
         db.session.add(new_account)
@@ -335,7 +352,7 @@ def update_transaction(transaction_id):
                     column_name="balance",
                     old_value=str(account.balance),
                     new_value=str(account.reflect_entry(entry)),  # Call function to reflect entry
-                    action="Accepted a journal entry"
+                    action="accepted a journal request"
                 )
                 journal_entry.set_reflected()
                 db.session.add(new_event)
@@ -348,7 +365,7 @@ def update_transaction(transaction_id):
             column_name="status",
             old_value="Pending",
             new_value="Rejected",
-            action="Rejected a journal"
+            action="rejected a journal request"
         )
         db.session.add(new_event)
 
@@ -385,7 +402,7 @@ def create_transaction():
         column_name="all",
         old_value="null",
         new_value="new transaction",
-        action="add"
+        action="added a transaction to database"
     )
 
     try:
@@ -423,7 +440,7 @@ def create_transaction():
             column_name="all",
             old_value="null",
             new_value=str(transaction_id),
-            action="add"
+            action="added transaction entry to database"
         )
 
         transaction_entries_list.append(new_entry)
