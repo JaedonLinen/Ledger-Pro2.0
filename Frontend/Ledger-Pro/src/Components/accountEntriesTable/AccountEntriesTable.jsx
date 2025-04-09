@@ -7,6 +7,7 @@ function AccountEntriesTable({id, currentUser}) {
 
     const navigate = useNavigate();
     const [journalEntries, setJournalEntries] = useState([]);
+    const [journalEntriesNotReflected, setJournalEntriesNotReflected] = useState([]);
     const [accounts, setAccounts] = useState([])
       
       useEffect(() => {
@@ -15,9 +16,10 @@ function AccountEntriesTable({id, currentUser}) {
     
       const fetchJournals = async () => {
           try {
-              const response = await fetch(`http://127.0.0.1:5000//get_entries/${id}`);
+              const response = await fetch(`http://127.0.0.1:5000//get_transaction_by_acc/${id}`);
               const data = await response.json();
-              setJournalEntries(data.allEntries);
+              setJournalEntries(data.reflectedEntries);
+              setJournalEntriesNotReflected(data.nonReflectedEntries);
           } catch (error) {
               console.error("Failed to fetch transactions:", error);
               setJournalEntries([]);  // Ensure users is always an array
@@ -66,8 +68,6 @@ function AccountEntriesTable({id, currentUser}) {
         };
 
         const [search, setSearch] = useState("");
-        const [filters, setFilters] = useState({ side: "", category: "", subcategory: "", balance: "", status: "", owner: "" });
-        const [isFiltered, setIsFiltered] = useState(false);
         const [openFilterMenu, setOpenFilterMenu] = useState(false)
         const [notReflected, setNotReflected] = useState(false)
 
@@ -147,17 +147,30 @@ function AccountEntriesTable({id, currentUser}) {
                     </tr>
                 </thead>
                 <tbody id='tooltip'>
-                    {journalEntries
-                    .filter(entry => entry.reflected !== notReflected)
-                    .map((entry) => (
-                        <tr key={entry.account_id} onClick={() => handleJournalNavigation(entry.transaction_id)} title="Click to view post reference" id='tooltiptext' className='table-data'>
-                            <td data-cell="Journal Id">{entry.transaction_id}</td>
-                            <td data-cell="Journal entry Id">{entry.transaction_entry_id}</td>
-                            <td data-cell="account">{findAccount(entry.account_id)?.account_name || ""}</td>
-                            <td data-cell="amount">{formatCurrency(entry.amount)}</td>
-                            <td data-cell="type">{entry.type}</td>
-                        </tr>
-                    ))}
+                    { !notReflected &&
+                        journalEntries
+                        .map((entry) => (
+                            <tr key={entry.account_id} onClick={() => handleJournalNavigation(entry.transaction_id)} title="Click to view post reference" id='tooltiptext' className='table-data'>
+                                <td data-cell="Journal Id">{entry.transaction_id}</td>
+                                <td data-cell="Journal entry Id">{entry.transaction_entry_id}</td>
+                                <td data-cell="account">{findAccount(entry.account_id)?.account_name || ""}</td>
+                                <td data-cell="amount">{formatCurrency(entry.amount)}</td>
+                                <td data-cell="type">{entry.type}</td>
+                            </tr>
+                        ))
+                    }
+                    { notReflected &&
+                        journalEntriesNotReflected
+                        .map((entry) => (
+                            <tr key={entry.account_id} onClick={() => handleJournalNavigation(entry.transaction_id)} title="Click to view post reference" id='tooltiptext' className='table-data'>
+                                <td data-cell="Journal Id">{entry.transaction_id}</td>
+                                <td data-cell="Journal entry Id">{entry.transaction_entry_id}</td>
+                                <td data-cell="account">{findAccount(entry.account_id)?.account_name || ""}</td>
+                                <td data-cell="amount">{formatCurrency(entry.amount)}</td>
+                                <td data-cell="type">{entry.type}</td>
+                            </tr>
+                        ))
+                    }
                 </tbody>
             </table>
         </div>

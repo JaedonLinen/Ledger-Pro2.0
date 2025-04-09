@@ -275,14 +275,45 @@ def get_transactions_by_acc(account_id):
                                 .distinct()\
                                 .all()
     
+    # Extract just the transaction IDs
     transaction_ids = [tid[0] for tid in transaction_ids]
 
-    all_entries = transactions.query.filter(transaction_entries.transaction_id.in_(transaction_ids)).all()
+    # Step 2: Fetch all transactions that match these transaction IDs
+    all_transactions = transactions.query.filter(transactions.transaction_id.in_(transaction_ids)).all()
 
-    # Convert to JSON format
-    json_entries = [entry.to_json() for entry in all_entries]
+    # Initialize lists to store reflected and non-reflected entries
+    all_reflected_entries = []
+    all_non_reflected_entries = []
 
-    return jsonify({"allTransactions": json_entries})
+    # Step 3: Process each transaction and fetch related entries
+    for transaction in all_transactions:
+        if transaction.status == 'Accepted':
+            # Fetch entries for the 'Accepted' transactions and add them to the reflected entries list
+            entries = transaction_entries.query.filter(
+                transaction_entries.transaction_id == transaction.transaction_id,
+                transaction_entries.account_id == account_id
+            ).all()
+            all_reflected_entries.extend(entries)
+
+        if transaction.status == 'Pending':
+            # Fetch entries for the 'Pending' transactions and add them to the non-reflected entries list
+            entries = transaction_entries.query.filter(
+                transaction_entries.transaction_id == transaction.transaction_id,
+                transaction_entries.account_id == account_id
+            ).all()
+            all_non_reflected_entries.extend(entries)
+
+    # Step 4: Convert entries to JSON format
+    json_transactions = [entry.to_json() for entry in all_transactions]
+    json_entries = [entry.to_json() for entry in all_reflected_entries]
+    json_entriesNR = [entry.to_json() for entry in all_non_reflected_entries]
+
+    # Step 5: Return the response with reflected and non-reflected entries
+    return jsonify({
+        "allTransactions": json_transactions,
+        "reflectedEntries": json_entries,
+        "nonReflectedEntries": json_entriesNR
+    })
 
 @app.route("/get_transaction/<int:transaction_id>", methods=["GET"])
 def get_transaction(transaction_id):
@@ -402,7 +433,7 @@ def create_transaction():
         column_name="all",
         old_value="null",
         new_value="new transaction",
-        action="added a transaction to database"
+        action="submitted a journal request"
     )
 
     try:

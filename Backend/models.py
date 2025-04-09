@@ -100,7 +100,6 @@ class Accounts(db.Model):
             self.balance = self.balance - entry.get("amount", 0)
 
         return self.balance
-
         
 
     def to_json(self):

@@ -75,13 +75,13 @@ function JournalTable({currentUser}) {
 
 
     const [search, setSearch] = useState("");
-    const [filters, setFilters] = useState({ description: "", date: "", owner: "", status: ""});
+    const [filters, setFilters] = useState({ description: "", date: "", type: "",owner: "", status: ""});
     const [isFiltered, setIsFiltered] = useState(false);
 
 
     const resetFilters = () => {
         setSearch("");
-        setFilters({ description: "", date: "", owner: "", status: ""});
+        setFilters({ description: "", date: "", type: "", owner: "", status: ""});
         setIsFiltered(false)
         setOthersFalse()
         setOpenFilterMenu(false)
@@ -121,6 +121,7 @@ function JournalTable({currentUser}) {
             (filters.date === "1 Month"   && transactionDate >= oneMonthAgo && transactionDate <= today) ||
             (filters.date === "This year" && transactionDate >= startOfYear && transactionDate <= today)
             ) &&
+            (filters.type === "" || journal.transaction_type.toLowerCase() === filters.type.toLowerCase()) &&
             (filters.status === "" || journal.status.toLowerCase() === filters.status.toLowerCase()) &&
             (filters.owner === "" || journal.user_id === filters.owner)
         );
@@ -153,12 +154,13 @@ function JournalTable({currentUser}) {
         return (
             (search === "" || journal.description.toLowerCase().includes(search.toLowerCase())) &&
             ( filters.date === "" ||
-            (filters.date === "Today"    && transactionDate.toDateString() === today.toDateString()) ||
-            (filters.date === "3 days"    && transactionDate >= threeDaysAgo && transactionDate <= today) ||
-            (filters.date === "1 week"    && transactionDate >= oneWeekAgo && transactionDate <= today) ||
-            (filters.date === "1 Month"   && transactionDate >= oneMonthAgo && transactionDate <= today) ||
-            (filters.date === "This year" && transactionDate >= startOfYear && transactionDate <= today)
+                (filters.date === "Today"    && transactionDate.toDateString() === today.toDateString()) ||
+                (filters.date === "3 days"    && transactionDate >= threeDaysAgo && transactionDate <= today) ||
+                (filters.date === "1 week"    && transactionDate >= oneWeekAgo && transactionDate <= today) ||
+                (filters.date === "1 Month"   && transactionDate >= oneMonthAgo && transactionDate <= today) ||
+                (filters.date === "This year" && transactionDate >= startOfYear && transactionDate <= today)
             ) &&
+            (filters.type === "" || journal.type.toLowerCase() === filters.type.toLowerCase()) &&
             (filters.status === "" || journal.status.toLowerCase() === filters.status.toLowerCase()) &&
             (filters.owner === "" || journal.user_id === filters.owner)
         );
@@ -236,8 +238,8 @@ function JournalTable({currentUser}) {
                             <button className={`${openDateOptions ? "clicked" : ""}`} onClick={() => {setOthersFalse(), setOpenDateOptions(!openDateOptions)}}>Date</button>
                             <button className={`${openUserOptions ? "clicked" : ""}`} onClick={() => {setOthersFalse(), setOpenUserOptions(!openUserOptions)}}>Owner</button>
                             <button className={`${openTypeOptions ? "clicked" : ""}`} onClick={() => {setOthersFalse(), setOpenTypeOptions(!openTypeOptions)}}>Type</button>
-                            <button className={`${openUserOptions ? "clicked" : ""}`} onClick={() => {setOthersFalse(), setOpenAccountNameOptions(!openAccountNameOptions)}}>Account Name</button>
-                            <button className={`${openTypeOptions ? "clicked" : ""}`} onClick={() => {setOthersFalse(), setOpenAccountNumberOptions(!openAccountNumberOptions)}}>Account Number</button>
+                            <button className={`${openAccountNameOptions ? "clicked" : ""}`} onClick={() => {setOthersFalse(), setOpenAccountNameOptions(!openAccountNameOptions)}}>Account Name</button>
+                            <button className={`${openAccountNumberOptions ? "clicked" : ""}`} onClick={() => {setOthersFalse(), setOpenAccountNumberOptions(!openAccountNumberOptions)}}>Account Number</button>
                         </div>
                     </div>
                 }
@@ -245,19 +247,19 @@ function JournalTable({currentUser}) {
                     {
                         openStatusOptions && 
                         <div className="j-extra-filter-menu-options-extended-subcategory">
-                            <button onClick={() => handleFilterChange("status", "Accepted")} >Accepted</button>
-                            <button onClick={() => handleFilterChange("status", "Rejected")} >Rejected</button>
-                            <button onClick={() => handleFilterChange("status", "Pending")} >Pending</button>
+                            <button onClick={() => (handleFilterChange("status", "Accepted"), setOpenFilterMenu(false), setOpenStatusOptions(false))} >Accepted</button>
+                            <button onClick={() => (handleFilterChange("status", "Rejected"), setOpenFilterMenu(false), setOpenStatusOptions(false))} >Rejected</button>
+                            <button onClick={() => (handleFilterChange("status", "Pending"),  setOpenFilterMenu(false), setOpenStatusOptions(false))} >Pending</button>
                         </div>
                     }
                     {
                         openDateOptions && 
                         <div className="j-extra-filter-menu-options-extended-date">
-                            <button onClick={() => handleFilterChange("date", "Today"    )} >Today</button>
-                            <button onClick={() => handleFilterChange("date", "3 days"   )} >3 days</button>
-                            <button onClick={() => handleFilterChange("date", "1 week"   )} >1 week</button>
-                            <button onClick={() => handleFilterChange("date", "1 Month"  )} >1 Month</button>
-                            <button onClick={() => handleFilterChange("date", "This year")} >This year</button>
+                            <button onClick={() => (setOpenFilterMenu(false), setOpenDateOptions(false), handleFilterChange("date", "Today"    ))} >Today</button>
+                            <button onClick={() => (setOpenFilterMenu(false), setOpenDateOptions(false), handleFilterChange("date", "3 days"   ))} >3 days</button>
+                            <button onClick={() => (setOpenFilterMenu(false), setOpenDateOptions(false), handleFilterChange("date", "1 week"   ))} >1 week</button>
+                            <button onClick={() => (setOpenFilterMenu(false), setOpenDateOptions(false), handleFilterChange("date", "1 Month"  ))} >1 Month</button>
+                            <button onClick={() => (setOpenFilterMenu(false), setOpenDateOptions(false), handleFilterChange("date", "This year"))} >This year</button>
                         </div>
                     }
                     {
@@ -265,7 +267,7 @@ function JournalTable({currentUser}) {
                         <div className="extra-filter-menu-options-extended-owners">
                             {
                                 accounts.map((acc) => (
-                                    <button key={acc.account_id} onClick={() => (setJournalsByFilter(true), setAccountInfo(acc.account_name, acc.account_num), handleFilterChangeJournals(acc.account_id))} >
+                                    <button key={acc.account_id} onClick={() => (setJournalsByFilter(true), setAccountInfo(acc.account_name, acc.account_num), handleFilterChangeJournals(acc.account_id), setOpenFilterMenu(false), setOpenAccountNameOptions(false))} >
                                         {acc.account_name}
                                     </button>
                                 ))
@@ -277,7 +279,7 @@ function JournalTable({currentUser}) {
                         <div className="extra-filter-menu-options-extended-owners">
                             {
                                 accounts.map((acc) => (
-                                    <button key={acc.account_id} onClick={() => (setJournalsByFilter(true), setAccountInfo(acc.account_name, acc.account_num), handleFilterChangeJournals(acc.account_id))} >
+                                    <button key={acc.account_id} onClick={() => (setJournalsByFilter(true), setAccountInfo(acc.account_name, acc.account_num), handleFilterChangeJournals(acc.account_id), setOpenFilterMenu(false), setOpenAccountNumberOptions(false))} >
                                         {acc.account_num}
                                     </button>
                                 ))
@@ -289,7 +291,7 @@ function JournalTable({currentUser}) {
                         <div className="extra-filter-menu-options-extended-owners">
                             {
                                 users.map((user) => (
-                                    <button key={user.id} onClick={() => handleFilterChange("owner", user.id)} >
+                                    <button key={user.id} onClick={() => (handleFilterChange("owner", user.id), setOpenFilterMenu(false), setOpenUserOptions(false))} >
                                         {user.firstName}
                                         <span> </span>
                                         {user.lastName}
@@ -301,8 +303,8 @@ function JournalTable({currentUser}) {
                     {
                         openTypeOptions && 
                         <div className="j-extra-filter-menu-options-extended-type">
-                            <button onClick={() => handleFilterChange("date", "Today"    )} >Transaction</button>
-                            <button onClick={() => handleFilterChange("date", "3 days"   )} >Adjusting</button>
+                            <button onClick={() => (handleFilterChange("type", "transaction"    ), setOpenFilterMenu(false), setOpenTypeOptions(false))} >Transaction</button>
+                            <button onClick={() => (handleFilterChange("type", "adjusting"   ), setOpenFilterMenu(false), setOpenTypeOptions(false))} >Adjusting</button>
                         </div>
                     }
                 </div>
@@ -411,7 +413,7 @@ function JournalTable({currentUser}) {
                         <div className="extra-filter-menu-options-extended-owners">
                             {
                                 users.map((user) => (
-                                    <button key={user.id} onClick={() => handleFilterChange("owner", user.id)} >
+                                    <button key={user.id} onClick={() => (handleFilterChange("owner", user.id), setOpenFilterMenu(false), setOpenUserOptions(false))} >
                                         {user.firstName}
                                         <span> </span>
                                         {user.lastName}
@@ -423,8 +425,8 @@ function JournalTable({currentUser}) {
                     {
                         openTypeOptions && 
                         <div className="j-extra-filter-menu-options-extended-type">
-                            <button onClick={() => handleFilterChange("date", "Today"    )} >Transaction</button>
-                            <button onClick={() => handleFilterChange("date", "3 days"   )} >Adjusting</button>
+                            <button onClick={() => handleFilterChange("type", "Today"    )} >Transaction</button>
+                            <button onClick={() => handleFilterChange("type", "3 days"   )} >Adjusting</button>
                         </div>
                     }
                 </div>

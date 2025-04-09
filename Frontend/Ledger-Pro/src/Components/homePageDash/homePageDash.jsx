@@ -50,15 +50,41 @@ function homePageDash({currentUser}) {
         return isNegative ? `-${formatted}` : formatted; // Re-add negative sign if needed
     };
 
+    const formatPercentage = (value) => {
+        if (typeof value !== "number") return "0%"; // Ensure value is a number
+        return `${(value * 100).toFixed(2)}%`; // Multiplies by 100 and formats to 2 decimal places
+      };
 
 
 
     // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~Finacial Overview~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-    const [changeQueryValue, setChangeQueryValue] = useState(false)
-    const [queryValue, setQueryValue] = useState("All")
-    const queryOptions = ["All", "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+    const inventory = accounts.filter(account =>
+        (account.account_name.toLowerCase().includes("inventory") && account.category === "Assets") ||
+        (account.account_name.toLowerCase().includes("goods") && account.category === "Assets") ||
+        (account.account_name.toLowerCase().includes("stock") && account.category === "Assets")
+    );
+    const cash = accounts.filter(account =>
+        (account.account_name.toLowerCase().includes("cash") && account.category === "Assets") ||
+        (account.account_name.toLowerCase().includes("checking") && account.category === "Assets") ||
+        (account.account_name.toLowerCase().includes("savings") && account.category === "Assets") ||
+        (account.account_name.toLowerCase().includes("operating") && account.category === "Assets") ||
+        (account.account_name.toLowerCase().includes("bank") && account.category === "Assets")
+    );
+    const incomes = accounts.filter(account => 
+        (account.account_name.toLowerCase().includes("income") && account.category === "Revenue") ||
+        (account.account_name.toLowerCase().includes("gains") && account.category === "Revenue") ||
+        (account.account_name.toLowerCase().includes("revenue") && account.category === "Revenue")
+    );
+    const expenses = accounts.filter(account => account.category === "Expenses");
+    const revenues = accounts.filter(account => account.category === "Revenue");
 
+    const getBalance = (accounts) => {
+        return accounts.reduce((total, account) => total + account.balance, 0);
+    }
+
+    const profit_loss = getBalance(revenues) - getBalance(expenses)
+    const profit_margin = ((getBalance(revenues) - getBalance(expenses)) / getBalance(revenues))
 
 
 
@@ -104,7 +130,12 @@ function homePageDash({currentUser}) {
         }
     
         const diffInDays = Math.floor(diffInHours / 24);
-        return `${diffInDays}d ago`;
+        if (diffInDays < 365) {
+            return `${diffInDays}d ago`;
+        }
+    
+        const diffInYears = Math.floor(diffInDays / 365);
+        return `${diffInYears}y ago`;
     }
 
 
@@ -112,9 +143,6 @@ function homePageDash({currentUser}) {
 
 
    // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~Breakdowns~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-    const expenses = accounts.filter(account => account.category === "Expenses");
-    const incomes = accounts.filter(account => account.category === "Equity");
     const totalExpenses = expenses.reduce((total, account) => total + account.balance, 0);
     const totalIncomes = incomes.reduce((total, account) => total + account.balance, 0);
 
@@ -229,20 +257,27 @@ function homePageDash({currentUser}) {
             <div className="panels-con">
 
                 <div className="panel finacial-overview">
-                    <div className="breakdown-title">
-                        <p className="panel-titles">Finacial Overview</p>
-                        <div className="query-selector" onClick={() => setChangeQueryValue(!changeQueryValue)}>
-                            <BiChevronDown size={20}/>
-                            <p>{queryValue}</p>
-                            { changeQueryValue &&
-                                <div className="query-options">
-                                    {queryOptions.map((option, index) => (
-                                        <p key={index} onClick={() => setQueryValue(option)}>{option}</p>
-                                    ))}
-                                </div>
-                            }
+                     <p className="panel-titles">Finacial Overview</p>
+                     <div className="overview-container">
+                        <div className="overview-section cash-avail">
+                            <p className='overview-section-header'>Inventory</p>
+                            <p className='overview-section-value'>{formatCurrency(getBalance(inventory))}</p>
+                            <p className='overview-section-extra'>Worth of goods</p>
                         </div>
-                    </div>
+                        <div className="overview-section cash-avail">
+                            <p className='overview-section-header'>Cash Availiable</p>
+                            <p className='overview-section-value'>{formatCurrency(getBalance(cash))}</p>
+                            <p className='overview-section-extra'>Cash and Bank</p>
+                        </div>
+                        <div className="overview-section profit-margin">
+                            <p className='overview-section-header'>Profit Margin</p>
+                            <p className={`overview-section-value margin ${profit_margin < 0 ? 'active' : ''}`}>{formatPercentage(profit_margin)}</p>
+                        </div>
+                        <div className="overview-section profit-loss">
+                            <p className='overview-section-header main'>Profit/Loss</p>
+                            <p className={`overview-section-value main ${profit_loss < 0 ? 'active' : ''}`}>{formatCurrency(profit_loss)}</p>
+                        </div>
+                     </div>
                 </div>  
 
                 <div className="panel recent-activity">
@@ -264,7 +299,7 @@ function homePageDash({currentUser}) {
                 </div>
 
                 <div className="panel pie-breakdown">
-                    <p className="panel-titles">Breakdowns</p>
+                    <p className="panel-titles">Current Breakdowns</p>
                     <div className="pie-charts">
                         <div className="chart income">
                             <p>Incomes</p>

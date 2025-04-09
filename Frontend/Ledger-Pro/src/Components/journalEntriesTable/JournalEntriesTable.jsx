@@ -71,7 +71,8 @@ function JournalEntriesTable({id}) {
                         <th>Journal entry Id</th>
                         <th>Normal Side</th>
                         <th>Account</th>
-                        <th>Amount</th>
+                        <th>Account Current Balance</th>
+                        <th>Entry effect</th>
                         <th>Type</th>
                     </tr>
                 </thead>
@@ -81,7 +82,10 @@ function JournalEntriesTable({id}) {
                             <td data-cell="Journal entry Id"    >{entry.transaction_entry_id}</td>
                             <td data-cell="normal side"    >{findAccount(entry.account_id)?.normal_side || ""}</td>
                             <td data-cell="account"    >{findAccount(entry.account_id)?.account_name || ""} </td>
-                            <td data-cell="amount"    >{formatCurrency(entry.amount)}</td>
+                            <td data-cell="account current balance"    >{formatCurrency(findAccount(entry.account_id)?.balance) || ""} </td>
+                            <td data-cell="entry effect"    >
+                                {entry.type === findAccount(entry.account_id)?.normal_side?.toLowerCase() ? `+${formatCurrency(entry.amount)}` : `-${formatCurrency(entry.amount)}`}
+                            </td>
                             <td data-cell="type"        >{entry.type}</td>
                         </tr>
                     ))}
