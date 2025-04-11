@@ -1,6 +1,6 @@
 import React from 'react'
 import HomeNav from '../Components/homeNav/HomeNav.jsx'
-import Content from '../Components/statementsLandingOptions/StatementsLandingOptions'
+import Content from '../Components/statementLandingOptions/StatementLandingOptions'
 import { useLocation } from "react-router-dom";
 
 function StatementsLanding() {
@@ -15,7 +15,7 @@ function StatementsLanding() {
   return (
     <div>
         <HomeNav currentUser={currentUser}/>
-        <Content />
+        <Content currentUser={currentUser}/>
     </div>
   )
 }

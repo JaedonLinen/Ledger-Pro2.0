@@ -6,7 +6,7 @@ import { useLocation } from "react-router-dom";
 function Statement() {
 
     const location = useLocation();
-    const { currentUser } = location.state;
+    const { currentUser, option, dateStart, dateEnd } = location.state;
 
     if (!currentUser){
         return <div className='error'>User not found...</div>;
@@ -15,7 +15,7 @@ function Statement() {
   return (
     <div>
         <HomeNav currentUser={currentUser}/>
-        <StatementDoc />
+        <StatementDoc option={option} dateStart={dateStart} dateEnd={dateEnd}/>
     </div>
   )
 }

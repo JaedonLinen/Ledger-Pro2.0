@@ -1,12 +1,136 @@
-.account-landing-options-container{
+.time-options-container{
     display: flex;
-    justify-content: center; /* Centers horizontally */
-    align-items: center; /* Centers vertically */
-    gap: 2%; /* Adds space between items */
-    height: 93vh;
+    justify-content: center;
+    align-items: center;
+    margin: 20px;
+}
+.time-options{
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    gap: 10px;
+}
+.time-options p{
+    padding: 10px 10px 10px 10px;
+    background-color: rgba(81, 141, 82, 0.35);
+    border-radius: 8px;
+    margin: 0;
+    cursor: pointer;
+    transition: 0.3s all ease-in-out;
+}
+.time-options p:hover{
+    background-color: rgba(81, 141, 82, 0.531);
+    transition: 0.12s all ease-in-out;
+}
+.dates-container{
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    height: 150px;
+}
+.refresh-dates-container{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(205, 136, 63, 0.691);
+    border-radius: 100px;
+    padding: 2px;
+    cursor: pointer;
+}
+.refresh-dates-container.restart{
+    background-color: rgba(205, 63, 63, 0.691);
+}
+.time-periods{
+    width: 250px;
+}
+.time-periods p{
+    margin: 0;
+    margin-bottom: 5px;
+}
+.date-input-container{
+    width: 100%;
+    height: 40px;
+    background-color: whitesmoke;
+    display: flex;
+    align-items: center;
+    border-radius: 8px;
+    transition: 0.3s all ease-in-out;
+}
+.date-input-container:hover{
+    width: 101%;
+    height: 41px;
+    background-color: whitesmoke;
+    display: flex;
+    align-items: center;
+    border-radius: 8px;
+    transition: 0.15s all ease-in-out;
+}
+.date-input{
+    margin: 0;
+    color: gray;
+    font-weight: 100;
+    font-size: 16px;
+    height: 28px;
+    width: 100%;
+    border: 0;
+    background-color: transparent;
+    padding-left: 5px;
+    cursor: pointer;
+}
+.date-input.active{
+    color: black;
+}
+.dates-error{
+    text-align: center;
+    font-size: 25px;
+    color: rgb(180, 64, 64);
+}
+.dates-middle-bttns{
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+.reset-time-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    margin: 25px;
+    gap: 20px;
+}
+.reset-time-container h1, .reset-time-container p{
+    margin: 0;
+}
+.reset-time-container p{
+    padding: 10px;
+    background-color: rgba(193, 86, 86, 0.541);
+    border-radius: 8px;
+    transition: 0.3s all ease-in-out;
+    cursor: pointer;
+}
+.reset-time-container p:hover{
+    padding: 11px;
+    background-color: rgba(193, 86, 86, 0.678);
+    border-radius: 8px;
+    transition: 0.12s all ease-in-out;
+}
+.from-to h5{
+    margin: 0;
+    padding: 0;
+    font-weight: 100;
+    font-size: 15px;
+}
+.statement-landing-options-container{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
 }
 
-.account-option{
+.statement-option{
+    height: 40vh;
+    width: 47vw;
     cursor: pointer;
     text-align: center;
     justify-content: center;
@@ -16,57 +140,61 @@
     transition: 0.3s all ease-in-out;
 }
 
-.account-option:hover{
+.statement-option:hover{
+    height: 41vh;
+    width: 48vw;
     box-shadow: rgba(46, 240, 62, 0.4) -5px 5px, rgba(46, 240, 101, 0.3) -10px 10px, rgba(46, 240, 98, 0.2) -15px 15px, rgba(46, 240, 85, 0.1) -20px 20px, rgba(46, 240, 98, 0.05) -25px 25px;
     transition: 0.1s all ease-in-out;
 }
 
-.account-option p{
+.statement-option p{
     margin-left: auto;
-    padding-right: 35px;
-    padding-top: 55vh;
+    text-align: center;
+    margin-right: 20px;
     font-size: 4rem;
     font-weight: 600;
     color: whitesmoke;
     width: 260px;
 }
 
+.statement-option.income p{
+    margin-right: 60px;
+}
+.statement-option.earnings p{
+    margin-right: 40px;
+}
 
-@media (max-width: 650px){
-    .account-landing-options-container{
-        display: flex;
-        flex-direction: column; /* Stacks items vertically */
-        justify-content: center; /* Centers horizontally */
-        align-items: center; /* Centers vertically */
-        gap: 20px; /* Adds space between items */
-        height: 93vh;
-    }
-    
-    .account-option{
+
+@media (max-width: 800px){
+    .statement-option{
         cursor: pointer;
         text-align: center;
         justify-content: center;
         background-color: rgb(95, 105, 96);
-        height: 45%;
+        height: 20vh;
         width: 85%;
         box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
         border-radius: 25px;
         transition: 0.3s all ease-in-out;
     }
 
-    .account-option:hover{
+    .statement-option:hover{
+        height: 21vh;
         width: 86%;
-        height: 46%;
         box-shadow: rgba(46, 240, 62, 0.4) -5px 5px, rgba(46, 240, 101, 0.3) -10px 10px, rgba(46, 240, 98, 0.2) -15px 15px, rgba(46, 240, 85, 0.1) -20px 20px, rgba(46, 240, 98, 0.05) -25px 25px;
         transition: 0.1s all ease-in-out;
     }
 
-    .account-option p{
-        padding-right: 0px;
-        padding-top: 23vh;
+    .statement-option p{
         font-size: 40px;
         font-weight: 600;
         color: whitesmoke;
         width: 260px;
+    }
+    .statement-option.income p{
+        margin-right: 0px;
+    }
+    .statement-option.earnings p{
+        margin-right: 0px;
     }
 }

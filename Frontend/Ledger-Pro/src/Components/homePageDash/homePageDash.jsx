@@ -374,7 +374,7 @@ function homePageDash({currentUser}) {
     };
 
     const handleNavigateStatements = () => {
-        navigate("/Statements_landing", { state: { currentUser } });
+        navigate("/Statements_menu", { state: { currentUser } });
     };
 
 

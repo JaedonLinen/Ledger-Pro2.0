@@ -1,8 +1,12 @@
 import React from 'react'
 
-function statementDoc() {
+function statementDoc({option, dateStart, dateEnd}) {
   return (
-    <div>statementDoc</div>
+    <div>
+      <p>{option}</p>
+      <p>{dateStart}</p>
+      <p>{dateEnd}</p>
+    </div>
   )
 }
 

@@ -17,6 +17,7 @@ import JournalTablePage from './Pages/JournalTablePage'
 import JournalInfo from './Pages/JournalInfo'
 import JournalLanding from './Pages/JournalLanding'
 import StatementsLanding from './Pages/StatementsLanding'
+import Statement from './Pages/Statement'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
@@ -36,8 +37,8 @@ createRoot(document.getElementById('root')).render(
         <Route path='/JournalTable' element={<JournalTablePage />} />
         <Route path='/JournalInfo' element={<JournalInfo />} />
         <Route path='/JournalLanding' element={<JournalLanding/>} />
-        <Route path='/Statements' element={<StatementsLanding/>} />
-        <Route path='/Statements' element={<StatementsLanding/>} />
+        <Route path='/Statements_menu' element={<StatementsLanding/>} />
+        <Route path='/Statement' element={<Statement/>} />
       </Routes>
     </Router>
   </StrictMode>,

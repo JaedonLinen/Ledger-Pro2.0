@@ -63,6 +63,11 @@ function HomeNav({currentUser}) {
         navigate("/authentications")  
     };
 
+    const handleNavigateStatements = () => {
+        navigate("/Statements_menu", { state: { currentUser } });
+    };
+
+
   return (
     <div className={`home-navbar ${isOpen ? "open" : ""}`}>
         <div className="logo-and-help" id="tooltip">
@@ -72,7 +77,7 @@ function HomeNav({currentUser}) {
         <div className={`home-nav-items ${isOpen ? "open" : ""}`}>
             <div onClick={handleNavigateAccounts} className="home-nav-link"><p className='home-nav-link-txt'>Accounts</p></div>
             <div onClick={handleNavigateUsers} className="home-nav-link"><p className='home-nav-link-txt'>Users</p></div>
-            <div onClick={handleEventLog} className="home-nav-link"><p className='home-nav-link-txt'>Statements</p></div>
+            <div onClick={handleNavigateStatements} className="home-nav-link"><p className='home-nav-link-txt'>Statements</p></div>
             <div onClick={handleJournal} className="home-nav-link"><p className='home-nav-link-txt'>Journals</p></div>
             { currentUser.role == "Admin" &&
                 <div onClick={handleEventLog} className="home-nav-link"><p className='home-nav-link-txt'>Events</p></div>

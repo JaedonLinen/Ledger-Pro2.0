@@ -219,7 +219,7 @@
 .noti-container{
     width: 85%;
     margin: 0 auto;
-    height: 100px;
+    height: 12vh;
     overflow: auto; /* or overflow-y: auto; if only vertical scrolling is needed */
     border-radius: 5px;
     
