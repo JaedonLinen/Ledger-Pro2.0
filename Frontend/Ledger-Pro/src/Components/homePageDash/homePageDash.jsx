@@ -1,9 +1,12 @@
 import React, { useEffect, useState, useRef } from 'react'
+import { useNavigate } from 'react-router-dom'
 import {Chart} from "chart.js/auto";
 import './homePageDash.css'
 import { BiSolidUser, BiBookBookmark, BiSpreadsheet, BiSolidBank, BiChevronDown } from "react-icons/bi";
 
 function homePageDash({currentUser}) {
+
+    const navigate = useNavigate(); 
 
     const [events, setEvents] = useState([]);
     const [accounts, setAccounts] = useState([]);
@@ -143,6 +146,7 @@ function homePageDash({currentUser}) {
 
 
    // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~Breakdowns~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
     const totalExpenses = expenses.reduce((total, account) => total + account.balance, 0);
     const totalIncomes = incomes.reduce((total, account) => total + account.balance, 0);
 
@@ -248,6 +252,134 @@ function homePageDash({currentUser}) {
     }, [expenses]);
 
 
+
+
+
+    // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~Ratios~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    const currentAssets = accounts.filter(account => account.subcategory === "Current Assets");
+    const currentLiabilities = accounts.filter(account => account.subcategory === "Current Liabilites");
+    const totalCurrentAssets = currentAssets.reduce((total, account) => total + account.balance, 0);
+    const totalCurrentLiabilites = currentLiabilities.reduce((total, account) => total + account.balance, 0);
+
+    const chartRefCurrentAsset = useRef(null);
+    const chartInstanceCurrentLiabilties = useRef(null);
+   
+    useEffect(() => {
+        // Only proceed if the canvas ref is available
+        if (chartRefCurrentAsset.current && currentAssets.length > 0) {
+            if (chartInstanceCurrentLiabilties.current) {
+                chartInstanceCurrentLiabilties.current.destroy();
+            }
+            const myChartRef = chartRefCurrentAsset.current.getContext("2d");
+    
+            chartInstanceCurrentLiabilties.current = new Chart(myChartRef, {
+                type: 'doughnut',
+                data: {
+                    labels: ["Liabilities", "Assets"],
+                    datasets: [{
+                        data: [totalCurrentLiabilites, totalCurrentAssets],
+                        backgroundColor: [
+                            'rgb(167, 65, 49)',
+                            'rgb(67, 117, 39)'
+                        ],
+                        hoverOffset: 4,
+                        borderColor: 'rgba(255, 204, 86, 0)',
+                    }],
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,  // Allows full control via CSS
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                        },
+                    },
+                },
+            });
+        }
+        return () => {
+            if (chartInstanceCurrentLiabilties.current) {
+                chartInstanceCurrentLiabilties.current.destroy();
+            }
+        };
+    }, [currentAssets]);
+
+    const debt = accounts.filter(account => account.category === "Liabilites");
+    const equity = accounts.filter(account => account.category === "Equity");
+    const totalDebt = debt.reduce((total, account) => total + account.balance, 0);
+    const totalEquity = equity.reduce((total, account) => total + account.balance, 0);
+
+    const chartRefDebtEquity = useRef(null);
+    const chartInstanceDebtEquity = useRef(null);
+    
+
+    useEffect(() => {
+        // Only proceed if the canvas ref is available
+        if (chartRefDebtEquity.current && debt.length > 0) {
+            if (chartInstanceDebtEquity.current) {
+                chartInstanceDebtEquity.current.destroy();
+            }
+            const myChartRef = chartRefDebtEquity.current.getContext("2d");
+    
+            chartInstanceDebtEquity.current = new Chart(myChartRef, {
+                type: 'doughnut',
+                data: {
+                    labels: ["Equity", "Debt"],
+                    datasets: [{
+                        data: [totalEquity, totalDebt],
+                        backgroundColor: [
+                            'rgb(67, 117, 39)',
+                            'rgb(167, 65, 49)'
+                        ],
+                        hoverOffset: 4,
+                        borderColor: 'rgba(255, 204, 86, 0)',
+                    }],
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,  // Allows full control via CSS
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                        },
+                    },
+                },
+            });
+        }
+        return () => {
+            if (chartInstanceDebtEquity.current) {
+                chartInstanceDebtEquity.current.destroy();
+            }
+        };
+    }, [debt]);
+
+
+
+    // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~Bottom Buttons~~~~~~~~~~~~~~~~~~~~~~~~~~~~`
+
+    const handleNavigateAccounts = () => {
+        if(currentUser.role === "Admin") {
+            navigate("/Accounts_Landing", {state: { currentUser } })
+        } else {
+            navigate("/Accounts_List", {state: {currentUser} })  
+        }  
+    };
+
+    const handleJournal = () => {
+        navigate("/JournalLanding", {state: { currentUser } })  
+    };
+
+    const handleNavigateUsers = () => {
+        navigate("/Users", { state: { currentUser } });
+    };
+
+    const handleNavigateStatements = () => {
+        navigate("/Statements_landing", { state: { currentUser } });
+    };
+
+
+
+
   return (
     <div className='homepage-dash-con'>
         <div className="homepage-dash-content">
@@ -295,7 +427,31 @@ function homePageDash({currentUser}) {
                 </div>  
 
                 <div className="panel performance-ratios">
-                    <p className="panel-titles">Performance/Ratios</p>
+                    <p className="panel-titles">Current Ratios</p>
+                    <div className="pie-charts">
+                        <div className="chart income">
+                            <p>Assets : Liabilites</p>
+                            {incomes.length === 0 ? (
+                                <p>No data, add tables to continue</p>  // Message when there is no data
+                            ) : (
+                                <div className="pie-chart">
+                                    <p className='pie-chart-totals'>{formatCurrency(totalCurrentAssets)} : {formatCurrency(totalCurrentLiabilites)}</p>
+                                    <canvas ref={chartRefCurrentAsset} />
+                                </div>
+                            )}
+                        </div>
+                        <div className="chart expense">
+                            <p>Debit : Equity</p>
+                            {expenses.length === 0 ? (
+                                <p>No data, add tables to continue</p>  // Message when there is no data
+                            ) : (
+                                <div className="pie-chart">
+                                    <p className='pie-chart-totals'>{formatCurrency(totalDebt)} : {formatCurrency(totalEquity)}</p>
+                                    <canvas ref={chartRefDebtEquity} />
+                                </div>
+                            )}
+                        </div>
+                    </div>
                 </div>
 
                 <div className="panel pie-breakdown">
@@ -329,21 +485,21 @@ function homePageDash({currentUser}) {
                 <div className="panel view-more">
                     <p className="panel-titles">View More</p>
                     <div className="view-more-buttons">
-                        <div className="view-more-button accounts">
+                        <div className="view-more-button accounts" onClick={handleNavigateAccounts}>
                             <BiSolidBank size={40}/>
                             <p>View accounts</p>
                         </div>
-                        <div className="view-more-button users">
+                        <div className="view-more-button users" onClick={handleNavigateUsers}>
                             <BiSolidUser size={40}/>
                             <p>View users</p>
                         </div>
-                        <div className="view-more-button journals">
+                        <div className="view-more-button journals" onClick={handleJournal}>
                             <BiBookBookmark size={40}/>
                             <p>View journals</p>
                         </div>
-                        <div className="view-more-button events">
+                        <div className="view-more-button events" onClick={handleNavigateStatements}>
                             <BiSpreadsheet size={40}/>
-                            <p>View events log</p>
+                            <p>View Statements</p>
                         </div>
                     </div>
                 </div>
