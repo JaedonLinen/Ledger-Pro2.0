@@ -7,6 +7,10 @@
     padding-right: 2.4%;
     padding-bottom: 5px;
 }
+.underline.space{
+    margin-top: 7px;
+    margin-bottom: 20px;
+}
 
 .addUserModalOpen-btn.send{
     background-color: rgba(169, 145, 60, 0.768);
@@ -14,6 +18,46 @@
 .addUserModalOpen-btn.send:hover{
     background-color: rgb(169, 145, 60);
 }
+
+
+
+.trial-table-titles{
+    display: flex;
+    justify-content: space-evenly;
+}
+.trial-table-titles p{
+    margin: 20px 0px 0px 0px;
+}
+.trial-table-titles-start{
+    margin: 0px 0px 0px -100px;
+}
+.trial-table-titles-others{
+    margin: 0px 0px 0px 200px;
+}
+.debit-credit-side{
+    margin-right: 100px;
+}
+.debit-credit-side.active{
+    margin-right: 280px;
+}
+.trial-totals{
+    display: flex;
+    justify-content: space-evenly;
+}
+.trial-balance{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+}
+.trial-balance h3{
+    font-weight: 100;
+    color: gray;
+}
+
+
+
+
 .statement-container{
     background-color: white;
     margin: 10%;

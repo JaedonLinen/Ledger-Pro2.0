@@ -7,18 +7,22 @@
   font-size: 3rem;
   color: whitesmoke;
 }
-.motto.about{
+.about-title{
+  margin-top: 100px;
+}
+.about-title p{
+  margin: 0;
+  font-weight: bold;
+  font-size: 4rem;
   color: rgba(173, 229, 151, 0.894);
   text-shadow: 2px 4px 4px rgba(255, 255, 255, 0.2),
                  0px -5px 10px rgba(255, 255, 255, 0.15);
-}
-.motto.services{
-  color: #EDE8D0;
-  text-align: center;
-  text-shadow: 2px 4px 4px rgba(0,0,0,0.2),
-                 0px -5px 10px rgba(255,255,255,0.15);
+  font-family: "Italiana", sans-serif;
 }
 .landing-con.about {
+  display: flex;
+  justify-content: center;
+  height: 600px;
   background-color: rgb(23, 23, 23);
   opacity: 0;
   transition: opacity 0.8s ease-in-out;
@@ -28,6 +32,7 @@
 }
 .landing-con.services {
   background-color: #307a55;
+  height: 800px;
   opacity: 0;
   transition: opacity 0.8s ease-in-out;
 }
@@ -35,7 +40,7 @@
   opacity: 1;
 }
 .landing-con.contact {
-  height: 50vh;
+  height: 600px;
   background-color: rgb(56, 56, 56);
   opacity: 0;
   transition: opacity 0.8s ease-in-out;
@@ -43,6 +48,7 @@
 .landing-con.contact.fade-in {
   opacity: 1;
 }
+
 .services-container{
   display: flex;
   justify-content: space-between;
@@ -118,9 +124,85 @@
   align-items: center;
 }
 
+.media-and-title p{
+  cursor: pointer;
+}
+
+.service-title{
+  margin: 0;
+}
+.service-title p{
+  font-family: "Italiana", sans-serif;
+  margin: 0;
+  padding: 75px 0px 0px 115px;
+  font-weight: bold;
+  font-size: 4rem;
+  color: rgba(233, 220, 183, 0.894);
+  text-shadow: 2px 4px 4px rgba(0, 0, 0, 0.2),
+                 0px -5px 10px rgba(0, 0, 0, 0.15);
+}
+
+.service-item h3{
+  font-family: "Titillium Web", sans-serif;
+  font-weight: 100;
+  font-size: 20px;
+  text-align: center;
+}
+
+.service-item p{
+  font-family: "Titillium Web", sans-serif;
+  font-weight: 100;
+  font-size: 15px;
+  margin: 10px;
+  text-align: center;
+}
+
+.services-container{
+  width: 100%;
+  margin-top: 55px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  transform-style: preserve-3d;
+  transform: perspective(1000px);
+}
+
+.services-container .service-item{
+  width: 16rem;
+  height: 30rem;
+  cursor: pointer;
+  transition: 0.5s;
+  border-radius: 10px;
+  background-color: rgb(135, 174, 143);
+  filter: brightness(0.3);
+}
+
+.services-container .service-item:hover{
+  filter: brightness(1);
+  transform: translateZ(180px);
+}
+.services-container .service-item:hover + *{
+  filter: brightness(0.4);
+  transform: rotateY(40deg);
+}
+.services-container .service-item:hover + * + *{
+  filter: brightness(0.2);
+  transform: rotateY(10deg);
+}
+.services-container .service-item:has(+ *:hover){
+  filter: brightness(0.4);
+  transform: rotateY(-40deg);
+}
+.services-container .service-item:has(+ * + *:hover){
+  filter: brightness(0.2);
+  transform: rotateY(-10deg);
+}
+
 .name{
   background-color: transparent;
   width: 200px;
+  font-family: "Titillium Web", sans-serif;
 }
 .name.about{
   background-color: transparent;
@@ -143,6 +225,7 @@
 .hook{
   width: 70vw;
   background-color: transparent;
+  font-family: "Titillium Web", sans-serif;
 }
 
 .landing-buttons{
@@ -154,7 +237,9 @@
   background-color: transparent;
 }
 
+
 .landing-buttons button {
+  font-family: "Titillium Web", sans-serif;
   padding: 1em 2em;
   background-color: rgb(41, 41, 41);
   border: none;
@@ -217,6 +302,7 @@
   background: conic-gradient(from 0deg, #e6832b, #f8dd5d, #58bb89, #db605d, #607c3c );
   animation: spinBlob 8s linear infinite;
 }
+
 
 @media (max-width: 800px){ 
 
