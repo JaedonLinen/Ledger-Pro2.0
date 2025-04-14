@@ -29,7 +29,7 @@ function SignUpIn() {
                 password
             }
 
-            const url = "http://127.0.0.1:5000/login"
+            const url = "https://render-flask-deployment-ivut.onrender.com/login"
             const options = {
                 method: "POST",
                 headers: {
@@ -84,7 +84,7 @@ function SignUpIn() {
                 role
             }
 
-            const url = "http://127.0.0.1:5000/register_user"
+            const url = "https://render-flask-deployment-ivut.onrender.com/register_user"
             const options = {
                 method: "POST",
                 headers: {
