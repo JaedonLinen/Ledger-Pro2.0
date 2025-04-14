@@ -1,0 +1,93 @@
+.top-right-buttons{
+    display: flex;
+    gap: 5px;
+    position: absolute;
+    top: 90px;
+    right: 0;
+    padding-right: 2.4%;
+    padding-bottom: 5px;
+}
+
+.addUserModalOpen-btn.send{
+    background-color: rgba(169, 145, 60, 0.768);
+}
+.addUserModalOpen-btn.send:hover{
+    background-color: rgb(169, 145, 60);
+}
+.statement-container{
+    background-color: white;
+    margin: 10%;
+}
+.statement-title{
+    text-align: center;
+}
+.statement-title h1{
+    margin: 0;
+    padding: 20px 1px 10px 1px;
+}
+.underline{
+    display: flex;
+    justify-content: center;
+    background-color: black;
+    height: 1px;
+    margin: 0px 10px 0px 10px;
+}
+.statement-ending{
+    background-color: white;
+    height: 20px;
+}
+
+.section{
+    margin: 0px 20px 0px 20px;
+}
+.section h3{
+    color: rgba(0, 0, 0, 0.73);
+    font-family: "Titillium Web", sans-serif;
+    margin: 60px 20px 20px 20px;
+}
+
+
+.total{
+    display: flex;
+    justify-content: space-between;
+    margin: 0px 20px 0px 20px;
+}
+.total h3{
+    margin: 20px 40px 20px 20px;
+}
+
+.incomes{
+    display: flex;
+    justify-content: space-between;
+    margin: 0px 40px 0px 20px;
+}
+.incomes.first{
+    display: flex;
+    justify-content: space-between;
+    margin: 60px 40px 0px 20px;
+}
+.incomes h3{
+    margin: 20px 20px 20px 20px;
+}
+
+
+.statement-account-container{
+    display: flex;
+    justify-content: space-between;
+    margin: -20px 40px 0px 40px;
+}
+.statement-account-container p{
+    font-family: "Titillium Web", sans-serif;
+    color: gray;
+    font-weight: 100;
+}
+
+
+
+@media (max-width: 1000px){
+    .statement-container{
+        background-color: white;
+        margin: 10%;
+        margin-top: 100px;
+    }
+}
