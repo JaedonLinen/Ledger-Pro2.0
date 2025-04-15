@@ -15,6 +15,7 @@ function AccountsTable() {
     }
 
     const [accounts, setAccounts] = useState([])
+    const [users, setUsers] = useState([])
 
     useEffect(() => {
         fetchAccounts()
@@ -22,29 +23,14 @@ function AccountsTable() {
 
     const fetchAccounts = async () => {
         try {
-            const response = await fetch("http://127.0.0.1:5000/get_accounts");
+            const response = await fetch("https://render-flask-deployment-ivut.onrender.com/get_dashboard");
             const data = await response.json();
-            setAccounts(data.allAccounts);
+            setAccounts(data.accounts);
+            setUsers(data.users);
         } catch (error) {
-            console.error("Failed to fetch users:", error);
-            setAccounts([]);  // Ensure users is always an array
-        }
-    };
-
-     const [users, setUsers] = useState([])
-
-    useEffect(() => {
-        fetchUsers()
-    }, [])
-
-    const fetchUsers = async () => {
-        try {
-            const response = await fetch("http://127.0.0.1:5000/get_users");
-            const data = await response.json();
-            setUsers(data.allUsers);
-        } catch (error) {
-            console.error("Failed to fetch users:", error);
-            setUsers([]);  // Ensure users is always an array
+            console.error("Failed to fetch information:", error);
+            setAccounts([]);
+            setUsers([]);
         }
     };
 

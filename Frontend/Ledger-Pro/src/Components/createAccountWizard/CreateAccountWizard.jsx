@@ -84,7 +84,7 @@ function CreateAccountWizard () {
             account_owner
         }
 
-        const url = "http://127.0.0.1:5000/create_account"
+        const url = "https://render-flask-deployment-ivut.onrender.com/create_account"
         const options = {
             method: "POST",
             headers: {

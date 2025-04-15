@@ -17,7 +17,7 @@ function HomeNav({currentUser}) {
     const handleSubmit = async (e) => {
         e.preventDefault()
         
-        const url = `http://127.0.0.1:5000/logout/${id}`
+        const url = `https://render-flask-deployment-ivut.onrender.com/logout/${id}`
         const options = {
             method: "POST",
             headers: {

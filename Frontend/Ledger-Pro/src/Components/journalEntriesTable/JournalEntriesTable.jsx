@@ -12,7 +12,7 @@ function JournalEntriesTable({id}) {
 
   const fetchJournals = async () => {
       try {
-          const response = await fetch(`http://127.0.0.1:5000//get_transaction/${id}`);
+          const response = await fetch(`https://render-flask-deployment-ivut.onrender.com/get_transaction/${id}`);
           const data = await response.json();
           setJournalEntries(data.transaction_entries);
       } catch (error) {
@@ -27,7 +27,7 @@ function JournalEntriesTable({id}) {
 
   const fetchAccounts = async () => {
       try {
-          const response = await fetch("http://127.0.0.1:5000/get_accounts");
+          const response = await fetch("https://render-flask-deployment-ivut.onrender.com/get_accounts");
           const data = await response.json();
           setAccounts(data.allAccounts);
       } catch (error) {

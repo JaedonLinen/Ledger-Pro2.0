@@ -17,7 +17,7 @@ function EmailModal({closeModal}) {
 
     const fetchUsers = async () => {
         try {
-            const response = await fetch("http://127.0.0.1:5000/get_users");
+            const response = await fetch("https://render-flask-deployment-ivut.onrender.com/get_users");
             const data = await response.json();
             setUsers(data.allUsers);
         } catch (error) {

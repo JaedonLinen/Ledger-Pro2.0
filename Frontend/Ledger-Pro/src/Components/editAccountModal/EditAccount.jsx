@@ -24,7 +24,7 @@ function EditAccount({closeModal, currentUser, account, updateCallBack}) {
             isActive
         }
 
-        const url = `http://127.0.0.1:5000/update_account/${account.account_id}`
+        const url = `https://render-flask-deployment-ivut.onrender.com/${account.account_id}`
         const options = {
             method: "PATCH",
             headers: {

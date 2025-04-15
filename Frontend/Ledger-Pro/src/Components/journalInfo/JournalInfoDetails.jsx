@@ -24,7 +24,7 @@ function JournalInfoDetails({t_id, currentUser}) {
 
   const fetchJournals = async () => {
       try {
-          const response = await fetch(`http://127.0.0.1:5000//get_transaction/${t_id}`);
+          const response = await fetch(`https://render-flask-deployment-ivut.onrender.com/get_transaction/${t_id}`);
           const data = await response.json();
           setJournals(data.transaction);
           setJournalEntries(data.transaction_entries)
@@ -48,7 +48,7 @@ function JournalInfoDetails({t_id, currentUser}) {
   
   const fetchUsers = async () => {
     try {
-        const response = await fetch("http://127.0.0.1:5000/get_users");
+        const response = await fetch("https://render-flask-deployment-ivut.onrender.com/get_users");
         const data = await response.json();
         setUsers(data.allUsers);
     } catch (error) {
@@ -86,7 +86,7 @@ function JournalInfoDetails({t_id, currentUser}) {
       journalEntries
     }
     
-    const url = `http://127.0.0.1:5000/update_transaction/${t_id}`
+    const url = `https://render-flask-deployment-ivut.onrender.com/update_transaction/${t_id}`
     const options = {
         method: "PATCH",
         headers: {

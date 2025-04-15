@@ -11,21 +11,6 @@ function JournalTable({currentUser}) {
     const [journalsByFilter, setJournalsByFilter] = useState(false)
     const [journalsF, setJournalsF] = useState([]);
 
-    useEffect(() => {
-    fetchJournals()
-    }, [])
-
-    const fetchJournals = async () => {
-        try {
-            const response = await fetch("http://127.0.0.1:5000/get_transactions");
-            const data = await response.json();
-            setJournals(data.allTransactions);
-        } catch (error) {
-            console.error("Failed to fetch transactions:", error);
-            setJournals([]);  // Ensure users is always an array
-        }
-    };
-
     const [users, setUsers] = useState([])
 
     useEffect(() => {
@@ -34,7 +19,7 @@ function JournalTable({currentUser}) {
 
     const fetchUsers = async () => {
         try {
-            const response = await fetch("http://127.0.0.1:5000/get_users");
+            const response = await fetch("https://render-flask-deployment-ivut.onrender.com/get_users");
             const data = await response.json();
             setUsers(data.allUsers);
         } catch (error) {
@@ -51,7 +36,7 @@ function JournalTable({currentUser}) {
 
     const fetchAccounts = async () => {
         try {
-            const response = await fetch("http://127.0.0.1:5000/get_accounts");
+            const response = await fetch("https://render-flask-deployment-ivut.onrender.com/get_accounts");
             const data = await response.json();
             setAccounts(data.allAccounts);
         } catch (error) {
@@ -63,7 +48,7 @@ function JournalTable({currentUser}) {
     const handleFilterChangeJournals = async (value) => {
         setIsFiltered(true);
         try {
-            const response = await fetch(`http://127.0.0.1:5000/get_transaction_by_acc/${value}`);
+            const response = await fetch(`https://render-flask-deployment-ivut.onrender.com/get_transaction_by_acc/${value}`);
             const data = await response.json();
             setJournalsF(data.allTransactions);
         } catch (error) {

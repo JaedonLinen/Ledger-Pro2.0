@@ -16,7 +16,7 @@ function FilesTableModal({closeModal, id, existing, updateCallback}) {
 
     const fetchFiles = async () => {
         try {
-            const response = await fetch(`http://127.0.0.1:5000/get_files/${id}`);
+            const response = await fetch(`https://render-flask-deployment-ivut.onrender.com/get_files/${id}`);
             const data = await response.json();
             setFiles(data.allFiles);
         } catch (error) {

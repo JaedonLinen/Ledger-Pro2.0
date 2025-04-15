@@ -14,7 +14,7 @@ function CreateJournalEntry() {
 
   const fetchAccounts = async () => {
       try {
-          const response = await fetch("http://127.0.0.1:5000/get_accounts");
+          const response = await fetch("https://render-flask-deployment-ivut.onrender.com/get_accounts");
           const data = await response.json();
           setAccounts(data.allAccounts);
       } catch (error) {
@@ -44,7 +44,7 @@ function CreateJournalEntry() {
       docs
     }
 
-    const url = "http://127.0.0.1:5000/create_transaction"
+    const url = "https://render-flask-deployment-ivut.onrender.com/create_transaction"
     const options = {
         method: "POST",
         headers: {

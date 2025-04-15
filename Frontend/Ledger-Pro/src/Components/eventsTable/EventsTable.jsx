@@ -11,7 +11,7 @@ function EventsTable() {
 
     const fetchEvents = async () => {
         try {
-            const response = await fetch("http://127.0.0.1:5000/get_events");
+            const response = await fetch("https://render-flask-deployment-ivut.onrender.com/get_events");
             const data = await response.json();
             setEvents(data.allEvents);
         } catch (error) {

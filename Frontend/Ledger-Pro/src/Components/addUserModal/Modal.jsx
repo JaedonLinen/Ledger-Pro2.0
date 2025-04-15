@@ -28,7 +28,7 @@ const Modal = ({closeModal, existingUser = {}, updateCallBack}) => {
             isActive
         }
 
-        const url = "http://127.0.0.1:5000/" + (updating ? `update_user/${existingUser.id}` : "create_user")
+        const url = "https://render-flask-deployment-ivut.onrender.com/" + (updating ? `update_user/${existingUser.id}` : "create_user")
         const options = {
             method: updating ? "PATCH" : "POST",
             headers: {

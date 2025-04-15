@@ -10,7 +10,7 @@ function addUserConfirmModal({closeModal, existingUser = {}, updateDelete}) {
       const options = {
         method: "DELETE"
       }
-      const response = await fetch(`http://127.0.0.1:5000/delete_user/${existingUser.id}`, options)
+      const response = await fetch(`https://render-flask-deployment-ivut.onrender.com/delete_user/${existingUser.id}`, options)
       if(response.status === 200){
         updateDelete()
       } else {

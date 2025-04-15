@@ -24,7 +24,7 @@ function statementDoc({option, dateStart, dateEnd}) {
   
   const fetchEverything = async () => {
     try {
-        const response = await fetch("http://127.0.0.1:5000/get_dashboard");
+        const response = await fetch("https://render-flask-deployment-ivut.onrender.com/get_dashboard");
         const data = await response.json();
         setAccounts(data.accounts);
     } catch (error) {
