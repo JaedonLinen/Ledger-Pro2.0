@@ -17,9 +17,9 @@ function JournalTable({currentUser}) {
 
     const fetchJournals = async () => {
         try {
-            const response = await fetch("https://render-flask-deployment-ivut.onrender.com/get_users");
+            const response = await fetch("https://render-flask-deployment-ivut.onrender.com/get_transactions");
             const data = await response.json();
-            setJournals(data.allUsers);
+            setJournals(data.allTransactions);
         } catch (error) {
             console.error("Failed to fetch users:", error);
             setJournals([]);  // Ensure users is always an array
