@@ -76,7 +76,6 @@ function CreateJournalEntry() {
   const [amountError, setEntryError] = useState(false)
   const [balanceError, setBalanceError] = useState(false)
   const [entriesError, setEntriesError] = useState(false)
-  const [accountsError, setAccountsError] = useState(false)
   
 
   const checkHighestID = () => {
@@ -169,19 +168,12 @@ function CreateJournalEntry() {
         account.account_id === entry.account_id && account.normal_side === "Credit"
       );
     };
-  
-    if (entries.some(entry => hasDebitAccount(entry, accounts)) && entries.some(entry => hasCreditAccount(entry, accounts))) {
-      setAccountsError(false)
-    } else {
-      setAccountsError(true)
-    }
   };
 
   const resetEntries = () => {
     setBalanceError(false);
     setEntryError(false);
     setEntriesError(true);
-    setAccountsError(false);
     setEntries([{id: 0, transaction_id:null, account_id:null, amount:null, type:"debit"},{id: 1, transaction_id:null, account_id:null, amount:null, type:"credit"}])
   }
 
@@ -253,7 +245,6 @@ function CreateJournalEntry() {
 
         {amountError && <div className='journal-Entry-Error'><BiErrorCircle />Amount cannot be negative or letters</div> }
         {balanceError && <div className='journal-Entry-Error'><BiErrorCircle />Journal entry is not balanced *debits=credits</div> }
-        {accountsError && <div className='journal-Entry-Error'><BiErrorCircle />Journal entries is must include at least one debit and one credit account</div> }
 
         <div className="side-titles">
           <h1>Debits</h1>
@@ -346,7 +337,7 @@ function CreateJournalEntry() {
             </div>
           </div>
         </div>
-        {!accountsError && !balanceError && !amountError && !entriesError &&
+        {!balanceError && !amountError && !entriesError &&
           <div className="journal-submit-con">
             <button className="wizard-submit" type="submit">Submit Request</button>
           </div>

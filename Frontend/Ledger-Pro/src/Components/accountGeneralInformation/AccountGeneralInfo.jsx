@@ -25,7 +25,7 @@ function AccountGeneralInfo({id}) {
 
   const fetchAccount = async () => {
       try {
-          const response = await fetch(`https://render-flask-deployment-ivut.onrender.com/${id}`);
+          const response = await fetch(`https://render-flask-deployment-ivut.onrender.com/get_account/${id}`);
           const data = await response.json();
           setAccount(data.account)
       } catch (error) {
