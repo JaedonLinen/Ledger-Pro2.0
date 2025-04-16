@@ -11,6 +11,7 @@ function HomeNav({currentUser}) {
 
     const [isOpen, setIsOpen] = useState(false);
     const [modalOpen, setModalOpen] = useState(false)
+    const [logoutOpen, setLogoutOpen] = useState(false)
     const navigate = useNavigate(); 
     const id = currentUser.id
 
@@ -69,35 +70,47 @@ function HomeNav({currentUser}) {
 
 
   return (
-    <div className={`home-navbar ${isOpen ? "open" : ""}`}>
-        <div className="logo-and-help" id="tooltip">
-            <BiHelpCircle className="help" size={20} onClick={() => setModalOpen(true)} id="tooltiptext" title='Help'/>
-            <img src={myImage} alt="" className='home-nav-logo' onClick={handleNavigateHome}/>
-        </div>
-        <div className={`home-nav-items ${isOpen ? "open" : ""}`}>
-            <div onClick={handleNavigateAccounts} className="home-nav-link"><p className='home-nav-link-txt'>Accounts</p></div>
-            <div onClick={handleNavigateUsers} className="home-nav-link"><p className='home-nav-link-txt'>Users</p></div>
-            <div onClick={handleNavigateStatements} className="home-nav-link"><p className='home-nav-link-txt'>Statements</p></div>
-            <div onClick={handleJournal} className="home-nav-link"><p className='home-nav-link-txt'>Journals</p></div>
-            { currentUser.role == "Admin" &&
-                <div onClick={handleEventLog} className="home-nav-link"><p className='home-nav-link-txt'>Events</p></div>
-            }
-            <div className="profile-container" onClick={handleSubmit}>
-                <div className="home-nav-link">
-                    <img src={ppImage} alt="" />
-                </div>
-                <div className="home-nav-link">
-                    <p className='home-nav-username'>{currentUser.username}</p>
+    <div>
+        <div className={`home-navbar ${isOpen ? "open" : ""}`}>
+            <div className="logo-and-help" id="tooltip">
+                <BiHelpCircle className="help" size={20} onClick={() => setModalOpen(true)} id="tooltiptext" title='Help'/>
+                <img src={myImage} alt="" className='home-nav-logo' onClick={handleNavigateHome}/>
+            </div>
+            <div className={`home-nav-items ${isOpen ? "open" : ""}`}>
+                { isOpen &&
+                    <div onClick={handleSubmit} className="home-nav-link lo"><p className='home-nav-link-txt'>Sign Out</p></div>
+                }
+                <div onClick={handleNavigateAccounts} className="home-nav-link"><p className='home-nav-link-txt'>Accounts</p></div>
+                <div onClick={handleNavigateUsers} className="home-nav-link"><p className='home-nav-link-txt'>Users</p></div>
+                <div onClick={handleNavigateStatements} className="home-nav-link"><p className='home-nav-link-txt'>Statements</p></div>
+                <div onClick={handleJournal} className="home-nav-link"><p className='home-nav-link-txt'>Journals</p></div>
+                { currentUser.role == "Admin" &&
+                    <div onClick={handleEventLog} className="home-nav-link"><p className='home-nav-link-txt'>Events</p></div>
+                }
+                <div className="profile-container" onClick={() => setLogoutOpen(!logoutOpen)}>
+                    <div className="home-nav-link">
+                        <img src={ppImage} alt="" />
+                    </div>
+                    <div className="home-nav-link">
+                        <p className='home-nav-username'>{currentUser.username}</p>
+                    </div>
                 </div>
             </div>
+            <div className={`home-nav-toggle ${isOpen ? "open" : ""}`} onClick={() => setIsOpen(!isOpen)}>
+                <div className="bar-home-nav"></div>
+            </div>
+            {
+                modalOpen &&
+                <div className="help-icon">
+                    <Help closeModal={() => {setModalOpen(false)}}/>
+                </div>
+            }
         </div>
-        <div className={`home-nav-toggle ${isOpen ? "open" : ""}`} onClick={() => setIsOpen(!isOpen)}>
-            <div className="bar-home-nav"></div>
-        </div>
-        {
-            modalOpen &&
-            <div className="help-icon">
-                <Help closeModal={() => {setModalOpen(false)}}/>
+        {logoutOpen &&
+            <div className="sign-out-dropdown-container">
+                <div onClick={handleSubmit} className="sign-out-dropdown lo">
+                    <p className='home-nav-link-txt'>Sign Out</p>
+                </div>
             </div>
         }
     </div>

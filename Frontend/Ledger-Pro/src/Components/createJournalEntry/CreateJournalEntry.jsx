@@ -3,6 +3,7 @@ import { BiDownArrow, BiPlus, BiTrash, BiCalendar, BiErrorCircle, BiRefresh, BiF
 import './CreateJournalEntry.css'
 import { useLocation } from "react-router-dom"
 import FileModal from '../filesTableModal/FilesTableModal'
+import SuccessModal from '../successModal/SuccessModal'
 
 function CreateJournalEntry() {
 
@@ -194,6 +195,7 @@ function CreateJournalEntry() {
 
   return (
     <div>
+      <SuccessModal />
       {openDocs && <FileModal closeModal={() => setOpenDocs(false)} existing={false} updateCallback={docsCallback} />}
       <form className='journal-form' onSubmit={onSubmit}>
         <div className="journal-title">

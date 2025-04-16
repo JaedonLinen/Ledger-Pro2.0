@@ -41,21 +41,17 @@ function JournalEntriesTable({id}) {
   }
 
   const formatCurrency = (num) => {
-    num = num.toString(); // Ensure it's a string for processing
-
-    let isNegative = num.toString().startsWith("-") ? true : false; // Check if the number is negative
-    if (isNegative) num = num.slice(1); // Remove the negative sign for formatting
-
-    let parts = num.split(".");
-    parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ","); // Add commas
-
-    // Limit to two decimal places
-    if (parts.length > 1) {
-        parts[1] = parts[1].slice(0, 2);
-    }
-
+    if (num === undefined || num === null || isNaN(num)) return "$0.00"; // or return empty string, if you prefer
+  
+    num = Number(num); // Ensure it's a number first
+    let isNegative = num < 0;
+    num = Math.abs(num);
+  
+    let parts = num.toFixed(2).split(".");
+    parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  
     let formatted = `$${parts.join(".")}`;
-    return isNegative ? `-${formatted}` : formatted; // Re-add negative sign if needed
+    return isNegative ? `-${formatted}` : formatted;
   };
 
   return (
@@ -79,12 +75,16 @@ function JournalEntriesTable({id}) {
                 <tbody>
                 {journalEntries.map((entry) => (
                         <tr key={entry.account_id} className='table-data'>
-                            <td data-cell="Journal entry Id"    >{entry.transaction_entry_id}</td>
+                            <td data-cell="Journal entry Id"    >{entry?.transaction_entry_id || ""}</td>
                             <td data-cell="normal side"    >{findAccount(entry.account_id)?.normal_side || ""}</td>
                             <td data-cell="account"    >{findAccount(entry.account_id)?.account_name || ""} </td>
-                            <td data-cell="account current balance"    >{formatCurrency(findAccount(entry.account_id)?.balance) || ""} </td>
+                            <td data-cell="account current balance">
+                                {findAccount(entry.account_id)?.balance !== undefined
+                                ? formatCurrency(findAccount(entry.account_id)?.balance)
+                                : ""}
+                            </td>
                             <td data-cell="entry effect"    >
-                                {entry.type === findAccount(entry.account_id)?.normal_side?.toLowerCase() ? `+${formatCurrency(entry.amount)}` : `-${formatCurrency(entry.amount)}`}
+                                {entry.type === findAccount(entry.account_id)?.normal_side?.toLowerCase() ? `+${formatCurrency(entry.amount)}` || "" : `-${formatCurrency(entry.amount)}` || ""}
                             </td>
                             <td data-cell="type"        >{entry.type}</td>
                         </tr>

@@ -38,7 +38,9 @@
     margin: 15px;
     cursor: pointer;
 }
-
+.home-nav-link.lo p{
+    color: rgb(180, 77, 77)
+}
 .home-navbar .home-nav-items .home-nav-link{
     color: black;
     font-size: 16px;
@@ -118,6 +120,27 @@
     position: absolute;
 }
 
+.sign-out-dropdown-container{
+    display: flex;
+    justify-content: right;
+}
+.sign-out-dropdown{
+    position: absolute;
+    background-color: rgba(172, 81, 81, 0.803);
+    border-radius: 0px 0px 0px 10px;
+    width: 155px;
+    text-align: center;
+    cursor: pointer;
+}
+.sign-out-dropdown:hover{
+    background-color: rgba(172, 81, 81, 0.884);
+    transition: 0.15s all ease-in-out;
+}
+.sign-out-dropdown p{
+    padding-bottom: 12px;
+    color: white;
+}
+
 @media (max-width: 700px){
 
     .profile-container{
@@ -138,6 +161,10 @@
         background: #7bab72;
         border: none;
         transition-delay: 0.5s;
+    }
+    .sign-out-dropdown-container{
+        background-color: transparent;
+        visibility: hidden;
     }
     
     .home-navbar .home-nav-items{

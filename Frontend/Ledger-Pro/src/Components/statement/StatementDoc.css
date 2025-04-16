@@ -23,22 +23,24 @@
 
 .trial-table-titles{
     display: flex;
-    justify-content: space-evenly;
-}
-.trial-table-titles p{
-    margin: 20px 0px 0px 0px;
-}
-.trial-table-titles-start{
-    margin: 0px 0px 0px -100px;
+    justify-content: space-between;
+    width: 90%;
+    margin: auto;
 }
 .trial-table-titles-others{
-    margin: 0px 0px 0px 200px;
+    display: flex;
+    justify-content: right;
+    width: 70%;
+    gap: 30%;
 }
-.debit-credit-side{
-    margin-right: 100px;
+.trial-table-titles-others h3:first-of-type{
+    margin-right: 9%;
+}
+.trial-table-titles p{
+    margin: 10px 0px 0px 0px;
 }
 .debit-credit-side.active{
-    margin-right: 280px;
+    margin-right: 28%;
 }
 .trial-totals{
     display: flex;
@@ -133,5 +135,8 @@
         background-color: white;
         margin: 10%;
         margin-top: 100px;
+    }
+    .debit-credit-side.active{
+        margin-right: 30%;
     }
 }

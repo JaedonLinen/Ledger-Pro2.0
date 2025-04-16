@@ -160,8 +160,8 @@ function statementDoc({option, dateStart, dateEnd}) {
             </div>
             <div className="trial-table-titles-others">
               <p>Debit</p>
+              <p>Credit</p>
             </div>
-            <p>Credit</p>
           </div>
           <div className="underline space"></div>
 
@@ -182,8 +182,8 @@ function statementDoc({option, dateStart, dateEnd}) {
             </div>
             <div className="trial-table-titles-others">
               <h3>{formatCurrency(getBalance(debitAccounts))}</h3>
-            </div>
               <h3>{formatCurrency(getBalance(creditAccounts))}</h3>
+            </div>
           </div>
 
           <div className="trial-balance">
