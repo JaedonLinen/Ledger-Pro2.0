@@ -2,6 +2,8 @@ import React, { useEffect } from 'react'
 import './CreateAccountWizard.css'
 import {useState} from "react"
 import { useLocation } from "react-router-dom";
+import SuccessModal from '../successModal/SuccessModal';
+import LoadingModal from '../loadingModal/LoadingModal';
 
 function CreateAccountWizard () {
 
@@ -72,6 +74,7 @@ function CreateAccountWizard () {
 
     const onSubmit = async (e) => {
         e.preventDefault()
+        setLoading(true)
 
         const data = {
             account_name,   
@@ -96,16 +99,21 @@ function CreateAccountWizard () {
         const response = await fetch (url, options)
         if (response.status !== 201 && response.status !== 200){
             const data = await response.json()
+            setLoading(false)
             alert(data.message)
         } else {
-            // success modal
+            setLoading(false)
+            setSuccess(true)
         }
     }
 
-    
+    const [loading, setLoading] = useState(false)
+    const [success, setSuccess] = useState(false)
 
   return (
     <div className='wizard-body'>
+        {loading && <LoadingModal />}
+        {success && <SuccessModal page={"account"} currentUser={currentUser}/>}
         <div className="wizard-header-text">
             <h3>Create an account</h3>
             <p>Please fill out the information below to create an account</p>

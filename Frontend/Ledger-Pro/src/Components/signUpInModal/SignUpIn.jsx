@@ -4,6 +4,7 @@ import { BiLock, BiUser, BiEnvelope, BiNotepad} from 'react-icons/bi'
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom'
 import myImage from "/src/assets/LP-logo-white.png";
+import LoadingModal from '../loadingModal/LoadingModal';
 
 function SignUpIn() {
     const navigate = useNavigate();
@@ -19,8 +20,10 @@ function SignUpIn() {
 
     const attemptLogin = async (e) => {
         e.preventDefault()
+        setLoading(true)
 
         if (suspended) {
+            setLoading(false)
             alert("You are suspended please try again in 5 min")
         } else {
             
@@ -47,13 +50,16 @@ function SignUpIn() {
                         setSuspended(true)
                     }
                     const data = await response.json()
+                    setLoading(false)
                     alert(data.message)
                 } else {
                     const data = await response.json()
+                    setLoading(false)
                     setUser(data.user)
                     navigate("/Home", {state: {user: user} })   
                 }
             } catch (error) {
+                setLoading(false)
                 alert(error.message);
             }
         }
@@ -65,16 +71,17 @@ function SignUpIn() {
     const [lastName, setlastName] = useState("")
     const [email, setEmail] = useState("")
     const [dateOfBirth, setDOB] = useState("")
-    const role = "Admin"
+    const role = "Accountant"
 
     const attemptRegister = async (e) => {
         e.preventDefault()
+        setLoading(true)
         
 
         if (errorPW) {
+            setLoading(false)
             alert(errorPW)
         } else {
-
             const registerData = {
                 firstName,
                 passwordHash,
@@ -97,14 +104,16 @@ function SignUpIn() {
                 const response = await fetch (url, options)
                 if (response.status !== 201 && response.status !== 200){
                     const data = await response.json()
+                    setLoading(false)
                     alert(data.message)
                 } else {
-                    console.log(data)
+                    setLoading(false)
                     const data = await response.json()
                     setUser(data.user)
-                    // navigate("/Home", {state: {user: user} })   
+                    navigate("/Home", {state: {user: user} })   
                 }
             } catch (error) {
+                setLoading(false)
                 alert(error.message);
             }
         }
@@ -145,8 +154,11 @@ function SignUpIn() {
         }
     }, [user]);
 
+    const [loading, setLoading] = useState(false)
+
   return (
     <div className='login-modal-body'>
+        {loading && <LoadingModal />}
         <div className={`login-container ${isActive ? "active" : ""}`} >
             <div className="form-box login">
                 <form onSubmit={attemptLogin}>

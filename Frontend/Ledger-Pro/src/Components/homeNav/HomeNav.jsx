@@ -5,6 +5,7 @@ import ppImage from "/src/assets/base-pp.png";
 import Help from "../helpModal/Help.jsx";
 import { BiHelpCircle } from "react-icons/bi";
 import './HomeNav.css'
+import LoadingModal from '../loadingModal/LoadingModal';
 
 
 function HomeNav({currentUser}) {
@@ -14,9 +15,11 @@ function HomeNav({currentUser}) {
     const [logoutOpen, setLogoutOpen] = useState(false)
     const navigate = useNavigate(); 
     const id = currentUser.id
+    const [loading, setLoading] = useState(false)
 
     const handleSubmit = async (e) => {
         e.preventDefault()
+        setLoading(true)
         
         const url = `https://render-flask-deployment-ivut.onrender.com/logout/${id}`
         const options = {
@@ -29,8 +32,10 @@ function HomeNav({currentUser}) {
         const response = await fetch (url, options)
         if (response.status !== 201 && response.status !== 200){
             const data = await response.json()
+            setLoading(false)
             alert(data.message)
         } else {
+            setLoading(false)
             handleNavigateSignOut()
         }
       }
@@ -71,6 +76,7 @@ function HomeNav({currentUser}) {
 
   return (
     <div>
+        {loading && <LoadingModal />}
         <div className={`home-navbar ${isOpen ? "open" : ""}`}>
             <div className="logo-and-help" id="tooltip">
                 <BiHelpCircle className="help" size={20} onClick={() => setModalOpen(true)} id="tooltiptext" title='Help'/>

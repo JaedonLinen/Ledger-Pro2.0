@@ -3,7 +3,10 @@ import { BiDownArrow, BiPlus, BiTrash, BiCalendar, BiErrorCircle, BiRefresh, BiF
 import './CreateJournalEntry.css'
 import { useLocation } from "react-router-dom"
 import FileModal from '../filesTableModal/FilesTableModal'
-import SuccessModal from '../successModal/SuccessModal'
+import SuccessModal from '../successModal/SuccessModal';
+import LoadingModal from '../loadingModal/LoadingModal';
+
+
 
 function CreateJournalEntry() {
 
@@ -35,6 +38,7 @@ function CreateJournalEntry() {
 
   const onSubmit = async (e) => {
     e.preventDefault()
+    setLoading(true)
 
     const data = {
       description,
@@ -57,9 +61,11 @@ function CreateJournalEntry() {
     const response = await fetch (url, options)
     if (response.status !== 201 && response.status !== 200){
         const data = await response.json()
+        setLoading(false)
         alert(data.message)
     } else {
-        // success modal
+        setLoading(false)
+        setSuccess(true)
     }
 }
 
@@ -193,9 +199,14 @@ function CreateJournalEntry() {
     setDocs([...docs, { filename: fileName, file: formData.get("file") }]);
   };
 
+  const [success, setSuccess] = useState(false)
+  const [loading, setLoading] = useState(false)
+  
+
   return (
     <div>
-      <SuccessModal />
+      {loading && <LoadingModal />}
+      {success && <SuccessModal page={"journal"} currentUser={currentUser}/>}
       {openDocs && <FileModal closeModal={() => setOpenDocs(false)} existing={false} updateCallback={docsCallback} />}
       <form className='journal-form' onSubmit={onSubmit}>
         <div className="journal-title">
