@@ -131,6 +131,7 @@
     width: 155px;
     text-align: center;
     cursor: pointer;
+    z-index: 9000;
 }
 .sign-out-dropdown:hover{
     background-color: rgba(172, 81, 81, 0.884);
