@@ -1,5 +1,16 @@
+
 .modal-container.loading{
-  z-index: 9998; /* Very high so it's above all other elements */
+  z-index: 9995; /* Very high so it's above all other elements */
+  background-color: rgba(0,0,0,0.6);
+}
+.modal-container.loading p{
+  position: absolute;
+  text-align: center;
+  margin-top: 150px;
+  background-color: rgb(216, 218, 119);
+  padding: 8px;
+  border-radius: 5px;
+  z-index: 9996; /* Very high so it's above all other elements */
 }
 .loader {
     width: 16px;
