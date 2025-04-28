@@ -362,7 +362,11 @@ function homePageDash({currentUser}) {
     };
 
     const handleJournal = () => {
-        navigate("/JournalLanding", {state: { currentUser } })  
+        if(currentUser.role === "Admin") {
+            navigate("/JournalTable", {state: {currentUser} })  
+        } else {
+            navigate("/JournalLanding", {state: { currentUser } })   
+        }    
     };
 
     const handleNavigateUsers = () => {
