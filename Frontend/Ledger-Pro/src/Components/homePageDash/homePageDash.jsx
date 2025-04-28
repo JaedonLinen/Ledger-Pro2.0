@@ -426,7 +426,7 @@ function homePageDash({currentUser}) {
                     </div>
                 </div>  
 
-                <div className="panel performance-ratios">
+                <div className="panel pie-breakdown">
                     <p className="panel-titles">Current Ratios</p>
                     <div className="pie-charts">
                         <div className="chart income">
