@@ -71,7 +71,7 @@ function SignUpIn() {
     const [lastName, setlastName] = useState("")
     const [email, setEmail] = useState("")
     const [dateOfBirth, setDOB] = useState("")
-    const role = "Accountant"
+    const role = "Admin"
 
     const attemptRegister = async (e) => {
         e.preventDefault()
